@@ -1,0 +1,45 @@
+html,body {
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	background-image: url('/YesCommentWeb/resources/images/yellimage.png');
+	width: 320px;
+	height: 100%;
+	position: fixed;
+	z-index: 9999;
+}
+
+#contentwrapper {
+	margin: 0 auto;
+	width: 1200px;
+}
+
+#contentwrapper article {
+	margin-left: 320px;
+	padding-top: 100px;
+}
+
+#contentwrapper #topdiv {
+	margin-left: 320px;
+	position: fixed;
+	background-color: white;
+	height: 100px;
+	z-index: 9999;
+	width: 100%;
+}
+
+#searcharticleform{
+	padding: 10px;
+	margin: 0;
+	
+}
+#searcharticleform\:searchedurl {
+	float:left;
+	width: 480px;
+	margin-right: 10px;
+}
+#searcharticleform\:searchbutton {
+	float:left;
+}

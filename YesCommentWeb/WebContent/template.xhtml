@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+		<title>YesComment</title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+		<meta name="ROBOTS" content="ALL" />
+
+		<meta name="keywords" content="comment, yescomment" />
+		<h:outputStylesheet name="yescomment.css" library="css" />
+	</h:head>
+	<h:body>
+
+		<div id="contentwrapper">
+			<header id="yellimage"> <hgroup>
+			<h1>Yescomment</h1>
+			<h2>Oda is, ahova nem szabad</h2>
+			</hgroup> </header>
+			<div id="topdiv">
+
+				<div id="searchdiv">
+					<ui:include src="search.xhtml" />
+				</div>
+
+
+			</div>
+
+			<article> <ui:insert name="content" /> </article>
+			<div style="margin-left: 400px; background-color: red;">
+				
+				<h:link outcome="latestarticles" value="Latest Articles" />
+				<h:link outcome="keywords" value="Keywords" />
+				<h:link outcome="legal" value="Legal" />
+			</div>
+
+		</div>
+
+
+	</h:body>
+</f:view>
+</html>

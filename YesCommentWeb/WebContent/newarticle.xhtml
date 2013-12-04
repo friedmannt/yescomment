@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+	<f:metadata>
+
+		<f:event type="preRenderView"
+			listener="#{newArticleManagedBean.fillNewArticleURLFromRequest()}" />
+	</f:metadata>
+	<ui:define name="content">
+		<h:outputText id="articlenotfoundtext"
+			value="#{yescommentmsg['article_not_found']}" />
+		<h:outputText id="importnewarticletext"
+			value="#{yescommentmsg['import_new_article']}" />
+		<br />
+		<h:form id="newarticleform">
+			<h:outputText value="#{yescommentmsg['newarticle_passed_the_check']}" />
+			<h:outputText id="newarticlepassedthecheck"
+				value="#{newArticleManagedBean.newArticlePassedTheCheck}" />
+			<p:message for="newarticlepassedthecheck" />
+			<p:panel rendered="#{newArticleManagedBean.newArticleInfo!=null}">
+				<h:outputText value="#{yescommentmsg['article_title']}" />
+				<h:outputText id="newarticletitle"
+					value="#{newArticleManagedBean.newArticleInfo.title}" />
+				<br />
+				<h:outputText value="#{yescommentmsg['article_description']}" />
+				<h:outputText id="newarticledescription"
+					value="#{newArticleManagedBean.newArticleInfo.description}" />
+
+				<br />
+				<h:outputText value="#{yescommentmsg['keywords']}" />
+				<h:outputText id="newarticlekeywords"
+					value="#{newArticleManagedBean.newArticleInfo.keywords}" />
+
+			</p:panel>
+
+			<p:commandButton value="#{yescommentmsg['submit']}" type="submit"
+				disabled="#{!newArticleManagedBean.newArticlePassedTheCheck}"
+				action="#{newArticleManagedBean.createNewArticle()}" update="@form" />
+		</h:form>
+	</ui:define>
+</ui:composition>

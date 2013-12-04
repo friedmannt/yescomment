@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form id="searcharticleform">
+		<p:inputText id="searchedurl"
+			value="#{searchArticleManagedBean.searchedArticleURL}"
+			required="true"  type="search">
+		</p:inputText>
+		<p:watermark for="searchedurl"
+			value="#{yescommentmsg['enter_article_url']}"></p:watermark>
+		
+		<p:commandButton type="submit"  id="searchbutton"
+			action="#{searchArticleManagedBean.searchForArticle()}"
+			value="#{yescommentmsg['search']}" update="@form">
+		</p:commandButton>
+		<p:message for="searchedurl" id="searchedurlmessage"/>
+	</h:form>
+</ui:composition>

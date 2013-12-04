@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	<application>
+		<resource-bundle>
+			<base-name>yescomment.localization.yescomment</base-name>
+			<var>yescommentmsg</var>
+		</resource-bundle>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>hu</supported-locale>
+		</locale-config>
+
+	</application>
+	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>legal</from-outcome>
+			<to-view-id>/legal.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>keywords</from-outcome>
+			<to-view-id>/keywords.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>viewarticle</from-outcome>
+			<to-view-id>/viewarticle.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>latestarticles</from-outcome>
+			<to-view-id>/latestarticles.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+</faces-config>

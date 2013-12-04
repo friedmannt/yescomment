@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+
+	<ui:define name="content">
+
+
+		<h:form id="usernameform">
+
+			<p:captcha id="captcha" label="Captcha" theme="white" />
+			<p:message for="captcha" />
+			<br />
+			<h:outputText value="Name" />
+			<p:inputText id="username" value="#{loginBean.userName}"
+				required="true" />
+			<p:message for="username" />
+			<p:commandButton value="Submit" ajax="false"
+				action="#{loginBean.testCaptcha()}" />
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+
+	<ui:define name="content">
+		<h3>#{yescommentmsg['latest_articles']}</h3>
+		<p:dataList
+			value="#{latestArticlesManagedBean.retrieveLatestArticles()}"
+			var="article" type="none">
+			<h:outputText value="#{article.registrationDate}">
+				<f:convertDateTime type="both" dateStyle="short" />
+
+			</h:outputText>:
+		<h:outputText
+				value="#{yesCommentApplicationBean.getSiteOfArticle(article)}" />
+			<h:outputText value=" " />
+			<h:link outcome="viewarticle" value="#{article.title}">
+				<f:param name="id" value="#{article.id}" />
+			</h:link>
+			<br />
+		</p:dataList>
+	</ui:define>
+</ui:composition>
+
+
+

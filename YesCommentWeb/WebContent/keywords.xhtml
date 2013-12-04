@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+
+	<ui:define name="content">
+		Itt található a rendszerben szereplő összes kulcsszó. 
+		Egy kulcsszóra kattintva feljönnek a rá vonatkozó cikkek, de használható a kulcsszókereső is.
+		<p:tagCloud id="tagcloud"
+			model="#{keywordTagCloudBean.getKeywordTagCloudModel()}">
+		</p:tagCloud>
+		<h:form id="keywordform">
+			<h:outputText value="#{yescommentmsg['keyword']}" />
+			<h:outputText value=":" />
+			<h:inputText value="#{keywordManagedBean.keyword}" required="true" />
+			<p:commandButton value="Search"
+				actionListener="#{keywordManagedBean.searchForKeyword()}"
+				update=":resultdatalist" />
+		</h:form>
+		<p:dataList value="#{keywordManagedBean.resultArticles}" var="article"
+			type="none" id="resultdatalist">
+			<h:outputText value="#{article.registrationDate}">
+				<f:convertDateTime type="both" dateStyle="short" />
+
+			</h:outputText>:
+		<h:outputText
+				value="#{yesCommentApplicationBean.getSiteOfArticle(article)}" />
+			<h:outputText value=" " />
+			<h:link outcome="viewarticle" value="#{article.title}">
+				<f:param name="id" value="#{article.id}" />
+			</h:link>
+
+		</p:dataList>
+	</ui:define>
+</ui:composition>

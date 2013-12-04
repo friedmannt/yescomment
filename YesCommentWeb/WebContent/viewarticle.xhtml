@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core" template="/template.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{viewArticleManagedBean.idParam}" />
+		<f:event type="preRenderView"
+			listener="#{viewArticleManagedBean.loadArticleFromIdParam()}" />
+	</f:metadata>
+
+	<ui:define name="content">
+		<p:messages showSummary="true" />
+		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
+			<h:outputText value="Article site" />:
+			<h:outputText
+				value="#{yesCommentApplicationBean.getSiteOfArticle(viewArticleManagedBean.article)}" />
+
+
+
+			<h:outputText value="Article title" />:
+			<h:outputText value="#{viewArticleManagedBean.article.title}" />
+			<br />
+			<h:outputText value="Article description" />:
+			<h:outputText value="#{viewArticleManagedBean.article.description}" />
+			<br />
+			<a href="#{viewArticleManagedBean.article.url}">#{viewArticleManagedBean.article.url}</a>
+			<h:outputText value="Keywords" />
+			<p:dataList value="#{viewArticleManagedBean.article.keywords}"
+				var="keyword" id="articlekeywords">
+				<h:outputText value="#{keyword}" id="keyword" />
+			</p:dataList>
+
+			<p:fieldset legend="#{yescommentmsg['original_article']}"
+				toggleable="true" toggleSpeed="500" collapsed="true">
+				<iframe src="#{viewArticleManagedBean.article.url}" width="800"
+					sandbox=""> Iframes not supported </iframe>
+			</p:fieldset>
+			<hr />
+			
+
+
+			<h:form id="newcommentform">
+				New Comment
+				<p:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
+					counter="commentremainingchars" maxlength="10000" id="newCommentText"
+					counterTemplate="{0} characters remaining" rows="5" cols="80" />
+				<br />
+				<h:outputText id="commentremainingchars" />
+				<br />
+				<h:outputText value="Author" />
+				<h:outputText value="#{viewArticleManagedBean.newCommentAuthor}" id="newCommentAuthor"/>
+				<br />
+				
+				<p:commandButton value="Post"  disabled="#{sessionScope['login_username'] == null}" 
+					actionListener="#{viewArticleManagedBean.postNewComment()}"
+					update=":comments :newcommentform:newCommentText :newcommentform:newCommentAuthor" />
+			</h:form>
+			<h:form id="unauthenticatedform">
+				<p:commandButton  id="whoareyoubutton" value="Who are you?"
+					action="#{viewArticleManagedBean.loginAction()}"
+					rendered="#{sessionScope['login_username'] == null}" />
+			</h:form>
+			<h2>Comments</h2>
+			<h:form>
+				<p:selectBooleanButton
+					value="#{viewArticleManagedBean.reverseArticleOrder}"
+					onLabel="Newest first" offLabel="Oldest first">
+					<p:ajax event="change" update=":comments" />
+				</p:selectBooleanButton>
+			</h:form>
+			<p:dataList value="#{viewArticleManagedBean.getCommentsOfArticle()}"
+				emptyMessage="No comments yet" var="comment" id="comments"
+				paginator="true" rows="20" paginatorPosition="bottom"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				currentPageReportTemplate="{currentPage}/{totalPages}"
+				rowsPerPageTemplate="20,50,100" type="none">
+
+
+				<p:panel>
+					<h:outputText value="#{comment.commentDate}" />
+					<h:outputText value=" " />
+					<h:outputText value="#{comment.author}" />
+					<h:outputText value=" " />
+					<h:outputText
+						value="##{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
+					<br />
+					<h:outputText value="#{comment.commentText}"
+						style="white-space:pre;" />
+					<!-- pre is needed for whitespacing -->
+				</p:panel>
+
+
+			</p:dataList>
+
+
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
