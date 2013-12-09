@@ -14,6 +14,7 @@ import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
 import yescomment.util.AllKeywordsSingletonLocal;
+import yescomment.util.KeywordUtil;
 
 @ApplicationScoped
 @ManagedBean
@@ -30,9 +31,7 @@ public class KeywordTagCloudBean implements Serializable {
 				.retrieveKeywords();
 		for (String keyword : keywordsAndOccurenceCounts.keySet()) {
 
-			model.addTag(new DefaultTagCloudItem(keyword, String.format(
-					"/faces/keywords.xhtml?keyword=%s",
-					URLEncoder.encode(keyword, "UTF-8")),
+			model.addTag(new DefaultTagCloudItem(keyword, KeywordUtil.getURLofKeyword(keyword),
 					keywordsAndOccurenceCounts.get(keyword)));// create keyword
 																// url
 

@@ -26,14 +26,14 @@ public class HTMLParser {
 		return CharacterReference.decodeCollapseWhiteSpace(titleElement.getContent());
 	}
 
-	public static String getMetaValue(String url, String key) throws MalformedURLException, IOException {
+	public static String getMetaValue(String url, String key,String metaKeyAttribute) throws MalformedURLException, IOException {
 		Source source=new Source(new URL(url));
-		return getMetaValue(source, key);
+		return getMetaValue(source, key,metaKeyAttribute);
 	}
 	
-	public static String getMetaValue(Source source, String key) {
+	public static String getMetaValue(Source source, String key,String metaKeyAttribute) {
 		for (int pos=0; pos<source.length();) {
-			StartTag startTag=source.getNextStartTag(pos,"name",key,false);
+			StartTag startTag=source.getNextStartTag(pos,metaKeyAttribute,key,false);
 			if (startTag==null) return null;
 			if (startTag.getName()==HTMLElementName.META)
 				return startTag.getAttributeValue("content"); // Attribute values are automatically decoded
@@ -41,6 +41,8 @@ public class HTMLParser {
 		}
 		return null;
 	}
+	
+	
 
 
 }

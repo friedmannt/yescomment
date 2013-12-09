@@ -49,7 +49,7 @@ public class KeywordManagedBean implements Serializable {
 	
 	@PostConstruct
 	public void searchForKeywordIfGiven() {
-		System.out.println("KW"+keyword);
+		
 		if (keyword!=null) {
 			searchForKeyword();
 		}

@@ -19,6 +19,7 @@ public class URLUtil {
 
 	public static class ArticleInfo implements Serializable{
 		private String finalURL;
+		private String imageURL;
 		private String title;
 		private String description;
 		private String keywords;
@@ -30,6 +31,14 @@ public class URLUtil {
 
 		public void setFinalURL(String finalURL) {
 			this.finalURL = finalURL;
+		}
+
+		public String getImageURL() {
+			return imageURL;
+		}
+
+		public void setImageURL(String imageURL) {
+			this.imageURL = imageURL;
 		}
 
 		public String getTitle() {
@@ -78,7 +87,7 @@ public class URLUtil {
 				CookiePolicy.ACCEPT_ALL));
 	}
 
-	public static String getSchemaOfURL(String urlString) {
+	private static String getSchemaOfURL(String urlString) {
 		if (urlString == null) {
 			throw new IllegalArgumentException();
 		}
@@ -146,12 +155,30 @@ public class URLUtil {
 			articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo
 					.getFinalURL()));
 			Source source = new Source(new URL(articleInfo.getFinalURL()));
+			
+			
+			
 			String title = HTMLParser.getTitle(source);
 			articleInfo.setTitle(title);
-			String keywords = HTMLParser.getMetaValue(source, "keywords");
+			String keywords = HTMLParser.getMetaValue(source, "keywords","name");
 			articleInfo.setKeywords(keywords);
-			String description = HTMLParser.getMetaValue(source, "description");
+			String description = HTMLParser.getMetaValue(source, "description","name");
 			articleInfo.setDescription(description);
+			//opengraph meta tags are the strongest
+			String openGraphTitle = HTMLParser.getMetaValue(source, "og:title","property");
+			if (openGraphTitle!=null) {
+				articleInfo.setTitle(openGraphTitle);
+			}
+			String openGraphImage = HTMLParser.getMetaValue(source, "og:image","property");
+			if (openGraphImage!=null) {
+				articleInfo.setImageURL(openGraphImage);
+			}
+			String openGraphDescription = HTMLParser.getMetaValue(source, "og:description","property");
+			if (openGraphDescription!=null) {
+				articleInfo.setDescription(openGraphDescription);
+			}
+
+			
 
 		}
 		LOGGER.fine(String.format("Got article info for %s", urlString));
@@ -159,7 +186,7 @@ public class URLUtil {
 
 	}
 
-	public static String eliminateUnnecessaryURLParams(String finalURL)
+	private static String eliminateUnnecessaryURLParams(String finalURL)
 			throws MalformedURLException, IOException {
 		if (finalURL.indexOf("?") < 0) {
 			return finalURL;
@@ -199,10 +226,10 @@ public class URLUtil {
 		String titleRef = HTMLParser.getTitle(sourceRef);
 		String titleTest = HTMLParser.getTitle(sourceTest);
 
-		String descRef = HTMLParser.getMetaValue(sourceRef, "description");
-		String descTest = HTMLParser.getMetaValue(sourceTest, "description");
-		String keywordsRef = HTMLParser.getMetaValue(sourceRef, "keywords");
-		String keywordsTest = HTMLParser.getMetaValue(sourceTest, "keywords");
+		String descRef = HTMLParser.getMetaValue(sourceRef, "description","name");
+		String descTest = HTMLParser.getMetaValue(sourceTest, "description","name");
+		String keywordsRef = HTMLParser.getMetaValue(sourceRef, "keywords","name");
+		String keywordsTest = HTMLParser.getMetaValue(sourceTest, "keywords","name");
 		if ((titleRef == null && titleTest == null)
 				|| titleRef.equals(titleTest)) {
 			if ((descRef == null && descTest == null)

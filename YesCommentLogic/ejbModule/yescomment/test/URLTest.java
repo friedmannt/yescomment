@@ -92,4 +92,13 @@ public class URLTest {
 	}
 	
 	
+	@Test()
+	public void testArticleInfo9() throws IOException  {
+		
+		ArticleInfo ai= URLUtil.getArticleInfoFromURL("http://gamerportal.hu/article/3594/How-To-Survive");
+		assertEquals(HttpURLConnection.HTTP_OK, ai.getResponseCode());
+		assertEquals("http://gamerportal.hu/@img/share/gamerportal.png", ai.getImageURL());
+	}
+	
+	
 }

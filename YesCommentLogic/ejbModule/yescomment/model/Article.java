@@ -27,6 +27,7 @@ public class Article extends AbstractEntity {
 
 	   
 	@Column(nullable=false,length=256)
+	@NotNull
 	@Size( max=256)
 	private String title;
 	@Column(nullable=true,length=2048)
@@ -46,6 +47,11 @@ public class Article extends AbstractEntity {
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private List<String> keywords=new ArrayList<String>();
+	
+	@Column(nullable=true,length=2048)
+	@Size(max=2048)
+	private String imageurl;
+	
 	
 	private static final long serialVersionUID = 1L;
 
@@ -95,6 +101,14 @@ public class Article extends AbstractEntity {
 
 	public void setKeywords(List<String> keywords) {
 		this.keywords = keywords;
+	}
+
+	public String getImageurl() {
+		return imageurl;
+	}
+
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
 	}
 
 	

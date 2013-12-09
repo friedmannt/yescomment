@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="articlepreview">
+		<div class="articlepreviewimage">
+			<img
+				src="#{article.imageurl}"
+				alt="#{article.title}" />
+		</div>
+		<div class="articlepreviewdata">
+
+			<h1>
+				<a href="#{article.url}">#{article.title}</a>
+			</h1>
+			<h2>#{yesCommentApplicationBean.getSiteOfArticle(article)}</h2>
+			<p>
+				#{article.description} <span> <p:lightBox
+						id="articlelightbox" iframe="true">
+						<h:outputLink value="#{article.url}" title="#{article.title}">
+							<h:outputText value="#{yescommentmsg['original_article']}" />
+						</h:outputLink>
+					</p:lightBox>
+				</span>
+			</p>
+			<p class="articlepreviewkeywords">
+				<ui:repeat var="keyword" value="#{article.keywords}" varStatus="status">
+
+					<a href="http://www.index.hu">#{keyword}</a>
+
+				</ui:repeat>
+			</p>
+		</div>
+
+	</div>
+</ui:composition>
