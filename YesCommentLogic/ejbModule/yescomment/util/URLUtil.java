@@ -1,6 +1,9 @@
 package yescomment.util;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -17,7 +20,7 @@ import net.htmlparser.jericho.Source;
 public class URLUtil {
 	private static Logger LOGGER = Logger.getLogger("URLUtil");
 
-	public static class ArticleInfo implements Serializable{
+	public static class ArticleInfo implements Serializable {
 		private String finalURL;
 		private String imageURL;
 		private String title;
@@ -150,37 +153,40 @@ public class URLUtil {
 		}
 		String contentType = connection.getHeaderField("Content-Type");
 		articleInfo.setFinalURL(connection.getURL().toString());
-		connection.disconnect();
-		if (responseCode == 200 && contentType.indexOf("text/html") >= 0) {
-			articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo
-					.getFinalURL()));
-			Source source = new Source(new URL(articleInfo.getFinalURL()));
-			
-			
-			
+		
+		if (responseCode == 200 && contentType.indexOf("text/html") >= 0) {	
+			InputStream is=connection.getInputStream();
+			Source source = new Source(is);
 			String title = HTMLParser.getTitle(source);
 			articleInfo.setTitle(title);
-			String keywords = HTMLParser.getMetaValue(source, "keywords","name");
+			String keywords = HTMLParser.getMetaValue(source, "keywords",
+					"name");
 			articleInfo.setKeywords(keywords);
-			String description = HTMLParser.getMetaValue(source, "description","name");
+			String description = HTMLParser.getMetaValue(source, "description",
+					"name");
 			articleInfo.setDescription(description);
-			//opengraph meta tags are the strongest
-			String openGraphTitle = HTMLParser.getMetaValue(source, "og:title","property");
-			if (openGraphTitle!=null) {
+			// opengraph meta tags are the strongest
+			String openGraphTitle = HTMLParser.getMetaValue(source, "og:title",
+					"property");
+			if (openGraphTitle != null) {
 				articleInfo.setTitle(openGraphTitle);
 			}
-			String openGraphImage = HTMLParser.getMetaValue(source, "og:image","property");
-			if (openGraphImage!=null) {
+			String openGraphImage = HTMLParser.getMetaValue(source, "og:image",
+					"property");
+			if (openGraphImage != null) {
 				articleInfo.setImageURL(openGraphImage);
 			}
-			String openGraphDescription = HTMLParser.getMetaValue(source, "og:description","property");
-			if (openGraphDescription!=null) {
+			String openGraphDescription = HTMLParser.getMetaValue(source,
+					"og:description", "property");
+			if (openGraphDescription != null) {
 				articleInfo.setDescription(openGraphDescription);
 			}
-
-			
+			is.close();
+			articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo
+					.getFinalURL()));
 
 		}
+		connection.disconnect();
 		LOGGER.fine(String.format("Got article info for %s", urlString));
 		return articleInfo;
 
@@ -226,10 +232,14 @@ public class URLUtil {
 		String titleRef = HTMLParser.getTitle(sourceRef);
 		String titleTest = HTMLParser.getTitle(sourceTest);
 
-		String descRef = HTMLParser.getMetaValue(sourceRef, "description","name");
-		String descTest = HTMLParser.getMetaValue(sourceTest, "description","name");
-		String keywordsRef = HTMLParser.getMetaValue(sourceRef, "keywords","name");
-		String keywordsTest = HTMLParser.getMetaValue(sourceTest, "keywords","name");
+		String descRef = HTMLParser.getMetaValue(sourceRef, "description",
+				"name");
+		String descTest = HTMLParser.getMetaValue(sourceTest, "description",
+				"name");
+		String keywordsRef = HTMLParser.getMetaValue(sourceRef, "keywords",
+				"name");
+		String keywordsTest = HTMLParser.getMetaValue(sourceTest, "keywords",
+				"name");
 		if ((titleRef == null && titleTest == null)
 				|| titleRef.equals(titleTest)) {
 			if ((descRef == null && descTest == null)
@@ -244,6 +254,8 @@ public class URLUtil {
 		return false;
 
 	}
+
+	
 
 	
 }
