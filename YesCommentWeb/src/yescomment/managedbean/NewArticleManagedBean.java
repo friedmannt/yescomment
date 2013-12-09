@@ -117,7 +117,7 @@ public class NewArticleManagedBean implements Serializable {
 			article.setImageurl(newArticleInfo.getImageURL());
 		}
 		else {
-			article.setImageurl("/resources/images/defaultarticleimage.png");
+			article.setImageurl("resources/images/defaultarticleimage.png");
 		}
 		article.setDescription(newArticleInfo.getDescription());
 		article.setRegistrationDate(new Date());

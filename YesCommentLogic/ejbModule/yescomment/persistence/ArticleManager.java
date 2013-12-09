@@ -61,7 +61,7 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 			} else if (articles.size() == 1) {
 				return articles.get(0);
 			} else
-				throw new IllegalStateException();
+				throw new IllegalStateException("Multiple articles were found with url "+url);
 
 		}
 	}

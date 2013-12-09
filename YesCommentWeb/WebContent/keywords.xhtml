@@ -23,13 +23,12 @@
 			<h:outputText value="#{article.registrationDate}">
 				<f:convertDateTime type="both" dateStyle="short" />
 
-			</h:outputText>:
-		<h:outputText
-				value="#{yesCommentApplicationBean.getSiteOfArticle(article)}" />
-			<h:outputText value=" " />
-			<h:link outcome="viewarticle" value="#{article.title}">
-				<f:param name="id" value="#{article.id}" />
-			</h:link>
+			</h:outputText>
+			<ui:include src="articlepreview.xhtml">
+				<ui:param name="article" value="#{article}" />
+				<ui:param name="insidelink" value="#{true}" />
+			</ui:include>
+			<br />
 
 		</p:dataList>
 	</ui:define>

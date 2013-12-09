@@ -16,6 +16,7 @@
 		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
 			<ui:include src="articlepreview.xhtml">
 				<ui:param name="article" value="#{viewArticleManagedBean.article}"/>
+				<ui:param name="insidelink" value="#{false}"/>
 			</ui:include>
 			
 			

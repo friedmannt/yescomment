@@ -6,9 +6,7 @@
 
 	<div class="articlepreview">
 		<div class="articlepreviewimage">
-			<img
-				src="#{article.imageurl}"
-				alt="#{article.title}" />
+			<img src="#{article.imageurl}" alt="#{article.title}" />
 		</div>
 		<div class="articlepreviewdata">
 
@@ -17,16 +15,21 @@
 			</h1>
 			<h2>#{yesCommentApplicationBean.getSiteOfArticle(article)}</h2>
 			<p>
-				#{article.description} <span> <p:lightBox
-						id="articlelightbox" iframe="true">
+				#{article.description}<span> <p:lightBox id="articlelightbox"
+						iframe="true" rendered="#{!insidelink}">
 						<h:outputLink value="#{article.url}" title="#{article.title}">
 							<h:outputText value="#{yescommentmsg['original_article']}" />
 						</h:outputLink>
-					</p:lightBox>
+					</p:lightBox> <h:link outcome="viewarticle" value="#{article.title}"
+						rendered="#{insidelink}">
+						<f:param name="id" value="#{article.id}" />
+					</h:link>
+
 				</span>
 			</p>
 			<p class="articlepreviewkeywords">
-				<ui:repeat var="keyword" value="#{article.keywords}" varStatus="status">
+				<ui:repeat var="keyword" value="#{article.keywords}"
+					varStatus="status">
 
 					<a href="http://www.index.hu">#{keyword}</a>
 
