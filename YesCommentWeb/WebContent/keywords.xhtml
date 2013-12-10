@@ -14,12 +14,12 @@
 			<h:outputText value="#{yescommentmsg['keyword']}" />
 			<h:outputText value=":" />
 			<h:inputText value="#{keywordManagedBean.keyword}" required="true" />
-			<p:commandButton value="Search"
+			<p:commandButton value="#{yescommentmsg['search']}"
 				actionListener="#{keywordManagedBean.searchForKeyword()}"
 				update=":resultdatalist" />
 		</h:form>
 		<p:dataList value="#{keywordManagedBean.resultArticles}" var="article"
-			type="none" id="resultdatalist">
+			type="none" id="resultdatalist" emptyMessage="#{yescommentmsg['no_results']}">
 			<h:outputText value="#{article.registrationDate}">
 				<f:convertDateTime type="both" dateStyle="short" />
 

@@ -11,27 +11,35 @@
 		<div class="articlepreviewdata">
 
 			<h1>
-				<a href="#{article.url}">#{article.title}</a>
+				<a href="#{article.url}"><h:outputText value="#{article.title}" />
+				</a>
 			</h1>
-			<h2>#{yesCommentApplicationBean.getSiteOfArticle(article)}</h2>
+			<h2>
+				<h:outputText
+					value="#{yesCommentApplicationBean.getSiteOfArticle(article)}" />
+			</h2>
 			<p>
-				#{article.description}<span> <p:lightBox id="articlelightbox"
-						iframe="true" rendered="#{!insidelink}">
-						<h:outputLink value="#{article.url}" title="#{article.title}">
-							<h:outputText value="#{yescommentmsg['original_article']}" />
-						</h:outputLink>
-					</p:lightBox> <h:link outcome="viewarticle" value="#{article.title}"
+				<h:outputText value="#{article.description}" />
+				<h:form id="articlelinkform">
+					<p:commandLink id="viewarticleoverlaylink" value="#{yescommentmsg['open_original_article']}" rendered="#{!insidelink}" />
+
+					<p:overlayPanel id="viewarticleoverlaypanel" for="viewarticleoverlaylink" hideEffect="fade" style="width:820px;height:610px" dynamic="true">
+					<iframe src="#{article.url}" style="width:800px;height:600px"/>
+					</p:overlayPanel>
+					<h:link outcome="viewarticle" value="#{article.title}"
 						rendered="#{insidelink}">
 						<f:param name="id" value="#{article.id}" />
-					</h:link>
 
-				</span>
+					</h:link>
+				</h:form>
 			</p>
 			<p class="articlepreviewkeywords">
 				<ui:repeat var="keyword" value="#{article.keywords}"
 					varStatus="status">
+					<h:link outcome="keywords" value="#{keyword}">
+						<f:param name="keyword" value="#{keyword}" />
+					</h:link>
 
-					<a href="http://www.index.hu">#{keyword}</a>
 
 				</ui:repeat>
 			</p>

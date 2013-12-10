@@ -33,7 +33,7 @@ public class Article extends AbstractEntity {
 	@Column(nullable=true,length=2048)
 	@Size( max=2048)
 	private String description;
-	@Column(nullable=false,length=2048)
+	@Column(nullable=false,length=2048,unique=true)
 	@NotNull
 	@Size(max=2048)
 	private String url;

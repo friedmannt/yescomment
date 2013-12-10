@@ -12,11 +12,11 @@
 			<p:captcha id="captcha" label="Captcha" theme="white" />
 			<p:message for="captcha" />
 			<br />
-			<h:outputText value="Name" />
+			<h:outputText value="#{yescommentmsg['name']}" />
 			<p:inputText id="username" value="#{loginBean.userName}"
 				required="true" />
 			<p:message for="username" />
-			<p:commandButton value="Submit" ajax="false"
+			<p:commandButton value="#{yescommentmsg['submit']}" ajax="false"
 				action="#{loginBean.testCaptcha()}" />
 
 		</h:form>
