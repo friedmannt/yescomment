@@ -15,8 +15,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.model.Article;
-import yescomment.util.AllKeywordsSingletonLocal;
 import yescomment.util.LatestArticlesSingletonLocal;
 
 @Stateless
@@ -54,7 +54,6 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 			predicateList.toArray(predicates);
 			q.where(predicates);
 			TypedQuery<Article> query = em.createQuery(q);
-
 			List<Article> articles = query.getResultList();
 			if (articles.isEmpty()) {
 				return null;

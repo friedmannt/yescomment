@@ -26,7 +26,8 @@
 				<p:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					counter="commentremainingchars" maxlength="10000"
 					id="newCommentText" counterTemplate="{0} characters remaining"
-					rows="5" cols="80" />
+					rows="5" cols="80" required="true"/>
+				<p:message for="newCommentText" />
 				<br />
 				<h:outputText id="commentremainingchars" />
 				<br />
@@ -38,7 +39,7 @@
 				<p:commandButton value="Post"
 					disabled="#{sessionScope['login_username'] == null}"
 					actionListener="#{viewArticleManagedBean.postNewComment()}"
-					update=":comments :newcommentform:newCommentText :newcommentform:newCommentAuthor" />
+					update=":comments :newcommentform" />
 			</h:form>
 			<h:form id="unauthenticatedform">
 				<p:commandButton id="whoareyoubutton" value="Who are you?"

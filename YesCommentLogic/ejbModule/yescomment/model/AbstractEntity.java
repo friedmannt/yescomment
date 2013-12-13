@@ -11,15 +11,12 @@ import javax.persistence.SequenceGenerator;
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable{
 	
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@SequenceGenerator(name="ENTITY_SEQ",sequenceName="ENTITY_SEQ", allocationSize=1,initialValue=0)
-	@GeneratedValue(generator="ENTITY_SEQ", strategy= GenerationType.SEQUENCE)
-	
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
 	public Long getId() {

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<crawlerconfigs>
+    <crawlerconfig name="origo" rssUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" minute="10"/>
+    <crawlerconfig name="index" rssUrl="http://www.index.hu/contentpartner/rss/hircentrum/origo.xml" minute="10"/>
+</crawlerconfigs>

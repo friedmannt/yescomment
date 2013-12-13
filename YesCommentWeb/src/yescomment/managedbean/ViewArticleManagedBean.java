@@ -101,7 +101,7 @@ public class ViewArticleManagedBean implements Serializable {
 		comment.setCommentDate(new Date());
 		comment.setArticle(article);
 		article.getComments().add(comment);
-		articleManager.save(article);
+		article=articleManager.save(article);
 		newCommentText = null;
 	}
 

@@ -13,8 +13,8 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
-import yescomment.util.AllKeywordsSingletonLocal;
-import yescomment.util.KeywordUtil;
+import yescomment.keyword.AllKeywordsSingletonLocal;
+import yescomment.keyword.KeywordUtil;
 
 @ApplicationScoped
 @ManagedBean

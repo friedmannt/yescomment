@@ -2,7 +2,9 @@ package yescomment.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,12 +44,12 @@ public class Article extends AbstractEntity {
 	@Column(nullable=false)
 	@NotNull
 	private Date registrationDate;
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article")
-	@OrderColumn(name="id")
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.EAGER)
+	@OrderBy(value="id")
 	private List<Comment> comments=new ArrayList<Comment>();
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	private List<String> keywords=new ArrayList<String>();
+	private Set<String> keywords=new HashSet<String>();
 	
 	@Column(nullable=true,length=2048)
 	@Size(max=2048)
@@ -95,11 +98,11 @@ public class Article extends AbstractEntity {
 
 	
 
-	public List<String> getKeywords() {
+	public Set<String> getKeywords() {
 		return keywords;
 	}
 
-	public void setKeywords(List<String> keywords) {
+	public void setKeywords(Set<String> keywords) {
 		this.keywords = keywords;
 	}
 

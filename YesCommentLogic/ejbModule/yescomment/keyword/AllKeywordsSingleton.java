@@ -1,4 +1,4 @@
-package yescomment.util;
+package yescomment.keyword;
 
 import java.io.Serializable;
 import java.util.HashMap;

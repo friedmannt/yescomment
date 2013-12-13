@@ -34,7 +34,7 @@
 				</h:form>
 			</p>
 			<p class="articlepreviewkeywords">
-				<ui:repeat var="keyword" value="#{article.keywords}"
+				<ui:repeat var="keyword" value="#{yesCommentApplicationBean.getKeywordsAsList(article)}"
 					varStatus="status">
 					<h:link outcome="keywords" value="#{keyword}">
 						<f:param name="keyword" value="#{keyword}" />
