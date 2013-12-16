@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <crawlerconfigs>
-    <crawlerconfig name="origo" rssUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" minute="10"/>
-    <crawlerconfig name="index" rssUrl="http://www.index.hu/contentpartner/rss/hircentrum/origo.xml" minute="10"/>
+    <crawlerconfig name="index" rssUrl="http://index.hu/24ora/rss/" minute="1"/>
+    <crawlerconfig name="divany" rssUrl="http://divany.hu/24ora/rss/" minute="2"/>
+    <crawlerconfig name="totalcar" rssUrl="http://totalcar.hu/24ora/rss/" minute="3"/>
+    <crawlerconfig name="portfolio.hu" rssUrl="http://www.portfolio.hu/rss/cikkek/all.xml" minute="4"/>
+    <crawlerconfig name="velvet" rssUrl="http://velvet.hu/24ora/rss/" minute="5"/>
+    <crawlerconfig name="indexvideo" rssUrl="http://index.hu/video/rss/" minute="6"/>
+    <crawlerconfig name="origo" rssUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" minute="7" patternOfNoComment="Ez a cikk nem kommentelhető"/>
+    <crawlerconfig name="hvg" rssUrl="http://hvg.hu/rss" minute="8" />
+    <crawlerconfig name="nol" rssUrl="http://nol.hu/feed/osszes.rss" minute="9" />
+    <crawlerconfig name="mno" rssUrl="http://mno.hu/rss" minute="10" />
+    
+    
 </crawlerconfigs>

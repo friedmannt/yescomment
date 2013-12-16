@@ -1,6 +1,7 @@
 package yescomment.persistence;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.persistence.criteria.Root;
 import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.model.Article;
 import yescomment.util.LatestArticlesSingletonLocal;
+import yescomment.util.URLUtil.ArticleInfo;
 
 @Stateless
 public class ArticleManager extends AbstractEntityManager<Article>  {
@@ -138,4 +140,45 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 	protected EntityManager getEntityManager() {
 		return em;
 	}
+	
+	public Article createArticleFromArticleInfo(ArticleInfo articleInfo) {
+		Article article = new Article();
+		article.setUrl(articleInfo.getFinalURL());
+		
+		if (articleInfo.getTitle() != null) {
+			article.setTitle(articleInfo.getTitle());
+		} else {
+			article.setTitle("");
+		}
+		if (articleInfo.getImageURL()!=null) {
+			article.setImageurl(articleInfo.getImageURL());
+		}
+		else {
+			article.setImageurl("resources/images/defaultarticleimage.png");
+		}
+		article.setDescription(articleInfo.getDescription());
+		article.setRegistrationDate(new Date());
+
+		List<String> newArticleKeywords = null;
+		if (articleInfo.getKeywords() != null
+				&& !articleInfo.getKeywords().isEmpty()) {
+			newArticleKeywords = new ArrayList<String>();
+			List<String> keywords = Arrays.asList(articleInfo.getKeywords()
+					.split(","));
+			for (String keyword : keywords) {
+				keyword = keyword.trim();
+				if (!keyword.equals("")) {
+					newArticleKeywords.add(keyword);
+				}
+
+			}
+
+		}
+
+		if (newArticleKeywords != null) {
+			article.getKeywords().addAll(newArticleKeywords);
+		}
+		return article;
+	}
+
 }

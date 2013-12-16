@@ -15,6 +15,10 @@ public class CrawlerConfig {
 	private String rssUrl;
 	@XmlAttribute
 	private int minute;//fetches rss only if minute in hour is this
+	@XmlAttribute
+	private String patternOfNoComment;
+
+	
 	
 	public String getName() {
 		return name;
@@ -34,10 +38,18 @@ public class CrawlerConfig {
 	public void setMinute(int minute) {
 		this.minute = minute;
 	}
+	public String getPatternOfNoComment() {
+		return patternOfNoComment;
+	}
+	public void setPatternOfNoComment(String patternOfNoComment) {
+		this.patternOfNoComment = patternOfNoComment;
+	}
 	@Override
 	public String toString() {
 		return "CrawlerConfig [name=" + name + ", rssUrl=" + rssUrl
-				+ ", minute=" + minute + "]";
+				+ ", minute=" + minute + ", patternOfNoComment="
+				+ patternOfNoComment + "]";
 	}
+	
 	
 }

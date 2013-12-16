@@ -73,9 +73,9 @@ public class NewArticleManagedBean implements Serializable {
 		}
 		if (newArticleInfo.getResponseCode() == 200) {
 
-			// we should check, whether article url is unique
+			// we should check, whether final sarticle url is unique
 			Article articleWithSameURL = articleManager
-					.getArticleByURL(url);
+					.getArticleByURL(newArticleInfo.getFinalURL());
 			if (articleWithSameURL == null) {
 				newArticlePassedTheCheck = true;
 			} else {
@@ -105,42 +105,7 @@ public class NewArticleManagedBean implements Serializable {
 
 	public String createNewArticle() {
 
-		Article article = new Article();
-		article.setUrl(newArticleInfo.getFinalURL());
-		
-		if (newArticleInfo.getTitle() != null) {
-			article.setTitle(newArticleInfo.getTitle());
-		} else {
-			article.setTitle("");
-		}
-		if (newArticleInfo.getImageURL()!=null) {
-			article.setImageurl(newArticleInfo.getImageURL());
-		}
-		else {
-			article.setImageurl("resources/images/defaultarticleimage.png");
-		}
-		article.setDescription(newArticleInfo.getDescription());
-		article.setRegistrationDate(new Date());
-
-		List<String> newArticleKeywords = null;
-		if (newArticleInfo.getKeywords() != null
-				&& !newArticleInfo.getKeywords().isEmpty()) {
-			newArticleKeywords = new ArrayList<String>();
-			List<String> keywords = Arrays.asList(newArticleInfo.getKeywords()
-					.split(","));
-			for (String keyword : keywords) {
-				keyword = keyword.trim();
-				if (!keyword.equals("")) {
-					newArticleKeywords.add(keyword);
-				}
-
-			}
-
-		}
-
-		if (newArticleKeywords != null) {
-			article.getKeywords().addAll(newArticleKeywords);
-		}
+		Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
 
 		Article savedArticle =articleManager.save(article);
 		// redirect to new article
@@ -149,6 +114,7 @@ public class NewArticleManagedBean implements Serializable {
 
 	}
 
+	
 	public void fillNewArticleURLFromRequest() {
 		
 		String searchedURL = (String) FacesContext.getCurrentInstance()
