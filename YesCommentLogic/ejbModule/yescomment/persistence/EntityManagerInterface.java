@@ -19,5 +19,5 @@ public interface EntityManagerInterface<T extends AbstractEntity> extends Serial
 
 	int count();
 
-	T save(T entity);
+	
 }

@@ -98,24 +98,17 @@ public class CrawlerSingleton {
 					try {
 						ArticleInfo newArticleInfo = URLUtil
 								.getArticleInfoFromURL(url);
-						if (newArticleInfo.getResponseCode() == 200) {
 
-							// we should check, whether the final article url is
-							// unique
-							Article articleWithSameURL = articleManager
-									.getArticleByURL(newArticleInfo
-											.getFinalURL());
-							if (articleWithSameURL == null) {
-								Article article = articleManager
-										.createArticleFromArticleInfo(newArticleInfo);
-
-								Article savedArticle = articleManager
-										.save(article);
-							}
+						// we should check, whether the final article url is
+						// unique
+						Article articleWithSameURL = articleManager
+								.getArticleByURL(newArticleInfo.getFinalURL());
+						if (articleWithSameURL == null) {
+							Article article = articleManager
+									.createArticleFromArticleInfo(newArticleInfo);
+							Article savedArticle = articleManager.create(article);
 						}
-					} catch (UnknownHostException e) {
 
-						e.printStackTrace();
 					} catch (IOException e) {
 
 						e.printStackTrace();

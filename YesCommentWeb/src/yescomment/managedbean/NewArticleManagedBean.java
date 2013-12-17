@@ -3,10 +3,6 @@ package yescomment.managedbean;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -50,16 +46,6 @@ public class NewArticleManagedBean implements Serializable {
 
 		try {
 			newArticleInfo = URLUtil.getArticleInfoFromURL(url);
-		} catch (UnknownHostException e) {
-			newArticlePassedTheCheck = false;
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage(
-					"newarticleform:newarticlepassedthecheck",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, String
-							.format("Unkown host %s", url), String.format(
-							"Unkown host %s", url)));
-			return;
-
 		} catch (IOException e) {
 			newArticlePassedTheCheck = false;
 			e.printStackTrace();
@@ -71,9 +57,9 @@ public class NewArticleManagedBean implements Serializable {
 			return;
 
 		}
-		if (newArticleInfo.getResponseCode() == 200) {
+		
 
-			// we should check, whether final sarticle url is unique
+			// we should check, whether final article url is unique
 			Article articleWithSameURL = articleManager
 					.getArticleByURL(newArticleInfo.getFinalURL());
 			if (articleWithSameURL == null) {
@@ -90,26 +76,16 @@ public class NewArticleManagedBean implements Serializable {
 
 			}
 
-		} else {
-			newArticlePassedTheCheck = false;
-			FacesContext.getCurrentInstance().addMessage(
-					"newarticleform:newarticlepassedthecheck",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, String
-							.format("Response code is %d",
-									newArticleInfo.getResponseCode()), String
-							.format("Response code is %d",
-									newArticleInfo.getResponseCode())));
-
-		}
+		
 	}
 
 	public String createNewArticle() {
 
 		Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
 
-		Article savedArticle =articleManager.save(article);
+		article =articleManager.create(article);
 		// redirect to new article
-		Long newArticleId = savedArticle.getId();
+		Long newArticleId = article.getId();
 		return "/viewarticle.xhtml?faces-redirect=true&id=" + newArticleId;
 
 	}

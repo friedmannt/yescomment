@@ -50,11 +50,7 @@ public class RSSLinkRetriever {
 		return urls;
 	}
 	
-	public static void main(String[] a) throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory dbf=DocumentBuilderFactory.newInstance();
-		DocumentBuilder db=dbf.newDocumentBuilder();
-		System.out.println(getItemLinksFromRSS("http://www.portfolio.hu/rss/cikkek/all.xml", db));
-	}
+	
 	
 
 }

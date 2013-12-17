@@ -74,18 +74,7 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 		javax.persistence.Query q = em.createQuery(cq);
 		return ((Long) q.getSingleResult()).intValue();
 	}
-	@Override
-	public T save(T entity) {
-
-		if (entity.getId() != null) {
-			return merge(entity);
-
-		} else {
-		 	return create(entity);
-
-		}
-
-	}
+	
 	
 	protected abstract void notifyEntityCreation(T entity);
 	

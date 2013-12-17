@@ -26,7 +26,6 @@ public class URLUtil {
 		private String title;
 		private String description;
 		private String keywords;
-		private int responseCode;
 
 		public String getFinalURL() {
 			return finalURL;
@@ -52,14 +51,6 @@ public class URLUtil {
 			this.title = title;
 		}
 
-		public int getResponseCode() {
-			return responseCode;
-		}
-
-		public void setResponseCode(int responseCode) {
-			this.responseCode = responseCode;
-		}
-
 		public String getKeywords() {
 			return keywords;
 		}
@@ -80,7 +71,7 @@ public class URLUtil {
 		public String toString() {
 			return "ArticleInfo [finalURL=" + finalURL + ", title=" + title
 					+ ", description=" + description + ", keywords=" + keywords
-					+ ", responseCode=" + responseCode + "]";
+					+ "]";
 		}
 
 	}
@@ -140,52 +131,40 @@ public class URLUtil {
 		connection.setRequestMethod("GET");
 		connection.setRequestProperty("User-Agent", "YesCommentBot/1.0");
 		connection.connect();
-
 		int responseCode = connection.getResponseCode();
 
 		LOGGER.fine(String.format("Response code is %d", responseCode));
-		articleInfo.setResponseCode(responseCode);
-		for (Map.Entry<String, List<String>> header : connection
-				.getHeaderFields().entrySet()) {
-			LOGGER.fine(String.format("Header: %s = %s", header.getKey(),
-					header.getValue()));
 
-		}
-		String contentType = connection.getHeaderField("Content-Type");
 		articleInfo.setFinalURL(connection.getURL().toString());
-		
-		if (responseCode == 200 && contentType.indexOf("text/html") >= 0) {	
-			InputStream is=connection.getInputStream();
-			Source source = new Source(is);
-			String title = HTMLParser.getTitle(source);
-			articleInfo.setTitle(title);
-			String keywords = HTMLParser.getMetaValue(source, "keywords",
-					"name");
-			articleInfo.setKeywords(keywords);
-			String description = HTMLParser.getMetaValue(source, "description",
-					"name");
-			articleInfo.setDescription(description);
-			// opengraph meta tags are the strongest
-			String openGraphTitle = HTMLParser.getMetaValue(source, "og:title",
-					"property");
-			if (openGraphTitle != null) {
-				articleInfo.setTitle(openGraphTitle);
-			}
-			String openGraphImage = HTMLParser.getMetaValue(source, "og:image",
-					"property");
-			if (openGraphImage != null) {
-				articleInfo.setImageURL(openGraphImage);
-			}
-			String openGraphDescription = HTMLParser.getMetaValue(source,
-					"og:description", "property");
-			if (openGraphDescription != null) {
-				articleInfo.setDescription(openGraphDescription);
-			}
-			is.close();
-			articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo
-					.getFinalURL()));
+		Source source = new Source(connection);
 
+		String title = HTMLParser.getTitle(source);
+		articleInfo.setTitle(title);
+		String keywords = HTMLParser.getMetaValue(source, "keywords", "name");
+		articleInfo.setKeywords(keywords);
+		String description = HTMLParser.getMetaValue(source, "description",
+				"name");
+		articleInfo.setDescription(description);
+		// opengraph meta tags are the strongest
+		String openGraphTitle = HTMLParser.getMetaValue(source, "og:title",
+				"property");
+		if (openGraphTitle != null) {
+			articleInfo.setTitle(openGraphTitle);
 		}
+		String openGraphImage = HTMLParser.getMetaValue(source, "og:image",
+				"property");
+		if (openGraphImage != null) {
+			articleInfo.setImageURL(openGraphImage);
+		}
+		String openGraphDescription = HTMLParser.getMetaValue(source,
+				"og:description", "property");
+		if (openGraphDescription != null) {
+			articleInfo.setDescription(openGraphDescription);
+		}
+
+		articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo
+				.getFinalURL()));
+
 		connection.disconnect();
 		LOGGER.fine(String.format("Got article info for %s", urlString));
 		return articleInfo;
@@ -225,10 +204,21 @@ public class URLUtil {
 
 	}
 
+	/**
+	 * to sites are the same if title, description and keywords are same. Cannot
+	 * be full content matching, as advertisemets might be randomised
+	 * 
+	 * @param referenceURL
+	 * @param testURL
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	private static boolean urlsAreSameContent(String referenceURL,
 			String testURL) throws MalformedURLException, IOException {
 		Source sourceRef = new Source(new URL(referenceURL));
 		Source sourceTest = new Source(new URL(testURL));
+
 		String titleRef = HTMLParser.getTitle(sourceRef);
 		String titleTest = HTMLParser.getTitle(sourceTest);
 
@@ -257,5 +247,4 @@ public class URLUtil {
 
 	
 
-	
 }

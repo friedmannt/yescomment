@@ -5,10 +5,10 @@ import java.util.Map;
 
 import javax.ejb.Local;
 
-import yescomment.util.ArticleListener;
+import yescomment.util.ArticleLifeCycleListener;
 
 @Local
-public interface AllKeywordsSingletonLocal extends   ArticleListener,Serializable{
+public interface AllKeywordsSingletonLocal extends   ArticleLifeCycleListener,Serializable{
 
 	Map<String, Integer> retrieveKeywords();
 

@@ -8,7 +8,7 @@ import javax.ejb.Local;
 import yescomment.model.Article;
 
 @Local
-public interface LatestArticlesSingletonLocal extends   ArticleListener,Serializable{
+public interface LatestArticlesSingletonLocal extends   ArticleLifeCycleListener,Serializable{
 
 	List<Article> retrieveLatestArticles();
 

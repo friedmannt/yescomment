@@ -1,11 +1,9 @@
 package yescomment.util;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;

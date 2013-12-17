@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import yescomment.model.Article;
 import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
+import yescomment.persistence.CommentManager;
 
 @ManagedBean
 @ViewScoped
@@ -24,6 +25,9 @@ public class ViewArticleManagedBean implements Serializable {
 
 	@EJB
 	ArticleManager articleManager;
+	
+	@EJB
+	CommentManager commentManager;
 	
 	private Long idParam;
 
@@ -94,14 +98,7 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public void postNewComment() {
-		
-		Comment comment = new Comment();
-		comment.setCommentText(newCommentText);
-		comment.setAuthor(newCommentAuthor);
-		comment.setCommentDate(new Date());
-		comment.setArticle(article);
-		article.getComments().add(comment);
-		article=articleManager.save(article);
+		commentManager.addCommentToArticle(article, newCommentText, newCommentAuthor);
 		newCommentText = null;
 	}
 

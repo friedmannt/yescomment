@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,18 +32,22 @@ public class Article extends AbstractEntity {
 	@NotNull
 	@Size( max=256)
 	private String title;
+	
 	@Column(nullable=true,length=2048)
 	@Size( max=2048)
 	private String description;
+	
 	@Column(nullable=false,length=2048,unique=true)
 	@NotNull
 	@Size(max=2048)
 	private String url;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable=false)
 	@NotNull
 	private Date registrationDate;
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.EAGER)
+	
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.LAZY)
 	@OrderBy(value="id")
 	private List<Comment> comments=new ArrayList<Comment>();
 	

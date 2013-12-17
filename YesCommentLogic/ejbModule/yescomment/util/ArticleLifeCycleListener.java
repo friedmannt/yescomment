@@ -1,10 +1,8 @@
 package yescomment.util;
 
-import java.io.Serializable;
-
 import yescomment.model.Article;
 
-public interface ArticleListener  {
+public interface ArticleLifeCycleListener  {
 
 	
 	void articleCreated(Article article);

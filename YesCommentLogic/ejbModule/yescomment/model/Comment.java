@@ -22,15 +22,18 @@ public class Comment extends AbstractEntity {
 
 	@ManyToOne(optional = false)
 	private Article article;
+	
 	@Column(nullable = false, length = 10000)
 	@NotNull
 	@Size(max = 10000)
 	@Lob
 	private String commentText;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	@NotNull
 	private Date commentDate;
+	
 	@Column(nullable=true,length = 256)
 	@Size(max = 256)
 	private String author;
