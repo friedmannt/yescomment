@@ -21,11 +21,8 @@
 			<p>
 				<h:outputText value="#{article.description}" />
 				<h:form id="articlelinkform">
-					<p:commandLink id="viewarticleoverlaylink" value="#{yescommentmsg['open_original_article']}" rendered="#{!insidelink}" />
-
-					<p:overlayPanel id="viewarticleoverlaypanel" for="viewarticleoverlaylink" hideEffect="fade" style="width:820px;height:610px" dynamic="true">
-					<iframe src="#{article.url}" style="width:800px;height:600px"/>
-					</p:overlayPanel>
+					<h:outputLink value="#{article.url}" rendered="#{!insidelink}">#{yescommentmsg['open_original_article']}</h:outputLink>       
+					
 					<h:link outcome="viewarticle" value="#{article.title}"
 						rendered="#{insidelink}">
 						<f:param name="id" value="#{article.id}" />

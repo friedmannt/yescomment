@@ -46,6 +46,7 @@ public class NewArticleManagedBean implements Serializable {
 
 		try {
 			newArticleInfo = URLUtil.getArticleInfoFromURL(url);
+			//create date is left empty
 		} catch (IOException e) {
 			newArticlePassedTheCheck = false;
 			e.printStackTrace();

@@ -14,10 +14,9 @@ public class CrawlerConfig {
 	@XmlAttribute
 	private String rssUrl;
 	@XmlAttribute
-	private int minute;//fetches rss only if minute in hour is this
+	private Integer minute;//fetches rss only if minute in hour is this
 	@XmlAttribute
-	private String patternOfNoComment;
-
+	private Integer delaySec;//delays between two rss items
 	
 	
 	public String getName() {
@@ -32,24 +31,25 @@ public class CrawlerConfig {
 	public void setRssUrl(String rssUrl) {
 		this.rssUrl = rssUrl;
 	}
-	public int getMinute() {
+	public Integer getMinute() {
 		return minute;
 	}
-	public void setMinute(int minute) {
+	public void setMinute(Integer minute) {
 		this.minute = minute;
 	}
-	public String getPatternOfNoComment() {
-		return patternOfNoComment;
+
+	public Integer getDelaySec() {
+		return delaySec;
 	}
-	public void setPatternOfNoComment(String patternOfNoComment) {
-		this.patternOfNoComment = patternOfNoComment;
+	public void setDelaySec(Integer delaySec) {
+		this.delaySec = delaySec;
 	}
 	@Override
 	public String toString() {
 		return "CrawlerConfig [name=" + name + ", rssUrl=" + rssUrl
-				+ ", minute=" + minute + ", patternOfNoComment="
-				+ patternOfNoComment + "]";
+				+ ", minute=" + minute  + ", delaySec=" + delaySec + "]";
 	}
+	
 	
 	
 }

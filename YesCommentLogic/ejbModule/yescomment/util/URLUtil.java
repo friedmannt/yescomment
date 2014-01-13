@@ -11,6 +11,7 @@ import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -26,6 +27,7 @@ public class URLUtil {
 		private String title;
 		private String description;
 		private String keywords;
+		private Date createDate;
 
 		public String getFinalURL() {
 			return finalURL;
@@ -67,13 +69,23 @@ public class URLUtil {
 			this.description = description;
 		}
 
-		@Override
-		public String toString() {
-			return "ArticleInfo [finalURL=" + finalURL + ", title=" + title
-					+ ", description=" + description + ", keywords=" + keywords
-					+ "]";
+		public Date getCreateDate() {
+			return createDate;
 		}
 
+		public void setCreateDate(Date createDate) {
+			this.createDate = createDate;
+		}
+
+		@Override
+		public String toString() {
+			return "ArticleInfo [finalURL=" + finalURL + ", imageURL="
+					+ imageURL + ", title=" + title + ", description="
+					+ description + ", keywords=" + keywords + ", createDate="
+					+ createDate + "]";
+		}
+
+		
 	}
 
 	static {
@@ -123,7 +135,7 @@ public class URLUtil {
 
 	public static ArticleInfo getArticleInfoFromURL(String urlString)
 			throws IOException {
-		LOGGER.fine(String.format("Getting article info for %s", urlString));
+		LOGGER.info(String.format("Getting article info for %s", urlString));
 		ArticleInfo articleInfo = new ArticleInfo();
 		String urlStringWithSchema = addDefaultSchemaToURL(urlString);
 		URL url = new URL(urlStringWithSchema);

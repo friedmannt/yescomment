@@ -47,7 +47,7 @@ public class Article extends AbstractEntity {
 	@NotNull
 	private Date registrationDate;
 	
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.EAGER)
 	@OrderBy(value="id")
 	private List<Comment> comments=new ArrayList<Comment>();
 	

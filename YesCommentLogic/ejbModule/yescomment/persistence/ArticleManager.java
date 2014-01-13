@@ -157,7 +157,12 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 			article.setImageurl("resources/images/defaultarticleimage.png");
 		}
 		article.setDescription(articleInfo.getDescription());
-		article.setRegistrationDate(new Date());
+		if (articleInfo.getCreateDate()!=null) {
+			article.setRegistrationDate(articleInfo.getCreateDate());
+		}
+		else 		{
+			article.setRegistrationDate(new Date());
+		}
 
 		List<String> newArticleKeywords = null;
 		if (articleInfo.getKeywords() != null

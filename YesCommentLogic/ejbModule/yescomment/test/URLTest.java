@@ -91,7 +91,7 @@ public class URLTest {
 	
 	
 	@Test()
-	public void testArticleInfoImage() throws IOException  {
+	public void testArticleInfoImage1() throws IOException  {
 		
 		ArticleInfo ai= URLUtil.getArticleInfoFromURL("http://gamerportal.hu/article/3594/How-To-Survive");
 		
@@ -99,7 +99,14 @@ public class URLTest {
 	}
 	
 
-	
+	@Test
+	public void testArticleInfoImage2() throws IOException {
+		ArticleInfo ai= URLUtil.getArticleInfoFromURL("http://index.hu/belfold/2013/12/30/szakallas_bacsizasert_kerult_semjen_az_erkolcstelen_listara/");
+		
+		assertEquals("http://kep.cdn.index.hu/1/0/532/5328/53284/5328406_893810a5cae87ac3f0065606b5625fe3_wm.jpg", ai.getImageURL());
+
+		
+	}
 	
 	
 }
