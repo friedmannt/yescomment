@@ -38,6 +38,10 @@ public class Comment extends AbstractEntity {
 	@Size(max = 256)
 	private String author;
 	
+	private Integer plusCount=0;
+	
+	private Integer minusCount=0;
+	
 	private static final long serialVersionUID = 1L;
 
 	
@@ -71,6 +75,22 @@ public class Comment extends AbstractEntity {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public Integer getPlusCount() {
+		return plusCount;
+	}
+
+	public void setPlusCount(Integer plusCount) {
+		this.plusCount = plusCount;
+	}
+
+	public Integer getMinusCount() {
+		return minusCount;
+	}
+
+	public void setMinusCount(Integer minusCount) {
+		this.minusCount = minusCount;
 	}
 
 }

@@ -3,12 +3,12 @@ package yescomment.managedbean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -21,14 +21,23 @@ import yescomment.persistence.CommentManager;
 @ViewScoped
 public class ViewArticleManagedBean implements Serializable {
 
+	@ManagedProperty(value = "#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
+
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
 
 	@EJB
 	ArticleManager articleManager;
-	
+
 	@EJB
 	CommentManager commentManager;
-	
+
 	private Long idParam;
 
 	public Long getIdParam() {
@@ -50,30 +59,30 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public void loadArticleFromIdParam() {
-		
-		if (idParam == null) {
-			FacesContext.getCurrentInstance()
-					.addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									"No id param given",
-									"Please specify an article id"));
-		} else {
-			Article article = articleManager.find(idParam);
-			if (article == null) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if (!facesContext.isPostback() && !facesContext.isValidationFailed()) {
+			if (idParam == null) {
 				FacesContext.getCurrentInstance().addMessage(
 						null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,
-								"Article not found", "Article not found"));
+								"No id param given",
+								"Please specify an article id"));
 			} else {
-				this.article = article;
+				Article article = articleManager.find(idParam);
+				if (article == null) {
+					FacesContext.getCurrentInstance().addMessage(
+							null,
+							new FacesMessage(FacesMessage.SEVERITY_ERROR,
+									"Article not found", "Article not found"));
+				} else {
+					this.article = article;
 
+				}
 			}
-		}
-		String loginUserName = (String) FacesContext.getCurrentInstance()
-				.getExternalContext().getSessionMap().get("login_username");
-		if (loginUserName != null) {
-			newCommentAuthor = loginUserName;
+			String loginUserName = userSessionBean.getLoginUserName();
+			if (loginUserName != null) {
+				newCommentAuthor = loginUserName;
+			}
 		}
 	}
 
@@ -98,7 +107,8 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public void postNewComment() {
-		commentManager.addCommentToArticle(article, newCommentText, newCommentAuthor);
+		article = commentManager.addCommentToArticle(article, newCommentText,
+				newCommentAuthor);
 		newCommentText = null;
 	}
 
@@ -129,6 +139,22 @@ public class ViewArticleManagedBean implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext().getFlash()
 				.put("viewed_article_before_login", this.getArticle().getId());
 		return "login.xhtml?faces-redirect=true";
+	}
+
+	public void upvoteComment(Comment comment) {
+		comment.setPlusCount(comment.getPlusCount() + 1);
+		userSessionBean.getVotedCommentIds().add(comment.getId());
+		commentManager.merge(comment);
+	}
+
+	public void downvoteComment(Comment comment) {
+		comment.setMinusCount(comment.getMinusCount() + 1);
+		userSessionBean.getVotedCommentIds().add(comment.getId());
+		commentManager.merge(comment);
+	}
+
+	public boolean alreadyVotedOnComment(Comment comment) {
+		return userSessionBean.getVotedCommentIds().contains(comment.getId());
 	}
 
 }

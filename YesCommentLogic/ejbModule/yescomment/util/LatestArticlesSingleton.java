@@ -31,7 +31,7 @@ public class LatestArticlesSingleton implements  LatestArticlesSingletonLocal{
 
 
 	private void populateLatestArticles() {
-		latestArticles = articleManager.getLatestArticles(10);
+		latestArticles = articleManager.getLatestArticles(100);
 	}
 
 

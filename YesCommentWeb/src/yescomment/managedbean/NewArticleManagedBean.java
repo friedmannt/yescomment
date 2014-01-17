@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -19,6 +20,12 @@ import yescomment.util.URLUtil.ArticleInfo;
 @ViewScoped
 public class NewArticleManagedBean implements Serializable {
 
+	@ManagedProperty(value="#{userSessionBean}")
+	private UserSessionBean userSessionBean;
+
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
 	
 	@EJB
 	ArticleManager articleManager;

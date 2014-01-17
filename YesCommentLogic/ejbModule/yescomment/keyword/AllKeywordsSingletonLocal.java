@@ -10,7 +10,7 @@ import yescomment.util.ArticleLifeCycleListener;
 @Local
 public interface AllKeywordsSingletonLocal extends   ArticleLifeCycleListener,Serializable{
 
-	Map<String, Integer> retrieveKeywords();
+	Map<String, Integer> retrieveTopKeywords(int n);
 
 	
 

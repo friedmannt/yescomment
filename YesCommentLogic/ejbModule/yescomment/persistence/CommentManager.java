@@ -52,7 +52,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 		return em;
 	}
 	
-	public void addCommentToArticle(Article article,final String commentText,final String commentAuthor ) {
+	public Article addCommentToArticle(Article article,final String commentText,final String commentAuthor ) {
 		article = articleManager.find(article.getId());//reread
 		Comment comment = new Comment();
 		comment.setCommentText(commentText);
@@ -61,6 +61,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 		comment.setArticle(article);
 		article.getComments().add(comment);
 		create(comment);
+		return article;
 
 	}
 	

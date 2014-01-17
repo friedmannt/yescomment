@@ -1,7 +1,7 @@
 package yescomment.keyword;
 
-import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,85 +10,108 @@ import javax.ejb.Singleton;
 
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
+import yescomment.util.MapSorter;
 
 /**
- * Singleton, holding all the keywords. If articles are created or deleted, it is notified
+ * Singleton, holding all the keywords. If articles are created or deleted, it
+ * is notified
+ * 
  * @author Friedmann Tamás
- *
+ * 
  */
 @Singleton
-
-public class AllKeywordsSingleton implements AllKeywordsSingletonLocal{
+public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 	@EJB
 	ArticleManager articleManager;
-	
 
-	private Map<String,Integer> keywords; //value is occurence count
+	private Map<String, Integer> keywords; // value is occurence count, all
+											// keywords contained
 
-	@Override
-	public Map<String,Integer> retrieveKeywords() {
+	/**
+	 * Retrieves keywords (the top n) based on occurece count
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public Map<String, Integer> retrieveTopKeywords(int n) {
 		if (keywords == null) {
 			populateKeywords();
 		}
-		return keywords;
-	}
+		
+		// sorting
+		Map<String, Integer> sortedKeywords = MapSorter.sortByValues(keywords,
+				false);
+		
+		Map<String, Integer> sortedLimitedKeywords = new HashMap<String, Integer>(
+				n);
+		int i = 0;
+		for (String key : sortedKeywords.keySet()) {
+			i++;
+			if (i <= n) {
+				//up until n
+				sortedLimitedKeywords.put(key, sortedKeywords.get(key));
+			} else {
+				break;//reached n
+			}
 
+		}
+		
+		return sortedLimitedKeywords;
+	}
 
 	private void populateKeywords() {
-		//get all keywords database
-		
+		// get all keywords database
+
 		List<String> allKeywords = articleManager.getAllKeywords(false);
-		keywords=new HashMap<String, Integer>(allKeywords.size());//initial size
-		for (String keyword:allKeywords) {
-			int currentKeywordCount=0;
+		keywords = new HashMap<String, Integer>(allKeywords.size());// initial
+																	// size
+		for (String keyword : allKeywords) {
+			int currentKeywordCount = 0;
 			if (keywords.containsKey(keyword)) {
-			currentKeywordCount=keywords.get(keyword);	
-				
+				currentKeywordCount = keywords.get(keyword);
+
 			}
-			
-			keywords.put(keyword, currentKeywordCount+1);
+
+			keywords.put(keyword, currentKeywordCount + 1);
 		}
 	}
-
 
 	@Override
 	public void articleCreated(Article article) {
 		if (keywords == null) {
 			populateKeywords();
 		}
-		for (String keyword:article.getKeywords()) {
-			int currentKeywordCount=0;
+		for (String keyword : article.getKeywords()) {
+			int currentKeywordCount = 0;
 			if (keywords.containsKey(keyword)) {
-			currentKeywordCount=keywords.get(keyword);	
-				
-			}
-			
-			keywords.put(keyword, currentKeywordCount+1);
-		}
-		
-	}
+				currentKeywordCount = keywords.get(keyword);
 
+			}
+
+			keywords.put(keyword, currentKeywordCount + 1);
+		}
+
+	}
 
 	@Override
 	public void articleDeleted(Article article) {
 		if (keywords == null) {
 			populateKeywords();
 		}
-		for (String keyword:article.getKeywords()) {
-			int currentKeywordCount=0;
+		for (String keyword : article.getKeywords()) {
+			int currentKeywordCount = 0;
 			if (keywords.containsKey(keyword)) {
-			currentKeywordCount=keywords.get(keyword);	
-				
+				currentKeywordCount = keywords.get(keyword);
+
 			}
-			if (currentKeywordCount!=1) {
-				keywords.put(keyword, currentKeywordCount-1);	
-			}
-			else {
+			if (currentKeywordCount != 1) {
+				keywords.put(keyword, currentKeywordCount - 1);
+			} else {
 				keywords.remove(keyword);
 			}
-			
+
 		}
-		
+
 	}
 
 }

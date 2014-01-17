@@ -2,7 +2,6 @@ package yescomment.managedbean;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -13,6 +12,7 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
+import yescomment.keyword.AllKeywordsSingleton;
 import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.keyword.KeywordUtil;
 
@@ -23,12 +23,12 @@ public class KeywordTagCloudBean implements Serializable {
 	@EJB
 	AllKeywordsSingletonLocal allKeywordsSingleton;
 	
-	public TagCloudModel getKeywordTagCloudModel()
+	public TagCloudModel getTopKeywordsTagCloudModel()
 			throws UnsupportedEncodingException {
 
 		DefaultTagCloudModel model = new DefaultTagCloudModel();
 		Map<String, Integer> keywordsAndOccurenceCounts = allKeywordsSingleton
-				.retrieveKeywords();
+				.retrieveTopKeywords(500);
 		for (String keyword : keywordsAndOccurenceCounts.keySet()) {
 
 			model.addTag(new DefaultTagCloudItem(keyword, KeywordUtil.getURLofKeyword(keyword),

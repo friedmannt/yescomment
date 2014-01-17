@@ -68,9 +68,9 @@ public class CrawlerSingleton {
 		}
 		// read from xml configuration
 		try {
-			/*String filePath = Thread.currentThread().getContextClassLoader()
-					.getResource("crawlerconfig.xml").getFile();*/
-			String filePath = "crawlerconfig.xml";
+			String filePath = Thread.currentThread().getContextClassLoader()
+					.getResource("crawlerconfig.xml").getFile();
+			/* jboss String filePath = "crawlerconfig.xml";*/
 			crawlerConfigs = CawlerConfigXMLHandler
 					.unmarshal(new File(filePath));
 		} catch (JAXBException je) {

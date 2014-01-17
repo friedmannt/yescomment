@@ -26,7 +26,7 @@
 				<p:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					counter="commentremainingchars" maxlength="10000"
 					id="newCommentText" counterTemplate="{0} characters remaining"
-					rows="5" cols="80" required="true"/>
+					rows="5" cols="80" required="true" />
 				<p:message for="newCommentText" />
 				<br />
 				<h:outputText id="commentremainingchars" />
@@ -37,14 +37,14 @@
 				<br />
 
 				<p:commandButton value="Post"
-					disabled="#{sessionScope['login_username'] == null}"
+					disabled="#{userSessionBean.loginUserName == null}"
 					actionListener="#{viewArticleManagedBean.postNewComment()}"
 					update=":comments :newcommentform" />
 			</h:form>
 			<h:form id="unauthenticatedform">
 				<p:commandButton id="whoareyoubutton" value="Who are you?"
 					action="#{viewArticleManagedBean.loginAction()}"
-					rendered="#{sessionScope['login_username'] == null}" />
+					rendered="#{userSessionBean.loginUserName == null}" />
 			</h:form>
 			<h2>Comments</h2>
 			<h:form>
@@ -54,6 +54,7 @@
 					<p:ajax event="change" update=":comments" />
 				</p:selectBooleanButton>
 			</h:form>
+
 			<p:dataList value="#{viewArticleManagedBean.getCommentsOfArticle()}"
 				emptyMessage="No comments yet" var="comment" id="comments"
 				paginator="true" rows="20" paginatorPosition="bottom"
@@ -64,12 +65,32 @@
 
 
 				<p:panel>
-					<h:outputText value="#{comment.commentDate}" />
-					<h:outputText value=" " />
-					<h:outputText value="#{comment.author}" />
-					<h:outputText value=" " />
-					<h:outputText
-						value="##{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
+					<p:panelGrid columns="5">
+						<h:outputText value="#{comment.commentDate}" />
+
+
+						<h:outputText value="#{comment.author}" />
+
+
+						<h:outputText
+							value="#{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
+						<h:panelGroup>
+							<h:form>
+								<h:outputText value="#{comment.plusCount}" />
+								<p:commandLink value="Vote up"
+									disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
+									actionListener="#{viewArticleManagedBean.upvoteComment(comment)}"
+									update="@form" />
+
+								<h:outputText value="#{comment.minusCount}" />
+								<p:commandLink value="Vote down"
+									disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
+									actionListener="#{viewArticleManagedBean.downvoteComment(comment)}"
+									update="@form" />
+							</h:form>
+						</h:panelGroup>
+
+					</p:panelGrid>
 					<br />
 					<h:outputText value="#{comment.commentText}"
 						style="white-space:pre;" />

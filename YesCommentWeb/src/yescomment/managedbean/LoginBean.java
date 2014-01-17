@@ -5,18 +5,24 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
 
 @ManagedBean
 @ViewScoped
 public class LoginBean implements Serializable {
 
+	@ManagedProperty(value="#{userSessionBean}")
+	private UserSessionBean userSessionBean;
 
+	public UserSessionBean getUserSessionBean() {
+		return userSessionBean;
+	}
 
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+	
 	private Long viewedArticleId;
 
 	public Long getViewedArticleId() {
@@ -38,9 +44,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public String testCaptcha() {
-		
-		FacesContext.getCurrentInstance()
-		.getExternalContext().getSessionMap().put("login_username", userName);
+		userSessionBean.setLoginUserName(userName);
 		return "/viewarticle.xhtml?faces-redirect=true&id="+viewedArticleId;
 	}
 

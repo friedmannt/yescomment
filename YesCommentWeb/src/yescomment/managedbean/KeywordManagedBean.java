@@ -15,6 +15,9 @@ import yescomment.persistence.ArticleManager;
 @ManagedBean
 @RequestScoped
 public class KeywordManagedBean implements Serializable {
+	
+	
+	
 	@ManagedProperty("#{param.keyword}")
 	private String keyword;
 
