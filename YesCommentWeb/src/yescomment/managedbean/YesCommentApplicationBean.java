@@ -32,5 +32,7 @@ public class YesCommentApplicationBean implements Serializable {
 		}
 
 	}
+	
+	
 
 }

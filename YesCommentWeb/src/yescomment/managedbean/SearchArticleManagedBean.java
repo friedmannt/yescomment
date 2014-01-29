@@ -37,7 +37,7 @@ public class SearchArticleManagedBean implements Serializable {
 			// redirect to searched article
 			articleId = article.getId();
 			
-			return "/viewarticle.xhtml?faces-redirect=true&id="+articleId;
+			return "/viewarticle.xhtml?faces-redirect=true&articleId="+articleId;
 		} else {
 			FacesContext.getCurrentInstance().getExternalContext().getFlash().put("searchedArticleURL", searchedArticleURL);
 			return "newarticle.xhtml?faces-redirect=true";

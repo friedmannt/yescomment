@@ -1,5 +1,6 @@
 package yescomment.managedbean;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,7 +9,7 @@ import javax.faces.bean.SessionScoped;
 
 @ManagedBean
 @SessionScoped
-public class UserSessionBean {
+public class UserSessionBean implements Serializable {
 
 	
 	private String loginUserName;

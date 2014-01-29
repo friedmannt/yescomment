@@ -7,17 +7,29 @@
 	<ui:define name="content">
 
 
-		<h:form id="usernameform">
-
-			<p:captcha id="captcha" label="Captcha" theme="white" />
-			<p:message for="captcha" />
+		<h:form id="loginform">
+			<h:outputText value="Please enter username and select:" />
+			<h:outputText value="#{loginBean.localizeColor(loginBean.correctCaptchaOption.color)}" />
+			<h:outputText value="#{loginBean.localizeNumber(loginBean.correctCaptchaOption.number)}" />
 			<br />
 			<h:outputText value="#{yescommentmsg['name']}" />
 			<p:inputText id="username" value="#{loginBean.userName}"
-				required="true" />
+				 />
 			<p:message for="username" />
-			<p:commandButton value="#{yescommentmsg['submit']}" ajax="false"
-				action="#{loginBean.testCaptcha()}" />
+			<p:panel id="captcha">
+				<ui:repeat value="#{loginBean.possibleCaptchaOptions}"
+					var="captchaoption">
+					<h:commandLink
+						actionListener="#{loginBean.setSelectedCaptchaOption(captchaoption)}" >
+						<h:outputText value="#{captchaoption}"/>
+					</h:commandLink>
+					<br />
+				</ui:repeat>
+
+			</p:panel>
+			<p:message for="captcha" />
+			<p:commandButton value="#{yescommentmsg['submit']}"
+				action="#{loginBean.tryToLogin()}"  update="@form"/>
 
 		</h:form>
 	</ui:define>

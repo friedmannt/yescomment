@@ -38,14 +38,24 @@ public class ViewArticleManagedBean implements Serializable {
 	@EJB
 	CommentManager commentManager;
 
-	private Long idParam;
+	private Long articleId;
 
-	public Long getIdParam() {
-		return idParam;
+	public Long getArticleId() {
+		return articleId;
 	}
 
-	public void setIdParam(Long idParam) {
-		this.idParam = idParam;
+	public void setArticleId(Long articleId) {
+		this.articleId = articleId;
+	}
+
+	private Long highlightCommentId;
+
+	public Long getHighlightCommentId() {
+		return highlightCommentId;
+	}
+
+	public void setHighlightCommentId(Long highlightCommentId) {
+		this.highlightCommentId = highlightCommentId;
 	}
 
 	private Article article;
@@ -61,14 +71,14 @@ public class ViewArticleManagedBean implements Serializable {
 	public void loadArticleFromIdParam() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (!facesContext.isPostback() && !facesContext.isValidationFailed()) {
-			if (idParam == null) {
+			if (articleId == null) {
 				FacesContext.getCurrentInstance().addMessage(
 						null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR,
 								"No id param given",
 								"Please specify an article id"));
 			} else {
-				Article article = articleManager.find(idParam);
+				Article article = articleManager.find(articleId);
 				if (article == null) {
 					FacesContext.getCurrentInstance().addMessage(
 							null,
@@ -107,9 +117,12 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public void postNewComment() {
-		article = commentManager.addCommentToArticle(article, newCommentText,
-				newCommentAuthor);
-		newCommentText = null;
+		if (userSessionBean.getLoginUserName() != null) {
+
+			article = commentManager.addCommentToArticle(article,
+					newCommentText, newCommentAuthor);
+			newCommentText = null;
+		}
 	}
 
 	private boolean reverseArticleOrder = true;// initialize with reverse
@@ -155,6 +168,11 @@ public class ViewArticleManagedBean implements Serializable {
 
 	public boolean alreadyVotedOnComment(Comment comment) {
 		return userSessionBean.getVotedCommentIds().contains(comment.getId());
+	}
+
+	public boolean commentShouldBeHighlighted(Comment comment) {
+		return highlightCommentId == null ? false : highlightCommentId
+				.equals(comment.getId());
 	}
 
 }

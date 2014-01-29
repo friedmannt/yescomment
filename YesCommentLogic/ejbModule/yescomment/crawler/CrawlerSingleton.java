@@ -18,7 +18,6 @@ import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
-import javax.ejb.TimerHandle;
 import javax.ejb.TimerService;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
@@ -70,7 +69,7 @@ public class CrawlerSingleton {
 		try {
 			String filePath = Thread.currentThread().getContextClassLoader()
 					.getResource("crawlerconfig.xml").getFile();
-			/* jboss String filePath = "crawlerconfig.xml";*/
+			/*String filePath = "crawlerconfig.xml"; */
 			crawlerConfigs = CawlerConfigXMLHandler
 					.unmarshal(new File(filePath));
 		} catch (JAXBException je) {
@@ -91,7 +90,9 @@ public class CrawlerSingleton {
 		LOGGER.info("Started crawling for minute " + currentMinute);
 		List<CrawlerConfig> crawlerConfigsForCurrentMinute = getCrawlerConfigsForMinute(currentMinute);
 		for (CrawlerConfig crawlerConfig : crawlerConfigsForCurrentMinute) {
-			crawlRss(crawlerConfig);
+			if (crawlerConfig.getEnabled()) {
+				crawlRss(crawlerConfig);
+			}
 		}
 		LOGGER.info("Finished crawling for minute " + currentMinute);
 	}

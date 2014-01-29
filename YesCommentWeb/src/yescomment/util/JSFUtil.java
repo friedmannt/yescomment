@@ -24,4 +24,7 @@ public class JSFUtil {
 		return FacesContext.getCurrentInstance().getViewRoot().getLocale();
 	}
 
+	
+
+	
 }

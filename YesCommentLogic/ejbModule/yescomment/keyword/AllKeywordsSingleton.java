@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -45,11 +46,11 @@ public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 		Map<String, Integer> sortedLimitedKeywords = new HashMap<String, Integer>(
 				n);
 		int i = 0;
-		for (String key : sortedKeywords.keySet()) {
+		for (Entry<String, Integer> entry : sortedKeywords.entrySet()) {
 			i++;
 			if (i <= n) {
 				//up until n
-				sortedLimitedKeywords.put(key, sortedKeywords.get(key));
+				sortedLimitedKeywords.put(entry.getKey(), entry.getValue());
 			} else {
 				break;//reached n
 			}

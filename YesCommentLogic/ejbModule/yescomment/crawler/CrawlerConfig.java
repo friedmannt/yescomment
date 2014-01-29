@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CrawlerConfig {
 
 	@XmlAttribute
+	private Boolean enabled;
+	@XmlAttribute
 	private String name;
 	@XmlAttribute
 	private String rssUrl;
@@ -19,6 +21,12 @@ public class CrawlerConfig {
 	private Integer delaySec;//delays between two rss items
 	
 	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 	public String getName() {
 		return name;
 	}

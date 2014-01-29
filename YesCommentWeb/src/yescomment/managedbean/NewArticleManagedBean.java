@@ -27,6 +27,10 @@ public class NewArticleManagedBean implements Serializable {
 		return userSessionBean;
 	}
 	
+	public void setUserSessionBean(UserSessionBean userSessionBean) {
+		this.userSessionBean = userSessionBean;
+	}
+
 	@EJB
 	ArticleManager articleManager;
 	
@@ -94,7 +98,7 @@ public class NewArticleManagedBean implements Serializable {
 		article =articleManager.create(article);
 		// redirect to new article
 		Long newArticleId = article.getId();
-		return "/viewarticle.xhtml?faces-redirect=true&id=" + newArticleId;
+		return "/viewarticle.xhtml?faces-redirect=true&articleId=" + newArticleId;
 
 	}
 
