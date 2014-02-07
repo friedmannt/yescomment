@@ -27,7 +27,7 @@ public class URLUtil {
 		private String title;
 		private String description;
 		private String keywords;
-		private Date createDate;
+		
 
 		public String getFinalURL() {
 			return finalURL;
@@ -69,22 +69,16 @@ public class URLUtil {
 			this.description = description;
 		}
 
-		public Date getCreateDate() {
-			return createDate;
-		}
-
-		public void setCreateDate(Date createDate) {
-			this.createDate = createDate;
-		}
-
 		@Override
 		public String toString() {
 			return "ArticleInfo [finalURL=" + finalURL + ", imageURL="
 					+ imageURL + ", title=" + title + ", description="
-					+ description + ", keywords=" + keywords + ", createDate="
-					+ createDate + "]";
+					+ description + ", keywords=" + keywords + "]";
 		}
 
+		
+
+		
 		
 	}
 

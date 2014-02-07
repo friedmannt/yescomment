@@ -178,7 +178,6 @@ public class CrawlerSingleton {
 
 			ArticleInfo newArticleInfo = URLUtil.getArticleInfoFromURL(rssItem
 					.getLink());
-			newArticleInfo.setCreateDate(rssItem.getPubDate());
 			// we should check, whether the final article url is
 			// unique
 			Article articleWithSameURL = articleManager

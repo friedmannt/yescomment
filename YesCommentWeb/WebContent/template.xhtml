@@ -20,11 +20,19 @@
 	<h:body>
 
 		<div id="contentwrapper">
-			<header id="yellimage"> 
-			<hgroup>
-				<h1>Yescomment</h1>
-				<h2>Oda is, ahova nem szabad</h2>
+			<header id="yellheader"> <hgroup>
+			<h1 class="clearfix">
+				<h:outputLink value="#{request.contextPath}">
+					<img src="#{resource['resources:images/speaker.png']}" />
+				</h:outputLink>
+				<h:outputText class="yescommentheaderboxtext" value="YES, COMMENT!" />
+			</h1>
+			<div class="clearfix">
+				<h:link outcome="latestarticles" value="#{yescommentmsg['latest']}" />
+				<h:link outcome="keywords" value="#{yescommentmsg['keywords']}" />
+			</div>
 			</hgroup> </header>
+
 			<div id="topdiv">
 
 				<div id="searchdiv">
@@ -35,12 +43,8 @@
 			</div>
 
 			<article> <ui:insert name="content" /> </article>
-			<div id="footerdiv" style="background-color: gray;">
+			<h:link outcome="legal" value="#{yescommentmsg['legal_statement']}" />
 
-				<h:link outcome="latestarticles" value="#{yescommentmsg['latest_articles']}" />
-				<h:link outcome="keywords" value="#{yescommentmsg['keywords']}" />
-				<h:link outcome="legal" value="#{yescommentmsg['legal_statement']}" />
-			</div>
 
 		</div>
 

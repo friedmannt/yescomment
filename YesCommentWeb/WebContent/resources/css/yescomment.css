@@ -3,13 +3,79 @@ html,body {
 	padding: 0;
 }
 
-header {
-	background-image: url('/YesCommentWeb/resources/images/yellimage.png');
+.clearfix:after{
+	display: block;
+	clear: both;
+	content: '';
+	float: none;
+}
+
+#yellheader {
+	background-image: url("#{resource['resources:images/yescommentyell.png']}");
 	width: 320px;
 	height: 100%;
 	position: fixed;
 	z-index: 999;
+	background-size:100% auto;
+	background-repeat: no-repeat;
 }
+
+
+#yellheader h1 {
+	margin: 20px auto 0 auto;
+	display: block;
+	width: 240px;
+	
+	
+}
+
+#yellheader h1 a {
+	display: block;
+	background-color: #fb1947;
+	width: 60px;
+	height: 60px;
+	float: left;
+	margin: 0 10px 10px 0;
+	
+}
+
+#yellheader h1 a img{
+	display: block;
+}
+
+#yellheader .yescommentheaderboxtext{
+	float: left;
+	line-height: 60px;
+	color: #FFFFFF;
+	background-color: rgba(0,0,0,0.8);
+	font-size: 16px;
+	text-align:center;
+	white-space: nowrap;
+	padding: 0 20px;
+	max-width: 130px;
+}
+
+#yellheader div{
+	margin: 0 auto;
+	width: 240px;
+}
+#yellheader div a{
+	display: block;
+	background-color: #fb1947;
+	width: 115px;
+	line-height:40px;
+	float: left;
+	margin: 0 10px 10px 0;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #FFFFFF;
+	text-align: center;
+}
+
+#yellheader div a:nth-of-type(even){
+	margin-right: 0;
+}
+
 
 #contentwrapper {
 	margin: 0 auto;
@@ -32,10 +98,6 @@ header {
 	max-width: 880px;
 }
 
-#contentwrapper #footerdiv {
-	margin-left: 320px;
-	padding: 10px;
-}
 
 #searcharticleform {
 	padding: 10px;

@@ -20,10 +20,7 @@
 		</h:form>
 		<p:dataList value="#{keywordManagedBean.resultArticles}" var="article"
 			type="none" id="resultdatalist" emptyMessage="#{yescommentmsg['no_results']}">
-			<h:outputText value="#{article.registrationDate}">
-				<f:convertDateTime type="both" dateStyle="short" />
-
-			</h:outputText>
+		
 			<ui:include src="articlepreview.xhtml">
 				<ui:param name="article" value="#{article}" />
 				<ui:param name="insidelink" value="#{true}" />

@@ -73,7 +73,7 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Article> q = cb.createQuery(Article.class);
 		Root<Article> r = q.from(Article.class);
-		q.orderBy(cb.desc(r.<Date> get("registrationDate")));
+		q.orderBy(cb.desc(r.<Integer> get("id")));
 		TypedQuery<Article> query = em.createQuery(q);
 		query.setMaxResults(maxResults);
 		return query.getResultList();
@@ -144,6 +144,7 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 	
 	public Article createArticleFromArticleInfo(ArticleInfo articleInfo) {
 		Article article = new Article();
+		article.setRegistrationDate(new Date());
 		article.setUrl(articleInfo.getFinalURL());
 		
 		if (articleInfo.getTitle() != null) {
@@ -158,13 +159,6 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 			article.setImageurl("resources/images/defaultarticleimage.png");
 		}
 		article.setDescription(articleInfo.getDescription());
-		if (articleInfo.getCreateDate()!=null) {
-			article.setRegistrationDate(articleInfo.getCreateDate());
-		}
-		else 		{
-			article.setRegistrationDate(new Date());
-		}
-
 		List<String> newArticleKeywords = null;
 		if (articleInfo.getKeywords() != null
 				&& !articleInfo.getKeywords().isEmpty()) {

@@ -42,10 +42,7 @@ public class Article extends AbstractEntity {
 	@Size(max=2048)
 	private String url;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
-	@NotNull
-	private Date registrationDate;
+
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.EAGER)
 	@OrderBy(value="id")
@@ -58,6 +55,10 @@ public class Article extends AbstractEntity {
 	@Size(max=2048)
 	private String imageurl;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable=false)
+	@NotNull
+	private Date registrationDate;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -86,12 +87,7 @@ public class Article extends AbstractEntity {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
+	
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -115,6 +111,14 @@ public class Article extends AbstractEntity {
 
 	public void setImageurl(String imageurl) {
 		this.imageurl = imageurl;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	

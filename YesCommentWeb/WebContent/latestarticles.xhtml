@@ -9,10 +9,6 @@
 		<p:dataList
 			value="#{latestArticlesManagedBean.retrieveLatestArticles()}"
 			var="article" type="none">
-			<h:outputText value="#{article.registrationDate}">
-				<f:convertDateTime type="both" dateStyle="short" />
-
-			</h:outputText>
 			<ui:include src="articlepreview.xhtml">
 				<ui:param name="article" value="#{article}"/>
 				<ui:param name="insidelink" value="#{true}"/>

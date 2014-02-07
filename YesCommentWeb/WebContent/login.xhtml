@@ -21,7 +21,7 @@
 					var="captchaoption">
 					<h:commandLink
 						actionListener="#{loginBean.setSelectedCaptchaOption(captchaoption)}" >
-						<h:outputText value="#{captchaoption}"/>
+						<h:outputText value="#{captchaoption.number}" style="color:#{captchaoption.color}"/>
 					</h:commandLink>
 					<br />
 				</ui:repeat>
