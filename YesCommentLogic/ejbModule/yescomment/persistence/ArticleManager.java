@@ -16,7 +16,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import yescomment.keyword.AllKeywordsSingleton;
 import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.model.Article;
 import yescomment.util.LatestArticlesSingletonLocal;

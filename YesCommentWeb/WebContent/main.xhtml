@@ -7,10 +7,14 @@
 	<ui:define name="content">
 
 
-		<h1>#{yescommentmsg['nocomment_impossible']}</h1>
-		
-A yescomment egy oldal, ahol olyan cikkekhez lehet hozzászólni, amikhez az eredeti helyükön nem lehet.
-A yescomment oldal használata ingyenes.
-		
+		<h1 class="pagetext">#{yescommentmsg['nocomment_impossible']}</h1>
+		<h:outputText
+			value="A yescomment egy oldal, ahol olyan cikkekhez lehet hozzászólni, amikhez az eredeti helyükön nem lehet.
+A yescomment oldal használata ingyenes."
+			styleClass="pagetext" />
+		<h1 class="pagetext">#{yescommentmsg['legal_statement']}</h1>
+		<h:outputText
+			value="A hozzászólások a vonatkozó jogszabályok értelmében felhasználói tartalomnak minősülnek, értük a szolgáltatás technikai üzemeltetője semmilyen felelősséget nem vállal, azokat nem ellenőrzi."
+			styleClass="pagetext" />
 	</ui:define>
 </ui:composition>

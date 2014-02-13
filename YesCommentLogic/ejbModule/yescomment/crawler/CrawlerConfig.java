@@ -1,24 +1,51 @@
 package yescomment.crawler;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Class for holding crawler configuration
+ * @author Friedmann Tamás
+ *
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="crawlerconfig")
-public class CrawlerConfig {
+public class CrawlerConfig implements Serializable{
 
+	/**
+	 * RSS is only crawled if enabled
+	 */
 	@XmlAttribute
+	@NotNull
 	private Boolean enabled;
+	/**
+	 * Name of the config
+	 */
 	@XmlAttribute
 	private String name;
+	
+	/**
+	 * URL of the rss file
+	 */
 	@XmlAttribute
+	@NotNull
 	private String rssUrl;
+	/**
+	 * fetches rss only if minute in hour is this. Mandatory
+	 */
 	@XmlAttribute
-	private Integer minute;//fetches rss only if minute in hour is this
+	@NotNull
+	private Integer minute;
+	/**
+	 * delays between two rss items. If null, there is no delay
+	 */
 	@XmlAttribute
-	private Integer delaySec;//delays between two rss items
+	private Integer delaySec;
 	
 	
 	public Boolean getEnabled() {

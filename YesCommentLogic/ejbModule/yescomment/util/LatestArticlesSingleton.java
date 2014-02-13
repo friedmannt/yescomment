@@ -16,6 +16,8 @@ import yescomment.persistence.ArticleManager;
 @Singleton
 public class LatestArticlesSingleton implements  LatestArticlesSingletonLocal{
 
+	private static final int LATEST_ARTICLE_COUNT = 100;
+
 	@EJB
 	ArticleManager articleManager;
 
@@ -31,7 +33,7 @@ public class LatestArticlesSingleton implements  LatestArticlesSingletonLocal{
 
 
 	private void populateLatestArticles() {
-		latestArticles = articleManager.getLatestArticles(100);
+		latestArticles = articleManager.getLatestArticles(LATEST_ARTICLE_COUNT);
 	}
 
 

@@ -1,6 +1,5 @@
 package yescomment.crawler;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +16,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ * Class for serializing and deserializing the crawler configurations to/from
+ * XML
+ * 
+ * @author Friedmann Tamás
+ * 
+ */
 public class CawlerConfigXMLHandler {
 
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -43,9 +49,15 @@ public class CawlerConfigXMLHandler {
 
 	}
 
-	// Export
-	public static void marshal(List<CrawlerConfig> crawlerConfigs,
-			File selectedFile) throws IOException, JAXBException {
+	/**
+	 * Export
+	 * 
+	 * @param crawlerConfigs
+	 * @param selectedFile
+	 * @throws IOException
+	 * @throws JAXBException
+	 */
+	public static void marshal(List<CrawlerConfig> crawlerConfigs, File selectedFile) throws IOException, JAXBException {
 		JAXBContext context;
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter(selectedFile));
@@ -56,7 +68,13 @@ public class CawlerConfigXMLHandler {
 		writer.close();
 	}
 
-	// Import
+	/**
+	 * Import
+	 * 
+	 * @param importFile
+	 * @return
+	 * @throws JAXBException
+	 */
 	public static List<CrawlerConfig> unmarshal(File importFile) throws JAXBException {
 		CrawlerConfigs crawlerConfigs = new CrawlerConfigs();
 
@@ -66,6 +84,5 @@ public class CawlerConfigXMLHandler {
 
 		return crawlerConfigs.getCrawlerConfigs();
 	}
-	
-	
+
 }

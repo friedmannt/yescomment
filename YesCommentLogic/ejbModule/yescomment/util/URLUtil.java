@@ -1,9 +1,6 @@
 package yescomment.util;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -11,9 +8,6 @@ import java.net.CookiePolicy;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import net.htmlparser.jericho.Source;

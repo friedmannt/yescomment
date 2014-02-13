@@ -17,10 +17,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 public class RSSLinkRetriever {
 
-	
+	/**
+	 * Reads rss xml file, and gets its items
+	 * @param rssUrl
+	 * @param documentBuilder
+	 * @return
+	 * @throws SAXException
+	 * @throws IOException
+	 * @throws DOMException
+	 * @throws ParseException
+	 */
 	public static List<RSSItem> getItemsFromRSS(String rssUrl,DocumentBuilder documentBuilder) throws SAXException, IOException, DOMException, ParseException {
 		DateFormat dateFormatterRssPubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 		List<RSSItem> rssItems=new ArrayList<RSSItem>();

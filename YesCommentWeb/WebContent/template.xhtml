@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -20,30 +18,32 @@
 	<h:body>
 
 		<div id="contentwrapper">
-			<header id="yellheader"> <hgroup>
-			<h1 class="clearfix">
-				<h:outputLink value="#{request.contextPath}">
-					<img src="#{resource['resources:images/speaker.png']}" />
-				</h:outputLink>
-				<h:outputText class="yescommentheaderboxtext" value="YES, COMMENT!" />
-			</h1>
-			<div class="clearfix">
-				<h:link outcome="latestarticles" value="#{yescommentmsg['latest']}" />
-				<h:link outcome="keywords" value="#{yescommentmsg['keywords']}" />
-			</div>
-			</hgroup> </header>
+			<header id="yellheader">
+				<div class="headerbuttons">
+					<h1>
+						<h:outputLink value="#{request.contextPath}">
+							<img src="#{request.contextPath}/resources/images/speaker.png" />
+						</h:outputLink>
+						<h:outputText class="yescommentheaderboxtext"
+							value="YES, COMMENT!" />
+					</h1>
+					<div class="clear"/>
+					<h2>
+						<h:link outcome="latestarticles"
+							value="#{yescommentmsg['latest']}" styleClass="firstlink"/>
+						<h:link outcome="keywords" value="#{yescommentmsg['keywords']}" styleClass="lastlink"/>
+					</h2>
+				</div>
+			</header>
 
 			<div id="topdiv">
-
-				<div id="searchdiv">
 					<ui:include src="search.xhtml" />
-				</div>
-
-
 			</div>
 
-			<article> <ui:insert name="content" /> </article>
-			<h:link outcome="legal" value="#{yescommentmsg['legal_statement']}" />
+			<article>
+				<ui:insert name="content" />
+			</article>
+
 
 
 		</div>

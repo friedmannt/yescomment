@@ -1,10 +1,14 @@
 package yescomment.util;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Creates a sorted treemap based on paramater map, sorted by value ascending or desceding
+ * @author Friedmann Tamás
+ *
+ */
 public class MapSorter {
 	public static <K, V extends Comparable<V>> Map<K, V> sortByValues(
 			final Map<K, V> map, boolean ascending) {

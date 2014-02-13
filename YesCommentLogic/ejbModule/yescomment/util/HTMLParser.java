@@ -11,7 +11,11 @@ import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
 
-
+/**
+ * Gets title and header meta values of a HTML file (can be url, or HTML source)
+ * @author Friedmann Tamás
+ *
+ */
 public class HTMLParser {
 
 	public static String getTitle(String url) throws MalformedURLException, IOException { 

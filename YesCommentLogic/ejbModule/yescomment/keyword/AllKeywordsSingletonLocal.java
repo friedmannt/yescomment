@@ -10,6 +10,11 @@ import yescomment.util.ArticleLifeCycleListener;
 @Local
 public interface AllKeywordsSingletonLocal extends   ArticleLifeCycleListener,Serializable{
 
+	/**
+	 * Retrieves top N keywords, ordered by occurence count
+	 * @param n
+	 * @return
+	 */
 	Map<String, Integer> retrieveTopKeywords(int n);
 
 	

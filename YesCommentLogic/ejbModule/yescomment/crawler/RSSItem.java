@@ -2,7 +2,11 @@ package yescomment.crawler;
 
 import java.io.Serializable;
 import java.util.Date;
-
+/**
+ * One rss item, has many more attributes, now only link and pubdate are stored, content is not stored
+ * @author Friedmann Tamás
+ *
+ */
 public class RSSItem implements Serializable{
 
 	private String link;
