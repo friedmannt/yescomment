@@ -103,7 +103,7 @@ public class NewArticleManagedBean implements Serializable {
 	}
 
 	
-	public void fillNewArticleURLFromRequest() {
+	public void fillNewArticleURLFromSearch() {
 		
 		String searchedURL = (String) FacesContext.getCurrentInstance()
 				.getExternalContext().getFlash().get("searchedArticleURL");

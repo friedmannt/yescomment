@@ -48,6 +48,7 @@ public class CrawlerConfig implements Serializable{
 	private Integer delaySec;
 	
 	
+	
 	public Boolean getEnabled() {
 		return enabled;
 	}
@@ -81,9 +82,9 @@ public class CrawlerConfig implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "CrawlerConfig [name=" + name + ", rssUrl=" + rssUrl
-				+ ", minute=" + minute  + ", delaySec=" + delaySec + "]";
+		return "CrawlerConfig [enabled=" + enabled + ", name=" + name + ", rssUrl=" + rssUrl + ", minute=" + minute + ", delaySec=" + delaySec + "]";
 	}
+	
 	
 	
 	

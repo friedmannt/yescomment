@@ -6,9 +6,11 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	<h:form id="searcharticleform">
-		<p:inputText id="searchedurl"
+		<p:inputText id="searchedurl" 
 			value="#{searchArticleManagedBean.searchedArticleURL}"
-			required="true"  type="search" requiredMessage="#{yescommentmsg['url_empty']}"/>
+			required="true"  type="search" requiredMessage="#{yescommentmsg['url_empty']}">
+			<f:validator validatorId="URLValidator" />
+			</p:inputText>
 		
 		
 		<p:watermark for="searchedurl" id="searchedurlwatermark"

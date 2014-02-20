@@ -37,30 +37,28 @@ public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 		if (keywords == null) {
 			populateKeywords();
 		}
-		
+
 		// sorting
-		Map<String, Integer> sortedKeywords = MapSorter.sortByValues(keywords,
-				false);
-		
-		Map<String, Integer> sortedLimitedKeywords = new HashMap<String, Integer>(
-				n);
+		Map<String, Integer> sortedKeywords = MapSorter.sortByValues(keywords, false);
+
+		Map<String, Integer> sortedLimitedKeywords = new HashMap<String, Integer>(n);
 		int i = 0;
 		for (Entry<String, Integer> entry : sortedKeywords.entrySet()) {
 			i++;
 			if (i <= n) {
-				//up until n
+				// up until n
 				sortedLimitedKeywords.put(entry.getKey(), entry.getValue());
 			} else {
-				break;//reached n
+				break;// reached n
 			}
 
 		}
-		
+
 		return sortedLimitedKeywords;
 	}
 
 	private void populateKeywords() {
-		// get all keywords database
+		// get all keywords from database
 
 		List<String> allKeywords = articleManager.getAllKeywords(false);
 		keywords = new HashMap<String, Integer>(allKeywords.size());// initial

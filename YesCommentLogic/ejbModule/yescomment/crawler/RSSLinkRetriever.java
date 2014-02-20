@@ -56,10 +56,15 @@ public class RSSLinkRetriever {
 				String linkUrl = linkElement.getTextContent();
 				Element pubDateElement=(Element)itemElement.getElementsByTagName("pubDate").item(0);
 				Date pubDate = dateFormatterRssPubDate .parse( pubDateElement.getTextContent());
+				Element titleElement=(Element)itemElement.getElementsByTagName("title").item(0);
+				String title = titleElement.getTextContent();
+				Element descriptionElement=(Element)itemElement.getElementsByTagName("description").item(0);
+				String description = descriptionElement.getTextContent();
 				RSSItem rssItem=new RSSItem();
 				rssItem.setLink(linkUrl);
 				rssItem.setPubDate(pubDate);
-				
+				rssItem.setTitle(title);
+				rssItem.setDescription(description);
 				rssItems.add(rssItem);
 	 
 			}

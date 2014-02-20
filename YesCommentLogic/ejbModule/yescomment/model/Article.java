@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
@@ -59,6 +60,8 @@ public class Article extends AbstractEntity {
 	@Column(nullable=false)
 	@NotNull
 	private Date registrationDate;
+	
+	
 	
 	private static final long serialVersionUID = 1L;
 
@@ -121,13 +124,5 @@ public class Article extends AbstractEntity {
 		this.registrationDate = registrationDate;
 	}
 
-	
-
-	
-	
-	
-   
-	
-	
-	
+		
 }

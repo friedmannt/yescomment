@@ -265,7 +265,7 @@ public class CrawlerSingleton implements CrawlerSingletonMBean {
 		// no unnecessary url params are added
 		if (articleManager.getArticleByURL(rssItem.getLink()) == null) {
 			LOGGER.finest(String.format("Crawling started for url: %s", rssItem.getLink()));
-			ArticleInfo newArticleInfo = URLUtil.getArticleInfoFromURL(rssItem.getLink());
+			ArticleInfo newArticleInfo = URLUtil.getArticleInfoFromURL(rssItem.getLink(),rssItem);
 			// we should check, whether the final article url is
 			// unique
 			Article articleWithSameURL = articleManager.getArticleByURL(newArticleInfo.getFinalURL());

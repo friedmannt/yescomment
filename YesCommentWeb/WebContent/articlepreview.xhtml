@@ -21,8 +21,8 @@
 			<p>
 				<h:outputText value="#{article.description}" />
 				<h:form id="articlelinkform">
-					<h:outputLink value="#{article.url}" rendered="#{!insidelink}">#{yescommentmsg['open_original_article']}</h:outputLink>       
-					
+					<h:outputLink value="#{article.url}" rendered="#{!insidelink}">#{yescommentmsg['open_original_article']}</h:outputLink>
+
 					<h:link outcome="viewarticle" value="#{article.title}"
 						rendered="#{insidelink}">
 						<f:param name="articleId" value="#{article.id}" />
@@ -31,7 +31,8 @@
 				</h:form>
 			</p>
 			<p class="articlepreviewkeywords">
-				<ui:repeat var="keyword" value="#{yesCommentApplicationBean.getKeywordsAsList(article)}"
+				<ui:repeat var="keyword"
+					value="#{yesCommentApplicationBean.getKeywordsAsList(article)}"
 					varStatus="status">
 					<h:link outcome="keywords" value="#{keyword}">
 						<f:param name="keyword" value="#{keyword}" />
