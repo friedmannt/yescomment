@@ -8,8 +8,8 @@
 	<f:metadata>
 		<f:viewParam name="articleId" value="#{viewArticleManagedBean.articleId}" />
 		<f:viewParam name="highlightCommentId" value="#{viewArticleManagedBean.highlightCommentId}" />
-		<f:event type="preRenderView"
-			listener="#{viewArticleManagedBean.loadArticleFromIdParam()}" />
+		<f:viewAction
+			action="#{viewArticleManagedBean.loadArticleFromIdParam()}" />
 	</f:metadata>
 
 	<ui:define name="content">
@@ -22,10 +22,12 @@
 
 
 			<hr />
+			Article text
+			<h:outputText value="#{viewArticleManagedBean.article.articleExtractedText}"/>
 			<h:form id="newcommentform">
 				New Comment
 				<p:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
-					counter="commentremainingchars" maxlength="10000"
+					counter="commentremainingchars" maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
 					id="newCommentText" counterTemplate="{0} characters remaining"
 					rows="5" cols="80" required="true" />
 				<p:message for="newCommentText" />

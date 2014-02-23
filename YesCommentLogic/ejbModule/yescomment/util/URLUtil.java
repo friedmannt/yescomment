@@ -1,7 +1,6 @@
 package yescomment.util;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -10,73 +9,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import net.htmlparser.jericho.Source;
+
 import org.apache.commons.validator.routines.UrlValidator;
 
 import yescomment.crawler.RSSItem;
-
-import net.htmlparser.jericho.Source;
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
+import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class URLUtil {
 	private static Logger LOGGER = Logger.getLogger("URLUtil");
-
-	public static class ArticleInfo implements Serializable {
-		private String finalURL;
-		private String imageURL;
-		private String title;
-		private String description;
-		private String keywords;
-		
-
-		public String getFinalURL() {
-			return finalURL;
-		}
-
-		public void setFinalURL(String finalURL) {
-			this.finalURL = finalURL;
-		}
-
-		public String getImageURL() {
-			return imageURL;
-		}
-
-		public void setImageURL(String imageURL) {
-			this.imageURL = imageURL;
-		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
-		public String getKeywords() {
-			return keywords;
-		}
-
-		public void setKeywords(String keywords) {
-			this.keywords = keywords;
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-		public void setDescription(String description) {
-			this.description = description;
-		}
-
-		@Override
-		public String toString() {
-			return "ArticleInfo [finalURL=" + finalURL + ", imageURL=" + imageURL + ", title=" + title + ", description=" + description + ", keywords=" + keywords + "]";
-		}
-
-		
-
-		
-		
-	}
 
 	static {
 		CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
@@ -102,16 +44,15 @@ public class URLUtil {
 	}
 
 	private static String removeFragmentFromURL(String urlString) {
-		int indexOfHashmark=urlString.lastIndexOf('#');
-		if  (indexOfHashmark<0) {
+		int indexOfHashmark = urlString.lastIndexOf('#');
+		if (indexOfHashmark < 0) {
 			return urlString;
-		}
-		else {
+		} else {
 			return urlString.substring(0, indexOfHashmark);
 		}
-		
+
 	}
-	
+
 	public static String getSiteOfURL(String urlString) {
 
 		if (urlString == null) {
@@ -150,7 +91,7 @@ public class URLUtil {
 		LOGGER.info(String.format("Getting article info for %s", urlString));
 		ArticleInfo articleInfo = new ArticleInfo();
 		String urlStringWithSchema = addDefaultSchemaToURL(urlString);
-		//remove fragment (#)
+		// remove fragment (#)
 		String urlStringWithoutFragment = removeFragmentFromURL(urlStringWithSchema);
 		URL url = new URL(urlStringWithoutFragment);
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -190,9 +131,9 @@ public class URLUtil {
 		if (openGraphDescription != null) {
 			articleInfo.setDescription(openGraphDescription);
 		}
-		
-		
-		
+
+		articleInfo.setExtractedArticleText(extractTextFromArticle(source, articleInfo.getFinalURL()));
+
 		articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo.getFinalURL()));
 
 		connection.disconnect();
@@ -201,7 +142,15 @@ public class URLUtil {
 
 	}
 
-	
+	private static String extractTextFromArticle(Source source, String url) {
+		try {
+			return ArticleExtractor.INSTANCE.getText(source.toString());
+		} catch (BoilerpipeProcessingException e) {
+			LOGGER.fine(String.format("Text cannot be extracted from %s", url));
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	private static String eliminateUnnecessaryURLParams(String finalURL) throws MalformedURLException, IOException {
 		if (finalURL.indexOf("?") < 0) {
@@ -265,23 +214,18 @@ public class URLUtil {
 	}
 
 	/**
-	 * Validates url. Default schemes in apache.commons.UrlValidator are http,
-	 * https and ftp
+	 * Validates url. Default schemes in apache.commons.UrlValidator are http
+	 * and https
 	 * 
 	 * @param url
 	 * @return
 	 */
 	public static boolean urlIsValid(String url) {
-		try {
-			UrlValidator urlValidator = new UrlValidator();
-			return urlValidator.isValid(url);
 
-		} catch (Throwable t) {
-			t.printStackTrace();
-		} finally {
+		String[] schemes = { "http", "https" };
+		UrlValidator urlValidator = new UrlValidator(schemes);
+		return urlValidator.isValid(url);
 
-		}
-		return false;
 	}
 
 }

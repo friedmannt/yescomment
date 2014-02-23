@@ -38,8 +38,8 @@ import org.xml.sax.SAXException;
 
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
+import yescomment.util.ArticleInfo;
 import yescomment.util.URLUtil;
-import yescomment.util.URLUtil.ArticleInfo;
 
 /**
  * Singleton, doing the crawl

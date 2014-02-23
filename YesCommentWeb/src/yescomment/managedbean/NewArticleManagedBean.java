@@ -2,7 +2,6 @@ package yescomment.managedbean;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.UnknownHostException;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -13,8 +12,8 @@ import javax.faces.context.FacesContext;
 
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
+import yescomment.util.ArticleInfo;
 import yescomment.util.URLUtil;
-import yescomment.util.URLUtil.ArticleInfo;
 
 @ManagedBean
 @ViewScoped

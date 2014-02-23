@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+
+	<ui:define name="content">
+		<h:form>
+			<p:selectOneButton id="recommendationAspect"
+				value="#{recommendedArticlesManagedBean.selectedRecommendationAspect}" required="true">
+				<f:selectItem itemLabel="#{yescommentmsg['latest_articles']}"
+					itemValue="LATEST" />
+				<f:selectItem itemLabel="#{yescommentmsg['most_commented']}"
+					itemValue="MOSTCOMMENTED" />
+				<p:ajax event="change" update="@form" />
+
+			</p:selectOneButton>
+
+			<h:panelGroup id="recommendedArticleContainer">
+				<h:panelGroup rendered="#{recommendedArticlesManagedBean.latestSelected()}">
+					<h3>
+						<h:outputText value="#{yescommentmsg['latest_articles']}" />
+					</h3>
+					<p:dataList
+						value="#{recommendedArticlesManagedBean.latestArticles}"
+						var="article" type="none">
+						<ui:include src="articlepreview.xhtml">
+							<ui:param name="article" value="#{article}" />
+							<ui:param name="insidelink" value="#{true}" />
+						</ui:include>
+						<br />
+					</p:dataList>
+				</h:panelGroup>
+				<h:panelGroup
+					rendered="#{recommendedArticlesManagedBean.mostCommentedSelected()}">
+					<h3>
+						<h:outputText value="#{yescommentmsg['most_commented']}" />
+					</h3>
+					<p:dataList
+						value="#{recommendedArticlesManagedBean.mostCommentedArticles}"
+						var="article" type="none">
+						<ui:include src="articlepreview.xhtml">
+							<ui:param name="article" value="#{article}" />
+							<ui:param name="insidelink" value="#{true}" />
+						</ui:include>
+						<br />
+					</p:dataList>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+
+

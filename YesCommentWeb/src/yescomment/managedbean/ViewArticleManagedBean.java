@@ -69,31 +69,23 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public void loadArticleFromIdParam() {
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		if (!facesContext.isPostback() && !facesContext.isValidationFailed()) {
-			if (articleId == null) {
-				FacesContext.getCurrentInstance().addMessage(
-						null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR,
-								"No id param given",
-								"Please specify an article id"));
+		
+		if (articleId == null) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No id param given", "Please specify an article id"));
+		} else {
+			Article article = articleManager.find(articleId);
+			if (article == null) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
 			} else {
-				Article article = articleManager.find(articleId);
-				if (article == null) {
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR,
-									"Article not found", "Article not found"));
-				} else {
-					this.article = article;
+				this.article = article;
 
-				}
-			}
-			String loginUserName = userSessionBean.getLoginUserName();
-			if (loginUserName != null) {
-				newCommentAuthor = loginUserName;
 			}
 		}
+		String loginUserName = userSessionBean.getLoginUserName();
+		if (loginUserName != null) {
+			newCommentAuthor = loginUserName;
+		}
+
 	}
 
 	private String newCommentText;
@@ -119,8 +111,7 @@ public class ViewArticleManagedBean implements Serializable {
 	public void postNewComment() {
 		if (userSessionBean.getLoginUserName() != null) {
 
-			article = commentManager.addCommentToArticle(article,
-					newCommentText, newCommentAuthor);
+			article = commentManager.addCommentToArticle(article, newCommentText, newCommentAuthor);
 			newCommentText = null;
 		}
 	}
@@ -149,8 +140,7 @@ public class ViewArticleManagedBean implements Serializable {
 
 	public String loginAction() {
 
-		FacesContext.getCurrentInstance().getExternalContext().getFlash()
-				.put("viewed_article_before_login", this.getArticle().getId());
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("viewed_article_before_login", this.getArticle().getId());
 		return "login.xhtml?faces-redirect=true";
 	}
 
@@ -171,8 +161,13 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public boolean commentShouldBeHighlighted(Comment comment) {
-		return highlightCommentId == null ? false : highlightCommentId
-				.equals(comment.getId());
+		return highlightCommentId == null ? false : highlightCommentId.equals(comment.getId());
+	}
+
+	private static final Integer MAX_COMMENT_SIZE = Comment.MAX_COMMENT_SIZE;
+
+	public static Integer getMaxCommentSize() {
+		return MAX_COMMENT_SIZE;
 	}
 
 }

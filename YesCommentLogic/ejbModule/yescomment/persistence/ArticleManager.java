@@ -18,33 +18,31 @@ import javax.persistence.criteria.Root;
 
 import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.model.Article;
-import yescomment.util.LatestArticlesSingletonLocal;
-import yescomment.util.URLUtil.ArticleInfo;
+import yescomment.recommended.RecommendedArticlesSingletonLocal;
+import yescomment.recommended.RecommendationAscpect;
+import yescomment.util.ArticleInfo;
 
 @Stateless
-public class ArticleManager extends AbstractEntityManager<Article>  {
-
+public class ArticleManager extends AbstractEntityManager<Article> {
 
 	@PersistenceContext(unitName = "YesCommentModel")
 	private EntityManager em;
-	
+
 	@EJB
 	AllKeywordsSingletonLocal allKeywordsSingleton;
 	
-	@EJB
-	LatestArticlesSingletonLocal latestArticlesSingleton;
 	
+
 	public ArticleManager() {
 		super(Article.class);
 
 	}
-	
-	
+
 	public Article getArticleByURL(String url) {
 		if (url == null) {
 			throw new IllegalArgumentException();
 		} else {
-			
+
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<Article> q = cb.createQuery(Article.class);
 			Root<Article> r = q.from(Article.class);
@@ -62,27 +60,20 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 			} else if (articles.size() == 1) {
 				return articles.get(0);
 			} else
-				throw new IllegalStateException("Multiple articles were found with url "+url);
+				throw new IllegalStateException("Multiple articles were found with url " + url);
 
 		}
 	}
-	
-	public List<Article> getLatestArticles(int maxResults) {
-	
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Article> q = cb.createQuery(Article.class);
-		Root<Article> r = q.from(Article.class);
-		q.orderBy(cb.desc(r.<Integer> get("id")));
-		TypedQuery<Article> query = em.createQuery(q);
-		query.setMaxResults(maxResults);
-		return query.getResultList();
 
-	}
+	
+
 
 	@Override
 	protected void notifyEntityCreation(Article entity) {
-		latestArticlesSingleton.articleCreated(entity);
+
 		allKeywordsSingleton.articleCreated(entity);
+		
+		
 	}
 
 	@Override
@@ -93,19 +84,18 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 
 	@Override
 	protected void notifyEntityDeletion(Article entity) {
-		latestArticlesSingleton.articleDeleted(entity);
+
 		allKeywordsSingleton.articleDeleted(entity);
+	
 
 	}
-	
+
 	public List<String> getAllKeywords(boolean distinct) {
 		return getAllKeywords(null, distinct);
 	}
-	
-	public List<String> getAllKeywords(String keywordStartFilter,
-			boolean distinct) {
 
-		
+	public List<String> getAllKeywords(String keywordStartFilter, boolean distinct) {
+
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<String> q = cb.createQuery(String.class);
 		Root<Article> r = q.from(Article.class);
@@ -119,10 +109,9 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 
 		return query.getResultList();
 	}
-	
+
 	public List<Article> getArticlesWithKeyword(String keyword) {
 
-		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Article> q = cb.createQuery(Article.class);
 		Root<Article> r = q.from(Article.class);
@@ -140,30 +129,27 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 	protected EntityManager getEntityManager() {
 		return em;
 	}
-	
+
 	public Article createArticleFromArticleInfo(ArticleInfo articleInfo) {
 		Article article = new Article();
 		article.setRegistrationDate(new Date());
 		article.setUrl(articleInfo.getFinalURL());
-		
+
 		if (articleInfo.getTitle() != null) {
 			article.setTitle(articleInfo.getTitle());
 		} else {
 			article.setTitle("");
 		}
-		if (articleInfo.getImageURL()!=null) {
+		if (articleInfo.getImageURL() != null) {
 			article.setImageurl(articleInfo.getImageURL());
-		}
-		else {
+		} else {
 			article.setImageurl("resources/images/defaultarticleimage.png");
 		}
 		article.setDescription(articleInfo.getDescription());
 		List<String> newArticleKeywords = null;
-		if (articleInfo.getKeywords() != null
-				&& !articleInfo.getKeywords().isEmpty()) {
+		if (articleInfo.getKeywords() != null && !articleInfo.getKeywords().isEmpty()) {
 			newArticleKeywords = new ArrayList<String>();
-			List<String> keywords = Arrays.asList(articleInfo.getKeywords()
-					.split(","));
+			List<String> keywords = Arrays.asList(articleInfo.getKeywords().split(","));
 			for (String keyword : keywords) {
 				keyword = keyword.trim();
 				if (!keyword.equals("")) {
@@ -177,7 +163,13 @@ public class ArticleManager extends AbstractEntityManager<Article>  {
 		if (newArticleKeywords != null) {
 			article.getKeywords().addAll(newArticleKeywords);
 		}
+		article.setArticleExtractedText(articleInfo.getExtractedArticleText());
+		article.setCommentCount(0);
 		return article;
 	}
+
+	
+	
+	
 
 }

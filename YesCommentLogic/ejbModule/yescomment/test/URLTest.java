@@ -1,6 +1,7 @@
 package yescomment.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,8 +9,8 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
+import yescomment.util.ArticleInfo;
 import yescomment.util.URLUtil;
-import yescomment.util.URLUtil.ArticleInfo;
 
 public class URLTest {
 
@@ -71,6 +72,9 @@ public class URLTest {
 		assertEquals("Ennek az egyeztetésnek meg mi értelme?", ai.getTitle());
 	}
 	
+	
+	
+	
 	@Test(expected=UnknownHostException.class)
 	public void testArticleInfoUnkownHost() throws IOException  {
 		 URLUtil.getArticleInfoFromURL("a.b.hu");
@@ -101,12 +105,17 @@ public class URLTest {
 
 	@Test
 	public void testArticleInfoImage2() throws IOException {
-		ArticleInfo ai= URLUtil.getArticleInfoFromURL("http://index.hu/belfold/2013/12/30/szakallas_bacsizasert_kerult_semjen_az_erkolcstelen_listara/");
+		ArticleInfo ai= URLUtil.getArticleInfoFromURL("http://mno.hu/gazdasag/orban-most-mar-nincs-visszaut-1212218");
 		
-		assertEquals("http://static.origos.hu/s/img/i/1402/20140208lazar-janos-algyo-mako-faluhaz.jpg", ai.getImageURL());
+		assertEquals("http://mno.hu/data/cikk/1/21/22/18/cikk_1212218/orban_BA_uj_fekvo_lead_fill_345x200.jpg", ai.getImageURL());
 
 		
 	}
-		
+
+	@Test 
+	public void testArticleExtractedText() throws IOException {
+		ArticleInfo ai = URLUtil.getArticleInfoFromURL("http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/UrlValidator.html#isValid%28java.lang.String%29");
+		assertNotNull(ai.getExtractedArticleText());
+	}
 	
 }

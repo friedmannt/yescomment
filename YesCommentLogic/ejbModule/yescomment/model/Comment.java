@@ -20,12 +20,14 @@ import javax.validation.constraints.Size;
 @Table(name="yescomment_comment")
 public class Comment extends AbstractEntity {
 
+	
 	@ManyToOne(optional = false)
 	private Article article;
 	
-	@Column(nullable = false, length = 10000)
+	public static final int MAX_COMMENT_SIZE=10000;
+	@Column(nullable = false, length = MAX_COMMENT_SIZE)
 	@NotNull
-	@Size(max = 10000)
+	@Size(max = MAX_COMMENT_SIZE)
 	@Lob
 	private String commentText;
 	
@@ -34,8 +36,9 @@ public class Comment extends AbstractEntity {
 	@NotNull
 	private Date commentDate;
 	
-	@Column(nullable=true,length = 256)
-	@Size(max = 256)
+	public static final int MAX_AUTHOR_SIZE=256;
+	@Column(nullable=true,length = MAX_AUTHOR_SIZE)
+	@Size(max = MAX_AUTHOR_SIZE)
 	private String author;
 	
 	private Integer plusCount=0;

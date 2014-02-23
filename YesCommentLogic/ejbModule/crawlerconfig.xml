@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <crawlerconfigs>
-    <crawlerconfig enabled="true" name="index" rssUrl="http://index.hu/24ora/rss/" minute="24" delaySec="60"/>
+    <crawlerconfig enabled="false" name="index" rssUrl="http://index.hu/24ora/rss/" minute="24" delaySec="60"/>
     <crawlerconfig enabled="false" name="divany" rssUrl="http://divany.hu/24ora/rss/" minute="26" delaySec="30"/>
     <crawlerconfig enabled="false" name="totalcar" rssUrl="http://totalcar.hu/24ora/rss/" minute="11" delaySec="30"/>
     <crawlerconfig enabled="false" name="portfolio.hu" rssUrl="http://www.portfolio.hu/rss/cikkek/all.xml" minute="4"/>

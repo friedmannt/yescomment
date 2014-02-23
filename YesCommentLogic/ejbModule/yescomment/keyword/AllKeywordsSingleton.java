@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.ejb.EJB;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 
 import yescomment.model.Article;
@@ -33,6 +35,8 @@ public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 	 * @param n
 	 * @return
 	 */
+
+	@Lock(LockType.READ)
 	public Map<String, Integer> retrieveTopKeywords(int n) {
 		if (keywords == null) {
 			populateKeywords();
@@ -57,6 +61,7 @@ public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 		return sortedLimitedKeywords;
 	}
 
+	@Lock(LockType.WRITE)
 	private void populateKeywords() {
 		// get all keywords from database
 
@@ -75,6 +80,7 @@ public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 	}
 
 	@Override
+	@Lock(LockType.WRITE)
 	public void articleCreated(Article article) {
 		if (keywords == null) {
 			populateKeywords();
@@ -92,6 +98,7 @@ public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
 	}
 
 	@Override
+	@Lock(LockType.WRITE)
 	public void articleDeleted(Article article) {
 		if (keywords == null) {
 			populateKeywords();

@@ -18,6 +18,14 @@ public interface EntityManagerInterface<T extends AbstractEntity> extends Serial
 	List<T> findAll();
 
 	int count();
+	
+	List<Long> findAllIds();
+	
+	List<T> find (List<Long> ids);
+
+	List<T> getEntitiesOrdered(String attributeName, boolean isAscending, Integer maxResults);
+	
+	List<T> getEntitiesOrdered(String attributeName, boolean isAscending);
 
 	
 }

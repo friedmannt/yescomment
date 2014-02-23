@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import yescomment.managedbean.captcha.CaptchaOption;
 import yescomment.managedbean.captcha.CaptchaOption.Color;
+import yescomment.model.Comment;
 import yescomment.util.JSFUtil;
 import yescomment.util.LocalizationUtil;
 import yescomment.util.NumberUtil;
@@ -24,6 +25,13 @@ public class LoginBean implements Serializable {
 
 	public static int getCaptchaOptionSize() {
 		return CAPTCHA_OPTION_SIZE;
+	}
+
+	private static final Integer MAX_AUTHOR_SIZE=Comment.MAX_AUTHOR_SIZE;
+	
+	
+	public static Integer getMaxAuthorSize() {
+		return MAX_AUTHOR_SIZE;
 	}
 
 	@ManagedProperty(value = "#{userSessionBean}")

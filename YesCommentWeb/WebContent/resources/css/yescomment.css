@@ -37,7 +37,7 @@ html,body {
 #yellheader .headerbuttons {
 	margin: 20px auto 0 auto;
 	display: block;
-	width: 260px;
+	width: 280px;
 }
 
 #yellheader h1 a {
@@ -63,22 +63,22 @@ html,body {
 	line-height: 60px;
 	color: #FFFFFF;
 	background-color: rgba(0, 0, 0, 0.4);
-	font-size: 16px;
+	font-size: 19px;
 	text-align: center;
 	white-space: nowrap;
 	padding: 0 20px;
-	width: 150px;
+	width: 170px;
 }
 
 #yellheader h2 {
 	margin: 0 auto;
-	width: 260px;
+	width: 280px;
 }
 
 #yellheader h2 a {
 	display: block;
 	background-color: #fb1947;
-	width: 125px;
+	width: 135px;
 	height: 40px;
 	text-transform: uppercase;
 	text-decoration: none;

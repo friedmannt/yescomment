@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 
 import yescomment.model.Article;
 import yescomment.model.Comment;
+import yescomment.recommended.RecommendedArticlesSingletonLocal;
 
 @Stateless
 public class CommentManager extends AbstractEntityManager<Comment>{
@@ -20,6 +21,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 	
 	@EJB
 	ArticleManager articleManager;
+	
 
 	@PersistenceContext(unitName = "YesCommentModel")
 	private EntityManager em;
@@ -31,7 +33,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 
 	@Override
 	protected void notifyEntityCreation(Comment entity) {
-		// doing nothing
+		
 		
 	}
 
@@ -43,7 +45,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 
 	@Override
 	protected void notifyEntityDeletion(Comment entity) {
-		// doing nothing
+		
 		
 	}
 
@@ -60,6 +62,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 		comment.setCommentDate(new Date());
 		comment.setArticle(article);
 		article.getComments().add(comment);
+		article.setCommentCount(article.getCommentCount()+1);
 		create(comment);
 		return article;
 

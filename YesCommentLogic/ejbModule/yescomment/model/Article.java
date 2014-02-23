@@ -48,6 +48,10 @@ public class Article extends AbstractEntity {
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.EAGER)
 	@OrderBy(value="id")
 	private List<Comment> comments=new ArrayList<Comment>();
+
+	@Column(nullable=false)
+	@NotNull
+	private Integer commentCount;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Set<String> keywords=new HashSet<String>();
@@ -61,6 +65,10 @@ public class Article extends AbstractEntity {
 	@NotNull
 	private Date registrationDate;
 	
+	@Column(nullable = true, length = 100000)
+	@Size(max = 100000)
+	@Lob
+	private String articleExtractedText;
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -100,6 +108,14 @@ public class Article extends AbstractEntity {
 
 	
 
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+
 	public Set<String> getKeywords() {
 		return keywords;
 	}
@@ -122,6 +138,14 @@ public class Article extends AbstractEntity {
 
 	public void setRegistrationDate(Date registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+
+	public String getArticleExtractedText() {
+		return articleExtractedText;
+	}
+
+	public void setArticleExtractedText(String articleExtractedText) {
+		this.articleExtractedText = articleExtractedText;
 	}
 
 		

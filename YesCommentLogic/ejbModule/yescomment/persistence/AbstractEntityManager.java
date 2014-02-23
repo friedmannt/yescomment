@@ -1,16 +1,22 @@
 package yescomment.persistence;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import yescomment.model.AbstractEntity;
+import yescomment.model.Article;
 
 public abstract class AbstractEntityManager<T extends AbstractEntity> implements EntityManagerInterface<T> {
 
-	
 	protected abstract EntityManager getEntityManager();
-	
+
 	private Class<T> entityClass;
 
 	public AbstractEntityManager(Class<T> entityClass) {
@@ -19,66 +25,121 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 
 	@Override
 	public T create(T entity) {
-		
+
 		EntityManager em = getEntityManager();
-		
+
 		em.persist(entity);
-		
-		//em.close();
+
+		// em.close();
 		notifyEntityCreation(entity);
 		return entity;
 
 	}
+
 	@Override
 	public T merge(T entity) {
 		notifyEntityModification(entity);
-		EntityManager em =  getEntityManager();
-		
+		EntityManager em = getEntityManager();
+
 		T mergedEntity = em.merge(entity);
-		
-		//em.close();
+
+		// em.close();
 		return mergedEntity;
 
 	}
+
 	@Override
 	public void remove(T entity) {
 		notifyEntityDeletion(entity);
 		EntityManager em = getEntityManager();
-		
+
 		em.remove(em.merge(entity));
-		
-		
-		//em.close();
+
+		// em.close();
 	}
+
 	@Override
 	public T find(Long id) {
-		EntityManager em =  getEntityManager();
+		EntityManager em = getEntityManager();
 		return em.find(entityClass, id);
 	}
+
 	@Override
 	public List<T> findAll() {
-		EntityManager em =  getEntityManager();
-		javax.persistence.criteria.CriteriaQuery<T> cq = em
-				.getCriteriaBuilder().createQuery(entityClass);
+		EntityManager em = getEntityManager();
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
 		cq.select(cq.from(entityClass));
 		return em.createQuery(cq).getResultList();
 	}
+
 	@Override
 	public int count() {
-		EntityManager em =  getEntityManager();
-		javax.persistence.criteria.CriteriaQuery<Long> cq = em
-				.getCriteriaBuilder().createQuery(Long.class);
-		javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-		cq.select(em.getCriteriaBuilder().count(rt));
+		EntityManager em = getEntityManager();
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> cq = criteriaBuilder.createQuery(Long.class);
+		Root<T> rt = cq.from(entityClass);
+		cq.select(criteriaBuilder.count(rt));
 		javax.persistence.Query q = em.createQuery(cq);
 		return ((Long) q.getSingleResult()).intValue();
 	}
+
+	@Override
+	public List<Long> findAllIds() {
+
+		EntityManager em = getEntityManager();
+
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		Root<T> r = cq.from(entityClass);
+		cq.select(r.<Long> get("id"));
+		TypedQuery<Long> tq = em.createQuery(cq);
+		return tq.getResultList();
+	}
+
+	@Override
+	public List<T> find(List<Long> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		} else {
+			EntityManager em = getEntityManager();
+			CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+			CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
+			Root<T> r = cq.from(entityClass);
+			cq.select(r);
+			cq.where(r.<Long> get("id").in(ids));
+			final TypedQuery<T> tq = em.createQuery(cq);
+			return tq.getResultList();
+		}
+	}
 	
 	
+	@Override
+	public List<T> getEntitiesOrdered(String attributeName, boolean isAscending) {
+		
+		return getEntitiesOrdered(attributeName, isAscending, null);
+	}
+
+	@Override
+	public List<T> getEntitiesOrdered(String attributeName,boolean isAscending,Integer maxResults) {
+		
+		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
+		
+		CriteriaQuery<T> q = cb.createQuery(entityClass);
+		Root<T> r = q.from(entityClass);
+		q.orderBy(cb.desc(r. get(attributeName)));
+		TypedQuery<T> query = getEntityManager().createQuery(q);
+		if (maxResults!=null) {
+			query.setMaxResults(maxResults);	
+		}
+		
+		return query.getResultList();
+	}
+
 	protected abstract void notifyEntityCreation(T entity);
-	
+
 	protected abstract void notifyEntityModification(T entity);
-	
+
 	protected abstract void notifyEntityDeletion(T entity);
 
 }
