@@ -12,8 +12,6 @@ import yescomment.util.HTMLParser;
 
 public class HTMLParseTest {
 
-	
-
 	@Test
 	public void testHTMLTitle() throws MalformedURLException, IOException {
 		

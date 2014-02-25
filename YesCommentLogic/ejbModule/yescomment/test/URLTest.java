@@ -112,10 +112,5 @@ public class URLTest {
 		
 	}
 
-	@Test 
-	public void testArticleExtractedText() throws IOException {
-		ArticleInfo ai = URLUtil.getArticleInfoFromURL("http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/UrlValidator.html#isValid%28java.lang.String%29");
-		assertNotNull(ai.getExtractedArticleText());
-	}
 	
 }

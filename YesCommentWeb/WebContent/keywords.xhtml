@@ -8,25 +8,32 @@
 		Itt található a rendszerben szereplő összes kulcsszó. 
 		Egy kulcsszóra kattintva feljönnek a rá vonatkozó cikkek, de használható a kulcsszókereső is.
 		<p:tagCloud id="tagcloud"
-			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}" style="width:800px;">
+			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}"
+			style="width:800px;">
 		</p:tagCloud>
 		<h:form id="keywordform">
 			<h:outputText value="#{yescommentmsg['keyword']}" />
 			<h:outputText value=":" />
 			<h:inputText value="#{keywordManagedBean.keyword}" required="true" />
-			<p:commandButton value="#{yescommentmsg['search']}"
-				actionListener="#{keywordManagedBean.searchForKeyword()}"
-				update=":resultdatalist" />
+			<h:commandButton value="#{yescommentmsg['search']}"
+				actionListener="#{keywordManagedBean.searchForKeyword()}">
+				<f:ajax render=":resultarticlesforkeyword" execute="@form" />
+			</h:commandButton>
 		</h:form>
-		<p:dataList value="#{keywordManagedBean.resultArticles}" var="article"
-			type="none" id="resultdatalist" emptyMessage="#{yescommentmsg['no_results']}">
-		
-			<ui:include src="articlepreview.xhtml">
-				<ui:param name="article" value="#{article}" />
-				<ui:param name="insidelink" value="#{true}" />
-			</ui:include>
-			<br />
+		<h:panelGroup id="resultarticlesforkeyword">
+			<h:outputText id="noresultarticles"
+				value="#{yescommentmsg['no_results']}"
+				rendered="#{keywordManagedBean.resultArticles.isEmpty()}" />
+			<ui:repeat value="#{keywordManagedBean.resultArticles}" var="article"
+				id="resultarticles">
 
-		</p:dataList>
+				<ui:include src="articlepreview.xhtml">
+					<ui:param name="article" value="#{article}" />
+					<ui:param name="insidelink" value="#{true}" />
+				</ui:include>
+				<br />
+
+			</ui:repeat>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>

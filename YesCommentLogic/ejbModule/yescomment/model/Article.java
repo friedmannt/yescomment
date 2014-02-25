@@ -65,10 +65,7 @@ public class Article extends AbstractEntity {
 	@NotNull
 	private Date registrationDate;
 	
-	@Column(nullable = true, length = 100000)
-	@Size(max = 100000)
-	@Lob
-	private String articleExtractedText;
+	
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -140,13 +137,6 @@ public class Article extends AbstractEntity {
 		this.registrationDate = registrationDate;
 	}
 
-	public String getArticleExtractedText() {
-		return articleExtractedText;
-	}
-
-	public void setArticleExtractedText(String articleExtractedText) {
-		this.articleExtractedText = articleExtractedText;
-	}
 
 		
 }

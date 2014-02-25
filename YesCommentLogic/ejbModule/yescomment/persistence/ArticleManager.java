@@ -163,7 +163,7 @@ public class ArticleManager extends AbstractEntityManager<Article> {
 		if (newArticleKeywords != null) {
 			article.getKeywords().addAll(newArticleKeywords);
 		}
-		article.setArticleExtractedText(articleInfo.getExtractedArticleText());
+		
 		article.setCommentCount(0);
 		return article;
 	}

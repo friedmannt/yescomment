@@ -1,50 +1,49 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
 
 	<ui:define name="content">
 		<h:form>
-			<p:selectOneButton id="recommendationAspect"
-				value="#{recommendedArticlesManagedBean.selectedRecommendationAspect}" required="true">
+			<h:selectOneRadio id="recommendationAspect"
+				value="#{recommendedArticlesManagedBean.selectedRecommendationAspect}">
 				<f:selectItem itemLabel="#{yescommentmsg['latest_articles']}"
 					itemValue="LATEST" />
 				<f:selectItem itemLabel="#{yescommentmsg['most_commented']}"
 					itemValue="MOSTCOMMENTED" />
-				<p:ajax event="change" update="@form" />
+				<f:ajax render="@form" />
 
-			</p:selectOneButton>
+			</h:selectOneRadio>
 
 			<h:panelGroup id="recommendedArticleContainer">
-				<h:panelGroup rendered="#{recommendedArticlesManagedBean.latestSelected()}">
+				<h:panelGroup
+					rendered="#{recommendedArticlesManagedBean.latestSelected()}">
 					<h3>
 						<h:outputText value="#{yescommentmsg['latest_articles']}" />
 					</h3>
-					<p:dataList
-						value="#{recommendedArticlesManagedBean.latestArticles}"
-						var="article" type="none">
+					<ui:repeat value="#{recommendedArticlesManagedBean.latestArticles}"
+						var="article">
 						<ui:include src="articlepreview.xhtml">
 							<ui:param name="article" value="#{article}" />
 							<ui:param name="insidelink" value="#{true}" />
 						</ui:include>
 						<br />
-					</p:dataList>
+					</ui:repeat>
 				</h:panelGroup>
 				<h:panelGroup
 					rendered="#{recommendedArticlesManagedBean.mostCommentedSelected()}">
 					<h3>
 						<h:outputText value="#{yescommentmsg['most_commented']}" />
 					</h3>
-					<p:dataList
+					<ui:repeat
 						value="#{recommendedArticlesManagedBean.mostCommentedArticles}"
-						var="article" type="none">
+						var="article">
 						<ui:include src="articlepreview.xhtml">
 							<ui:param name="article" value="#{article}" />
 							<ui:param name="insidelink" value="#{true}" />
 						</ui:include>
 						<br />
-					</p:dataList>
+					</ui:repeat>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:form>

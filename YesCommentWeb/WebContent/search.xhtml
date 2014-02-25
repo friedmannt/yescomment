@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	<h:form id="searcharticleform">
-		<p:inputText id="searchedurl" 
+		<h:inputText id="searchedurl" type="search"
 			value="#{searchArticleManagedBean.searchedArticleURL}"
-			required="true"  type="search" requiredMessage="#{yescommentmsg['url_empty']}">
+			required="true" 
+			requiredMessage="#{yescommentmsg['url_empty']}"
+			pt:placeholder="#{yescommentmsg['enter_article_url']}">
 			<f:validator validatorId="URLValidator" />
-			</p:inputText>
-		
-		
-		<p:watermark for="searchedurl" id="searchedurlwatermark"
-			value="#{yescommentmsg['enter_article_url']}"/>
-		
-		<p:commandButton type="submit"  id="searchbutton"
-			action="#{searchArticleManagedBean.searchForArticle()}"
-			 update="@form" value=""/>
-		<div class="clear"/>
-		<p:message for="searchedurl" id="searchedurlmessage" display="text"/>
-		
-		
+			<f:passThroughAttribute name="required" value="required"/>
+		</h:inputText>
+		<h:commandButton type="submit" id="searchbutton" action="#{searchArticleManagedBean.searchForArticle()}">
+			<f:ajax 
+				render="@form" execute="@form"/>
+		</h:commandButton>
+		<div class="clear" />
+		<h:message for="searchedurl" id="searchedurlmessage" 
+			showSummary="true" showDetail="false"
+			style="color: red;  font-style: oblique;  " />
+
+
 	</h:form>
 </ui:composition>

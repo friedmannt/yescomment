@@ -3,111 +3,131 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core" template="/template.xhtml">
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
 
 	<f:metadata>
-		<f:viewParam name="articleId" value="#{viewArticleManagedBean.articleId}" />
-		<f:viewParam name="highlightCommentId" value="#{viewArticleManagedBean.highlightCommentId}" />
-		<f:viewAction
-			action="#{viewArticleManagedBean.loadArticleFromIdParam()}" />
+		<f:viewParam name="articleId"
+			value="#{viewArticleManagedBean.articleId}" />
+		<f:viewParam name="highlightCommentId"
+			value="#{viewArticleManagedBean.highlightCommentId}" />
+		<f:viewAction action="#{viewArticleManagedBean.loadArticle()}" />
 	</f:metadata>
 
 	<ui:define name="content">
-		<p:messages showSummary="true" />
+	
+		<h:messages showSummary="true" />
 		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
 			<ui:include src="articlepreview.xhtml">
 				<ui:param name="article" value="#{viewArticleManagedBean.article}" />
 				<ui:param name="insidelink" value="#{false}" />
 			</ui:include>
-
-
 			<hr />
-			Article text
-			<h:outputText value="#{viewArticleManagedBean.article.articleExtractedText}"/>
 			<h:form id="newcommentform">
 				New Comment
-				<p:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
-					counter="commentremainingchars" maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
-					id="newCommentText" counterTemplate="{0} characters remaining"
-					rows="5" cols="80" required="true" />
-				<p:message for="newCommentText" />
+				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
+					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
+					id="newCommentText" rows="5" cols="80" required="true"
+					requiredMessage="Empty comment" />
+				<h:message for="newCommentText" />
 				<br />
-				<h:outputText id="commentremainingchars" />
-				<br />
+
+
 				<h:outputText value="Author" />
 				<h:outputText value="#{viewArticleManagedBean.newCommentAuthor}"
 					id="newCommentAuthor" />
 				<br />
 
-				<p:commandButton value="Post"
+				<h:commandButton value="Post"
 					disabled="#{userSessionBean.loginUserName == null}"
-					actionListener="#{viewArticleManagedBean.postNewComment()}"
-					update=":comments :newcommentform" />
+					actionListener="#{viewArticleManagedBean.postNewComment()}">
+					<f:ajax render=":comments :newcommentform" execute="@form" />
+				</h:commandButton>
 			</h:form>
 			<h:form id="unauthenticatedform">
-				<p:commandButton id="whoareyoubutton" value="Who are you?"
+				<h:commandButton id="whoareyoubutton" value="Who are you?"
 					action="#{viewArticleManagedBean.loginAction()}"
 					rendered="#{userSessionBean.loginUserName == null}" />
 			</h:form>
 			<h2>Comments</h2>
-			<h:form>
+			<h:form id="commentorderform">
 				<p:selectBooleanButton
 					value="#{viewArticleManagedBean.reverseArticleOrder}"
 					onLabel="Newest first" offLabel="Oldest first">
 					<p:ajax event="change" update=":comments" />
 				</p:selectBooleanButton>
 			</h:form>
-
-			<p:dataList value="#{viewArticleManagedBean.getCommentsOfArticle()}"
-				emptyMessage="No comments yet" var="comment" id="comments"
-				paginator="true" rows="20" paginatorPosition="bottom"
-				paginatorAlwaysVisible="false"
-				paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-				currentPageReportTemplate="{currentPage}/{totalPages}"
-				rowsPerPageTemplate="20,50,100" type="none">
+			<h:panelGroup id="comments">
 
 
-				<p:panel>
-					<p:panelGrid columns="7">
-						<h:outputText value="#{comment.commentDate}" />
+				<h:form id="commentpaginatorform"
+					rendered="#{!viewArticleManagedBean.article.comments.isEmpty()}">
+					<h:commandLink value="First Page"
+						actionListener="#{viewArticleManagedBean.firstPage()}">
+						<f:ajax render=":comments" />
+					</h:commandLink>
+					<h:commandLink value="Prev Page"
+						actionListener="#{viewArticleManagedBean.prevPage()}">
+						<f:ajax render=":comments" />
+					</h:commandLink>
+					<h:commandLink value="Next Page"
+						actionListener="#{viewArticleManagedBean.nextPage()}">
+						<f:ajax render=":comments" />
+					</h:commandLink>
+					<h:commandLink value="Last Page"
+						actionListener="#{viewArticleManagedBean.lastPage()}">
+						<f:ajax render=":comments" />
+					</h:commandLink>
+				</h:form>
+
+				<ui:repeat value="#{viewArticleManagedBean.getCommentsOfArticle()}"
+					var="comment" varStatus="varStatus">
+					<h:panelGroup
+						rendered="#{varStatus.index ge viewArticleManagedBean.commentStartIndex and varStatus.index le viewArticleManagedBean.commentEndIndex}">
+						<h:panelGrid columns="7">
+							<h:outputText value="#{comment.commentDate}" />
 
 
-						<h:outputText value="#{comment.author}" />
+							<h:outputText value="#{comment.author}" />
 
 
-						<h:outputText
-							value="#{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
-						<h:panelGroup>
-							<h:form>
-								<h:outputText value="#{comment.plusCount}" />
-								<p:commandLink value="Vote up"
-									disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-									actionListener="#{viewArticleManagedBean.upvoteComment(comment)}"
-									update="@form" />
+							<h:outputText
+								value="#{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
+							<h:panelGroup>
+								<h:form>
+									<h:outputText value="#{comment.plusCount}" />
+									<h:commandLink value="Vote up"
+										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
+										actionListener="#{viewArticleManagedBean.upvoteComment(comment)}">
+										<f:ajax render="@form" />
+									</h:commandLink>
 
-								<h:outputText value="#{comment.minusCount}" />
-								<p:commandLink value="Vote down"
-									disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-									actionListener="#{viewArticleManagedBean.downvoteComment(comment)}"
-									update="@form" />
-							</h:form>
-						</h:panelGroup>
-						<h:link
-							value="Link to comment" >
-							<f:param name="articleId" value="#{viewArticleManagedBean.articleId}" />
-							<f:param name="highlightCommentId" value="#{comment.id}" />
+									<h:outputText value="#{comment.minusCount}" />
+									<h:commandLink value="Vote down"
+										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
+										actionListener="#{viewArticleManagedBean.downvoteComment(comment)}">
+										<f:ajax render="@form" />
+									</h:commandLink>
+								</h:form>
+							</h:panelGroup>
+							<h:link value="Link to comment">
+								<f:param name="articleId"
+									value="#{viewArticleManagedBean.articleId}" />
+								<f:param name="highlightCommentId" value="#{comment.id}" />
 							</h:link>
-						<h:outputText
-							value="HIGHLIGHT:#{viewArticleManagedBean.commentShouldBeHighlighted(comment)}" />
-					</p:panelGrid>
-					<br />
-					<h:outputText value="#{comment.commentText}"
-						style="white-space:pre;" />
-					<!-- pre is needed for whitespacing -->
-				</p:panel>
+							<h:outputText
+								value="HIGHLIGHT:#{viewArticleManagedBean.commentShouldBeHighlighted(comment)}" />
+						</h:panelGrid>
+						<br />
+						<h:outputText value="#{comment.commentText}"
+							style="white-space:pre;" />
+						<!-- pre is needed for whitespacing -->
+						<hr />
+					</h:panelGroup>
 
 
-			</p:dataList>
+				</ui:repeat>
+			</h:panelGroup>
 
 
 		</h:panelGroup>

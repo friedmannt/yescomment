@@ -68,26 +68,6 @@ public class ViewArticleManagedBean implements Serializable {
 		this.article = article;
 	}
 
-	public void loadArticleFromIdParam() {
-		
-		if (articleId == null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No id param given", "Please specify an article id"));
-		} else {
-			Article article = articleManager.find(articleId);
-			if (article == null) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
-			} else {
-				this.article = article;
-
-			}
-		}
-		String loginUserName = userSessionBean.getLoginUserName();
-		if (loginUserName != null) {
-			newCommentAuthor = loginUserName;
-		}
-
-	}
-
 	private String newCommentText;
 
 	public String getNewCommentText() {
@@ -108,11 +88,44 @@ public class ViewArticleManagedBean implements Serializable {
 		this.newCommentAuthor = newCommentAuthor;
 	}
 
+	public void loadArticle() {
+
+		if (articleId == null) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No id param given", "Please specify an article id"));
+		} else {
+			Article article = articleManager.find(articleId);
+			if (article == null) {
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
+			} else {
+				this.article = article;
+				if (reverseArticleOrder) {
+					firstPage();	
+				}
+				else {
+					lastPage();
+				}
+
+			}
+		}
+		String loginUserName = userSessionBean.getLoginUserName();
+		if (loginUserName != null) {
+			newCommentAuthor = loginUserName;
+		}
+
+	}
+
 	public void postNewComment() {
 		if (userSessionBean.getLoginUserName() != null) {
 
 			article = commentManager.addCommentToArticle(article, newCommentText, newCommentAuthor);
 			newCommentText = null;
+			if (reverseArticleOrder) {
+				firstPage();	
+			}
+			else {
+				lastPage();
+			}
+			
 		}
 	}
 
@@ -127,11 +140,15 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public List<Comment> getCommentsOfArticle() {
-		List<Comment> comments = new ArrayList<Comment>(article.getComments());
-		if (reverseArticleOrder) {
-			Collections.reverse(comments);
+		if (article == null) {
+			return Collections.emptyList();
+		} else {
+			List<Comment> comments = new ArrayList<Comment>(article.getComments());
+			if (reverseArticleOrder) {
+				Collections.reverse(comments);
+			}
+			return comments;
 		}
-		return comments;
 	}
 
 	public int getOrderNumberOfComment(final Comment comment) {
@@ -164,10 +181,43 @@ public class ViewArticleManagedBean implements Serializable {
 		return highlightCommentId == null ? false : highlightCommentId.equals(comment.getId());
 	}
 
-	private static final Integer MAX_COMMENT_SIZE = Comment.MAX_COMMENT_SIZE;
+	public static String getMaxCommentSize() {
+		return Integer.valueOf(Comment.MAX_COMMENT_SIZE).toString();
+	}
 
-	public static Integer getMaxCommentSize() {
-		return MAX_COMMENT_SIZE;
+	public static final Integer COMMENT_PAGE_SIZE = 10;
+
+	private int commentStartIndex;// zero based, inclusive
+
+	private int commentEndIndex;// zero based, inclusive
+
+	public int getCommentStartIndex() {
+		return commentStartIndex;
+	}
+
+	public int getCommentEndIndex() {
+		return commentEndIndex;
+	}
+
+	public void firstPage() {
+		commentStartIndex = 0;
+		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
+	}
+
+	public void prevPage() {
+		commentStartIndex = Math.max(0, commentStartIndex - COMMENT_PAGE_SIZE);
+		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
+	}
+
+	public void nextPage() {
+		commentStartIndex = Math.min((article.getCommentCount() - 1) / COMMENT_PAGE_SIZE * COMMENT_PAGE_SIZE, commentStartIndex + COMMENT_PAGE_SIZE);
+		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
+
+	}
+
+	public void lastPage() {
+		commentStartIndex = (article.getCommentCount() - 1) / COMMENT_PAGE_SIZE * COMMENT_PAGE_SIZE;
+		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
 }

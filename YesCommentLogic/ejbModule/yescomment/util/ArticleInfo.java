@@ -6,7 +6,7 @@ public class ArticleInfo {
 	private String title;
 	private String description;
 	private String keywords;
-	private String extractedArticleText;
+	
 	
 
 	public String getFinalURL() {
@@ -49,14 +49,7 @@ public class ArticleInfo {
 		this.description = description;
 	}
 
-	public String getExtractedArticleText() {
-		return extractedArticleText;
-	}
-
-	public void setExtractedArticleText(String extractedArticleText) {
-		this.extractedArticleText = extractedArticleText;
-	}
-
+	
 	@Override
 	public String toString() {
 		return "ArticleInfo [finalURL=" + finalURL + ", imageURL=" + imageURL + ", title=" + title + ", description=" + description + ", keywords=" + keywords + "]";

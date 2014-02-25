@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
+	
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
 
 	<ui:define name="content">
@@ -9,27 +9,32 @@
 
 		<h:form id="loginform">
 			<h:outputText value="Please enter username and select:" />
-			<h:outputText value="#{loginBean.localizeColor(loginBean.correctCaptchaOption.color)}" />
-			<h:outputText value="#{loginBean.localizeNumber(loginBean.correctCaptchaOption.number)}" />
+			<h:outputText
+				value="#{loginBean.localizeColor(loginBean.correctCaptchaOption.color)}" />
+			<h:outputText
+				value="#{loginBean.localizeNumber(loginBean.correctCaptchaOption.number)}" />
 			<br />
 			<h:outputText value="#{yescommentmsg['name']}" />
-			<p:inputText id="username" value="#{loginBean.userName}" maxlength="#{loginBean.getMaxAuthorSize()}"
-				 />
-			<p:message for="username" />
-			<p:panel id="captcha">
+			<h:inputText id="username" value="#{loginBean.userName}"
+				maxlength="#{loginBean.getMaxAuthorSize()}" />
+			<h:message for="username" />
+			<h:panelGroup id="captcha">
 				<ui:repeat value="#{loginBean.possibleCaptchaOptions}"
 					var="captchaoption">
 					<h:commandLink
-						actionListener="#{loginBean.setSelectedCaptchaOption(captchaoption)}" >
-						<h:outputText value="#{captchaoption.number}" style="color:#{captchaoption.color}"/>
+						actionListener="#{loginBean.setSelectedCaptchaOption(captchaoption)}">
+						<h:outputText value="#{captchaoption.number}"
+							style="color:#{captchaoption.color}" />
 					</h:commandLink>
 					<br />
 				</ui:repeat>
 
-			</p:panel>
-			<p:message for="captcha" />
-			<p:commandButton value="#{yescommentmsg['submit']}"
-				action="#{loginBean.tryToLogin()}"  update="@form"/>
+			</h:panelGroup>
+			<h:message for="captcha" />
+			<h:commandButton value="#{yescommentmsg['submit']}"
+				action="#{loginBean.tryToLogin()}">
+				<f:ajax render="@form" execute="@form" />
+			</h:commandButton>
 
 		</h:form>
 	</ui:define>

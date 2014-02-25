@@ -14,8 +14,6 @@ import net.htmlparser.jericho.Source;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import yescomment.crawler.RSSItem;
-import de.l3s.boilerpipe.BoilerpipeProcessingException;
-import de.l3s.boilerpipe.extractors.ArticleExtractor;
 
 public class URLUtil {
 	private static Logger LOGGER = Logger.getLogger("URLUtil");
@@ -132,7 +130,7 @@ public class URLUtil {
 			articleInfo.setDescription(openGraphDescription);
 		}
 
-		articleInfo.setExtractedArticleText(extractTextFromArticle(source, articleInfo.getFinalURL()));
+		
 
 		articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo.getFinalURL()));
 
@@ -142,15 +140,7 @@ public class URLUtil {
 
 	}
 
-	private static String extractTextFromArticle(Source source, String url) {
-		try {
-			return ArticleExtractor.INSTANCE.getText(source.toString());
-		} catch (BoilerpipeProcessingException e) {
-			LOGGER.fine(String.format("Text cannot be extracted from %s", url));
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	private static String eliminateUnnecessaryURLParams(String finalURL) throws MalformedURLException, IOException {
 		if (finalURL.indexOf("?") < 0) {
