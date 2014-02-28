@@ -15,6 +15,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -49,7 +52,8 @@ import yescomment.util.URLUtil;
  */
 @Singleton
 @Startup
-public class CrawlerSingleton implements CrawlerSingletonMBean {
+@Local(CrawlerSingletonLocal.class)
+public class CrawlerSingleton implements CrawlerSingletonLocal {
 
 	@EJB
 	ArticleManager articleManager;
@@ -63,15 +67,17 @@ public class CrawlerSingleton implements CrawlerSingletonMBean {
 	private static DocumentBuilderFactory documentBuilderFactory;
 	private static DocumentBuilder documentBuilder;
 
-	private AtomicBoolean crawlerRuns = new AtomicBoolean(false);
+	private AtomicBoolean crawlerRuns = new AtomicBoolean(true);
 
 	@Override
+	@Lock(LockType.WRITE)
 	public void startCrawler()  {
 		
 			crawlerRuns.set(true);
 	}
 
 	@Override
+	@Lock(LockType.WRITE)
 	public void stopCrawler() {
 		
 		crawlerRuns.set(false);
@@ -79,6 +85,7 @@ public class CrawlerSingleton implements CrawlerSingletonMBean {
 	}
 
 	@Override
+	@Lock(LockType.READ)
 	public boolean isCrawlerRunning() {
 
 		return crawlerRuns.get();
@@ -147,7 +154,7 @@ public class CrawlerSingleton implements CrawlerSingletonMBean {
 		// read from xml configuration
 
 		String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfig.xml").getFile();
-		/* String filePath = "crawlerconfig.xml"; */
+		/* String filePath = "crawlerconfig.xml";*/ 
 		crawlerConfigs = CawlerConfigXMLHandler.unmarshal(new File(filePath));
 
 		LOGGER.info(String.format("Read crawler configs at startup : %s", crawlerConfigs));
@@ -159,7 +166,7 @@ public class CrawlerSingleton implements CrawlerSingletonMBean {
 	 */
 	@Schedule(hour = "*", minute = "*", second = "0", persistent = false)
 	public void crawl() {
-		if (crawlerRuns.get()) {
+		if (isCrawlerRunning()) {
 
 			Calendar cal = Calendar.getInstance();
 			int currentMinute = cal.get(Calendar.MINUTE);

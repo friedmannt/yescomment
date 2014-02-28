@@ -2,25 +2,45 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
 
 	<ui:define name="content">
-		Itt található a rendszerben szereplő összes kulcsszó. 
-		Egy kulcsszóra kattintva feljönnek a rá vonatkozó cikkek, de használható a kulcsszókereső is.
-		<p:tagCloud id="tagcloud"
-			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}"
-			style="width:800px;">
-		</p:tagCloud>
-		<h:form id="keywordform">
-			<h:outputText value="#{yescommentmsg['keyword']}" />
-			<h:outputText value=":" />
-			<h:inputText value="#{keywordManagedBean.keyword}" required="true" />
-			<h:commandButton value="#{yescommentmsg['search']}"
-				actionListener="#{keywordManagedBean.searchForKeyword()}">
-				<f:ajax render=":resultarticlesforkeyword" execute="@form" />
-			</h:commandButton>
+		<h:outputText escape="false"
+			value="Itt található a rendszerben szereplő összes kulcsszó. &lt;br/&gt;
+		Egy kulcsszóra kattintva feljönnek a rá vonatkozó cikkek, de használható a kulcsszókereső is." />
+		<h:form id="searchkeywordform">
+			<table>
+				<TR>
+					<TD><h:inputText id="searchedkeyword" type="search"
+							value="#{keywordManagedBean.keyword}" required="true"
+							requiredMessage="#{yescommentmsg['keyword_empty']}"
+							pt:placeholder="#{yescommentmsg['enter_keyword']}">
+							<f:passThroughAttribute name="required" value="required" />
+						</h:inputText></TD>
+					<TD><h:commandButton type="submit" id="keywordsearchbutton"
+							actionListener="#{keywordManagedBean.searchForKeyword()}">
+							<f:ajax render=":resultarticlesforkeyword @form" execute="@form" />
+						</h:commandButton></TD>
+				</TR>
+				<TR>
+					<TD><h:message for="searchedkeyword"
+							id="searchedkeywordmessage" showSummary="true" showDetail="false"
+							style="color: red;  font-style: oblique;  " /></TD>
+					<TD />
+				</TR>
+			</table>
+
 		</h:form>
-		<h:panelGroup id="resultarticlesforkeyword">
+		<p:tagCloud id="tagcloud"
+			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}">
+		</p:tagCloud>
+
+
+
+
+		<h:panelGroup id="resultarticlesforkeyword" styleClass="articlelist">
 			<h:outputText id="noresultarticles"
 				value="#{yescommentmsg['no_results']}"
 				rendered="#{keywordManagedBean.resultArticles.isEmpty()}" />
@@ -29,9 +49,9 @@
 
 				<ui:include src="articlepreview.xhtml">
 					<ui:param name="article" value="#{article}" />
-					<ui:param name="insidelink" value="#{true}" />
+
 				</ui:include>
-				<br />
+
 
 			</ui:repeat>
 		</h:panelGroup>

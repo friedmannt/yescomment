@@ -1,4 +1,4 @@
-package yescomment.managedbean;
+package yescomment.managedbean.keyword;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

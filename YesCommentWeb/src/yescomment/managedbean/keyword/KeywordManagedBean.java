@@ -1,4 +1,4 @@
-package yescomment.managedbean;
+package yescomment.managedbean.keyword;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,19 +15,16 @@ import yescomment.persistence.ArticleManager;
 @ManagedBean
 @RequestScoped
 public class KeywordManagedBean implements Serializable {
-	
-	
-	
+
 	@ManagedProperty("#{param.keyword}")
 	private String keyword;
 
 	@EJB
 	ArticleManager articleManager;
-	
+
 	public String getKeyword() {
 		return keyword;
 	}
-
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
@@ -35,29 +32,28 @@ public class KeywordManagedBean implements Serializable {
 
 	private List<Article> resultArticles;
 
-
 	public List<Article> getResultArticles() {
 		return resultArticles;
 	}
 
-
 	public void setResultArticles(List<Article> resultArticles) {
 		this.resultArticles = resultArticles;
 	}
-	
+
 	public void searchForKeyword() {
-		
-		resultArticles=articleManager.getArticlesWithKeyword(keyword);
+		if (keyword == null || keyword.equals("")) {
+			resultArticles = null;
+		} else {
+			resultArticles = articleManager.getArticlesWithKeyword(keyword);
+		}
 	}
-	
+
 	@PostConstruct
 	public void searchForKeywordIfGiven() {
-		
-		if (keyword!=null) {
+
+		if (keyword != null) {
 			searchForKeyword();
 		}
 	}
-	
 
-	
 }

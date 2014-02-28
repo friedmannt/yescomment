@@ -5,44 +5,39 @@
 
 	<ui:define name="content">
 		<h:form>
-			<h:selectOneRadio id="recommendationAspect"
-				value="#{recommendedArticlesManagedBean.selectedRecommendationAspect}">
-				<f:selectItem itemLabel="#{yescommentmsg['latest_articles']}"
-					itemValue="LATEST" />
-				<f:selectItem itemLabel="#{yescommentmsg['most_commented']}"
-					itemValue="MOSTCOMMENTED" />
-				<f:ajax render="@form" />
 
-			</h:selectOneRadio>
+			<h:commandButton value="#{yescommentmsg['latest_articles']}" styleClass="button first"
+				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('LATEST')}">
+				<f:ajax render="@form" />
+			</h:commandButton>
+			<h:commandButton value="#{yescommentmsg['most_commented']}"  styleClass="button middle"
+				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('MOSTCOMMENTED')}">
+				<f:ajax render="@form" />
+			</h:commandButton>
+
 
 			<h:panelGroup id="recommendedArticleContainer">
-				<h:panelGroup
+				<h:panelGroup   styleClass="articlelist"
 					rendered="#{recommendedArticlesManagedBean.latestSelected()}">
-					<h3>
-						<h:outputText value="#{yescommentmsg['latest_articles']}" />
-					</h3>
 					<ui:repeat value="#{recommendedArticlesManagedBean.latestArticles}"
 						var="article">
 						<ui:include src="articlepreview.xhtml">
 							<ui:param name="article" value="#{article}" />
-							<ui:param name="insidelink" value="#{true}" />
+							
 						</ui:include>
-						<br />
+						
 					</ui:repeat>
 				</h:panelGroup>
-				<h:panelGroup
+				<h:panelGroup  styleClass="articlelist"
 					rendered="#{recommendedArticlesManagedBean.mostCommentedSelected()}">
-					<h3>
-						<h:outputText value="#{yescommentmsg['most_commented']}" />
-					</h3>
 					<ui:repeat
 						value="#{recommendedArticlesManagedBean.mostCommentedArticles}"
 						var="article">
 						<ui:include src="articlepreview.xhtml">
 							<ui:param name="article" value="#{article}" />
-							<ui:param name="insidelink" value="#{true}" />
+							
 						</ui:include>
-						<br />
+
 					</ui:repeat>
 				</h:panelGroup>
 			</h:panelGroup>

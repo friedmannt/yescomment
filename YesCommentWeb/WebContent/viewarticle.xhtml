@@ -20,8 +20,13 @@
 		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
 			<ui:include src="articlepreview.xhtml">
 				<ui:param name="article" value="#{viewArticleManagedBean.article}" />
-				<ui:param name="insidelink" value="#{false}" />
+				
 			</ui:include>
+			<h:form id="articlelinkform">
+					<h:outputLink value="#{viewArticleManagedBean.article.url}"
+						>#{yescommentmsg['open_original_article']}</h:outputLink>
+
+				</h:form>
 			<hr />
 			<h:form id="newcommentform">
 				New Comment

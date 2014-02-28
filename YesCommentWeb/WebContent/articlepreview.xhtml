@@ -4,37 +4,45 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 	<div class="articlepreview">
-		<div class="articlepreviewimage">
-			<img src="#{article.imageurl}" alt="#{article.title}" />
-		<h:outputText value="id #{article.id}"/>
-			<h:outputText value="Comments: #{article.commentCount}"/>
+		<div class="articlepreviewheader">
+			<div class="articlepreviewimage">
+				<h:link outcome="viewarticle">
+					<f:param name="articleId" value="#{article.id}" />
+					<img src="#{article.imageurl}" alt="#{article.title}" />
+				</h:link>
+
+
+			</div>
+			<div class="button">
+				<h:outputText value="#{article.commentCount}" />
+			</div>
+
 		</div>
 		<div class="articlepreviewdata">
 
 			<h1>
-				<a href="#{article.url}"><h:outputText value="#{article.title}" />
-				</a>
-			</h1>
-			<h2>
-				<h:outputText
-					value="#{yesCommentApplicationBean.getSiteOfArticle(article)}" />
-			</h2>
-			<p>
-				<h:outputText value="#{article.description}" />
-				<h:form id="articlelinkform">
-					<h:outputLink value="#{article.url}" rendered="#{!insidelink}">#{yescommentmsg['open_original_article']}</h:outputLink>
-
-					<h:link outcome="viewarticle" value="#{article.title}"
-						rendered="#{insidelink}">
+				
+					<h:link outcome="viewarticle" value="#{article.title}">
 						<f:param name="articleId" value="#{article.id}" />
 
 					</h:link>
-				</h:form>
+				
+			</h1>
+			<p>
+			<cite>
+				<h:outputText
+					value="#{yesCommentApplicationBean.getSiteOfArticle(article)}" />
+			</cite>
 			</p>
+			<p class="articledescriptiontext">	
+				<h:outputText value="#{article.description}" />
+			</p>
+			
 			<p class="articlepreviewkeywords">
 				<ui:repeat var="keyword"
-					value="#{yesCommentApplicationBean.getKeywordsAsList(article)}"
+					value="#{yesCommentApplicationBean.getSetAsList(article.keywords)}"
 					varStatus="status">
+					<h:outputText value=" " rendered="#{!status.first}"/>
 					<h:link outcome="keywords" value="#{keyword}">
 						<f:param name="keyword" value="#{keyword}" />
 					</h:link>

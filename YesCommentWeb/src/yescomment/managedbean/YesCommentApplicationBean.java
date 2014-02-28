@@ -3,6 +3,7 @@ package yescomment.managedbean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
@@ -24,9 +25,9 @@ public class YesCommentApplicationBean implements Serializable {
 	 * @param article
 	 * @return
 	 */
-	public List<String> getKeywordsAsList(final Article article) {
-		if (article != null) {
-			return new ArrayList<String>(article.getKeywords());
+	public <T> List<T> getSetAsList(final Set<T> set) {
+		if (set != null) {
+			return new ArrayList<T>(set);
 		} else {
 			return null;
 		}
