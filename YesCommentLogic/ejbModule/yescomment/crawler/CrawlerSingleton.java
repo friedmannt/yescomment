@@ -67,7 +67,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	private static DocumentBuilderFactory documentBuilderFactory;
 	private static DocumentBuilder documentBuilder;
 
-	private AtomicBoolean crawlerRuns = new AtomicBoolean(true);
+	private AtomicBoolean crawlerRuns = new AtomicBoolean(false);
 
 	@Override
 	@Lock(LockType.WRITE)

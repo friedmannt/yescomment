@@ -19,7 +19,7 @@
 
 		<div id="contentwrapper">
 			<header id="yellheader">
-				<div class="headerbuttons">
+				<nav class="headerbuttons">
 					<h1>
 						<h:outputLink value="#{request.contextPath}">
 							<img src="#{request.contextPath}/resources/images/speaker.png" />
@@ -33,17 +33,22 @@
 							value="#{yescommentmsg['recommended']}" styleClass="first button"/>
 						<h:link outcome="keywords" value="#{yescommentmsg['keywords']}" styleClass="last button"/>
 					</h2>
-				</div>
+				</nav>
 			</header>
 
-			<div id="topdiv">
+			<header id="top">
 					<ui:include src="search.xhtml" />
-			</div>
+			</header>
 
 			<article>
 				<ui:insert name="content" />
 			</article>
-
+			<footer id="footer">
+				<nav id="footerlinks">
+				aaa
+				</nav>
+			
+			</footer>
 
 
 		</div>

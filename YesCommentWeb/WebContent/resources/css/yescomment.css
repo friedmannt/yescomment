@@ -7,6 +7,10 @@ html,body {
 	line-height: 18px;
 }
 
+input, textarea {
+  -webkit-appearance: none;/*for ios*/
+}
+
 a {
 	text-decoration: none
 }
@@ -16,19 +20,40 @@ p {
 }
 
 .button {
-	display: inline-block;
+	color: #FFFFFF;	
 	background-color: #fb1947;
+	display: inline-block;
 	height: 40px;
 	text-transform: uppercase;
 	text-decoration: none;
-	color: #FFFFFF;
 	text-align: center;
 	font-size: 16px;
 	font-weight: bold;
 	line-height: 40px;
 	padding: 0 10px;
-	border: 0
+	border: 0;
 }
+
+
+
+
+.invertedbutton {
+	color: #fb1947;
+	background-color: #FFFFFF;
+	display: inline-block;
+	height: 40px;
+	text-transform: uppercase;
+	text-decoration: none;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 40px;
+	padding: 0 10px;
+	border: 1px solid;
+	border-color: #fb1947;
+}
+
+
 
 .button+.button {
 	margin-left: 5px;
@@ -51,6 +76,19 @@ p {
 	margin-right: 0px;
 }
 
+.button:disabled {
+	
+	background-color: #aaaaaa;
+	
+}
+
+.invertedbutton:disabled {
+	
+	background-color: #aaaaaa;
+	
+}
+
+
 .clear {
 	clear: both;
 }
@@ -66,25 +104,25 @@ p {
 	padding: 10px 40px 10px 40px;
 }
 
-#contentwrapper #topdiv {
+#contentwrapper #top {
 	margin-left: 320px;
 	padding: 20px 40px 20px 40px;
 }
 
-#contentwrapper #topdiv table {
+#contentwrapper #top table {
 	border-collapse: collapse;
 	width: 100%
 }
 
-#contentwrapper #topdiv td {
+#contentwrapper #top td {
 	padding: 0
 }
 
-#contentwrapper #topdiv td:first-of-type {
+#contentwrapper #top td:first-of-type {
 	width: 100%
 }
 
-#contentwrapper #topdiv input {
+#contentwrapper #top input {
 	display: block
 }
 
@@ -143,7 +181,6 @@ p {
 #yellheader h2 a {
 	display: block;
 	width: 135px;
-	margin-top: 10px;
 	padding: 0
 }
 
@@ -347,4 +384,7 @@ p {
 	padding: 0;
 }
 
-
+#contentwrapper #footer {
+	margin-left: 320px;
+	padding: 20px 40px 20px 40px;
+}

@@ -15,18 +15,17 @@
 	</f:metadata>
 
 	<ui:define name="content">
-	
+
 		<h:messages showSummary="true" />
 		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
 			<ui:include src="articlepreview.xhtml">
 				<ui:param name="article" value="#{viewArticleManagedBean.article}" />
-				
+
 			</ui:include>
 			<h:form id="articlelinkform">
-					<h:outputLink value="#{viewArticleManagedBean.article.url}"
-						>#{yescommentmsg['open_original_article']}</h:outputLink>
+				<h:outputLink value="#{viewArticleManagedBean.article.url}">#{yescommentmsg['open_original_article']}</h:outputLink>
 
-				</h:form>
+			</h:form>
 			<hr />
 			<h:form id="newcommentform">
 				New Comment
@@ -39,21 +38,34 @@
 
 
 				<h:outputText value="Author" />
-				<h:outputText value="#{viewArticleManagedBean.newCommentAuthor}"
-					id="newCommentAuthor" />
+				<h:outputText value="#{userSessionBean.loginUserName}" />
 				<br />
 
-				<h:commandButton value="Post"
+				<h:commandButton value="Post Coment" styleClass="button"
 					disabled="#{userSessionBean.loginUserName == null}"
 					actionListener="#{viewArticleManagedBean.postNewComment()}">
 					<f:ajax render=":comments :newcommentform" execute="@form" />
 				</h:commandButton>
+				<h:outputText rendered="#{userSessionBean.loginUserName == null}"
+					value="In order to post comment, you should answer a capthca." />
+
+
+
 			</h:form>
-			<h:form id="unauthenticatedform">
+			<h:form>
 				<h:commandButton id="whoareyoubutton" value="Who are you?"
-					action="#{viewArticleManagedBean.loginAction()}"
-					rendered="#{userSessionBean.loginUserName == null}" />
+					type="button" styleClass="invertedbutton"
+					onclick="PF('logindialog').show();" />
 			</h:form>
+			<ui:include src="login.xhtml" />
+
+
+
+
+
+
+
+			<hr />
 			<h2>Comments</h2>
 			<h:form id="commentorderform">
 				<p:selectBooleanButton
@@ -136,5 +148,7 @@
 
 
 		</h:panelGroup>
+
 	</ui:define>
+
 </ui:composition>

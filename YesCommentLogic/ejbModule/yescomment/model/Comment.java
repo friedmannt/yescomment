@@ -36,9 +36,10 @@ public class Comment extends AbstractEntity {
 	@NotNull
 	private Date commentDate;
 	
-	public static final int MAX_AUTHOR_SIZE=256;
-	@Column(nullable=true,length = MAX_AUTHOR_SIZE)
+	public static final int MAX_AUTHOR_SIZE=64;
+	@Column(nullable=false,length = MAX_AUTHOR_SIZE)
 	@Size(max = MAX_AUTHOR_SIZE)
+	@NotNull
 	private String author;
 	
 	private Integer plusCount=0;

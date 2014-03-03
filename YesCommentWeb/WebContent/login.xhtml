@@ -1,41 +1,69 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
-
-	<ui:define name="content">
-
-
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:dialog id="logindialog" widgetVar="logindialog" modal="true"
+		closable="false" closeOnEscape="false" showHeader="false"
+		resizable="false" maximizable="false">
 		<h:form id="loginform">
-			<h:outputText value="Please enter username and select:" />
-			<h:outputText
-				value="#{loginBean.localizeColor(loginBean.correctCaptchaOption.color)}" />
-			<h:outputText
-				value="#{loginBean.localizeNumber(loginBean.correctCaptchaOption.number)}" />
-			<br />
-			<h:outputText value="#{yescommentmsg['name']}" />
-			<h:inputText id="username" value="#{loginBean.userName}"
-				maxlength="#{loginBean.getMaxAuthorSize()}" />
-			<h:message for="username" />
-			<h:panelGroup id="captcha">
-				<ui:repeat value="#{loginBean.possibleCaptchaOptions}"
-					var="captchaoption">
-					<h:commandLink
-						actionListener="#{loginBean.setSelectedCaptchaOption(captchaoption)}">
-						<h:outputText value="#{captchaoption.number}"
-							style="color:#{captchaoption.color}" />
-					</h:commandLink>
-					<br />
-				</ui:repeat>
 
-			</h:panelGroup>
-			<h:message for="captcha" />
-			<h:commandButton value="#{yescommentmsg['submit']}"
-				action="#{loginBean.tryToLogin()}">
-				<f:ajax render="@form" execute="@form" />
-			</h:commandButton>
+			<div>
+				<h:outputText value="Please enter username and select:" />
+				<h:outputText
+					value="#{loginManagedBean.localizeColor(loginManagedBean.correctCaptchaOption.color)}" />
+				<h:outputText value=" " />
+				<h:outputText
+					value="#{loginManagedBean.localizeNumber(loginManagedBean.correctCaptchaOption.number)}" />
+				<br />
+				
+				<h:panelGroup id="captcha">
+					<ui:repeat value="#{loginManagedBean.possibleCaptchaOptions}"
+						var="captchaoption">
+						<h:commandLink
+							actionListener="#{loginManagedBean.setSelectedCaptchaOption(captchaoption)}">
+							<h:outputText value="#{captchaoption.number}"
+								style="color:#{captchaoption.color}" />
+							<f:ajax />
+						</h:commandLink>
+
+					</ui:repeat>
+
+				</h:panelGroup>
+				<h:message for="captcha" id="logincaptchamessage" showSummary="true" showDetail="false"
+						style="color: red;  font-style: oblique;" />
+				<br/>
+				<h:outputText value="#{yescommentmsg['name']}" />
+				<h:inputText id="username" value="#{loginManagedBean.userName}"
+					maxlength="#{loginManagedBean.getMaxAuthorSize()}" />
+				<h:message for="username" id="loginusernamemessage" showSummary="true" showDetail="false"
+						style="color: red;  font-style: oblique;"/>
+				
+				
+			</div>
+			<div id="loginbuttons">
+				<h:commandButton value="#{yescommentmsg['submit']}"
+					styleClass="button" type="button">
+					<f:ajax execute="@form" render="@form :newcommentform"
+						listener="#{loginManagedBean.tryToLogin()}"
+						onevent="function(data) {
+									 if (data.status === 'success') { 
+    											if(!document.getElementById('loginform:logincaptchamessage').innerHTML) {
+    												PF('logindialog').hide();
+    												}
+    											}
+    								 }" />
+				</h:commandButton>
+
+				<h:commandButton value="#{yescommentmsg['cancel']}" type="button"
+					styleClass="invertedbutton" onclick="PF('logindialog').hide();" />
+			</div>
+
 
 		</h:form>
-	</ui:define>
+
+	</p:dialog>
+
+
+
 </ui:composition>

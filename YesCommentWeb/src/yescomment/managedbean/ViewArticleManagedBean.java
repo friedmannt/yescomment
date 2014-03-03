@@ -12,6 +12,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
 import yescomment.model.Article;
 import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
@@ -78,16 +80,7 @@ public class ViewArticleManagedBean implements Serializable {
 		this.newCommentText = newCommentText;
 	}
 
-	private String newCommentAuthor;
-
-	public String getNewCommentAuthor() {
-		return newCommentAuthor;
-	}
-
-	public void setNewCommentAuthor(String newCommentAuthor) {
-		this.newCommentAuthor = newCommentAuthor;
-	}
-
+	
 	public void loadArticle() {
 
 		if (articleId == null) {
@@ -107,17 +100,14 @@ public class ViewArticleManagedBean implements Serializable {
 
 			}
 		}
-		String loginUserName = userSessionBean.getLoginUserName();
-		if (loginUserName != null) {
-			newCommentAuthor = loginUserName;
-		}
+		
 
 	}
 
 	public void postNewComment() {
 		if (userSessionBean.getLoginUserName() != null) {
 
-			article = commentManager.addCommentToArticle(article, newCommentText, newCommentAuthor);
+			article = commentManager.addCommentToArticle(article, newCommentText, userSessionBean.getLoginUserName());
 			newCommentText = null;
 			if (reverseArticleOrder) {
 				firstPage();	
@@ -155,11 +145,7 @@ public class ViewArticleManagedBean implements Serializable {
 		return article.getComments().indexOf(comment) + 1;
 	}
 
-	public String loginAction() {
-
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("viewed_article_before_login", this.getArticle().getId());
-		return "login.xhtml?faces-redirect=true";
-	}
+	
 
 	public void upvoteComment(Comment comment) {
 		comment.setPlusCount(comment.getPlusCount() + 1);
@@ -220,4 +206,5 @@ public class ViewArticleManagedBean implements Serializable {
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
+	
 }

@@ -9,6 +9,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
 import yescomment.managedbean.captcha.CaptchaOption;
 import yescomment.managedbean.captcha.CaptchaOption.Color;
 import yescomment.model.Comment;
@@ -18,7 +20,7 @@ import yescomment.util.NumberUtil;
 
 @ManagedBean
 @ViewScoped
-public class LoginBean implements Serializable {
+public class LoginManagedBean implements Serializable {
 
 	private static final int CAPTCHA_OPTION_SIZE = 3;// this many options are
 														// presented
@@ -27,11 +29,11 @@ public class LoginBean implements Serializable {
 		return CAPTCHA_OPTION_SIZE;
 	}
 
-	private static final Integer MAX_AUTHOR_SIZE=Comment.MAX_AUTHOR_SIZE;
+	
 	
 	
 	public static Integer getMaxAuthorSize() {
-		return MAX_AUTHOR_SIZE;
+		return Comment.MAX_AUTHOR_SIZE;
 	}
 
 	@ManagedProperty(value = "#{userSessionBean}")
@@ -45,15 +47,6 @@ public class LoginBean implements Serializable {
 		this.userSessionBean = userSessionBean;
 	}
 
-	private Long viewedArticleId;
-
-	public Long getViewedArticleId() {
-		return viewedArticleId;
-	}
-
-	public void setViewedArticleId(Long viewedArticleId) {
-		this.viewedArticleId = viewedArticleId;
-	}
 
 	private String userName;
 
@@ -65,28 +58,29 @@ public class LoginBean implements Serializable {
 		this.userName = userName;
 	}
 
-	public String tryToLogin() {
+
+	
+	public void tryToLogin()  {
 		boolean success = true;
-		if (userName == null||userName.length()==0) {
-			success = false;
-			FacesContext.getCurrentInstance().addMessage("loginform:username", new FacesMessage(FacesMessage.SEVERITY_ERROR,"sumu", "detu"));
-		}
 		if (selectedCaptchaOption==null||!selectedCaptchaOption.equals(correctCaptchaOption)) {
 			success = false;
 			FacesContext.getCurrentInstance().addMessage("loginform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,"sumc", "detc"));
 		}
+		
+
 		if (success) {
+			if (userName == null||userName.length()==0) {
+				userName="Anonymus";
+			}
 			userSessionBean.setLoginUserName(userName);
-			return "/viewarticle.xhtml?faces-redirect=true&articleId="
-					+ viewedArticleId;
 		}
-		else {
-			return null;
-		}
+		
 	}
 
+	
+	
 	@PostConstruct
-	public void getViewedArticleIdFromFlash() {
+	public void initializeCaptcha() {
 		correctCaptchaOption = new CaptchaOption(
 				CaptchaOption.Color.values()[NumberUtil.getRandomInt(6)],
 				NumberUtil.getRandomInt(100));
@@ -106,11 +100,6 @@ public class LoginBean implements Serializable {
 				// continue randomize it
 			}
 		}
-
-		viewedArticleId = (Long) FacesContext.getCurrentInstance()
-				.getExternalContext().getFlash()
-				.get("viewed_article_before_login");
-
 	}
 
 	private CaptchaOption correctCaptchaOption;

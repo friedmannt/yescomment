@@ -12,7 +12,6 @@
 			<default-locale>en</default-locale>
 			<supported-locale>hu</supported-locale>
 		</locale-config>
-
 	</application>
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
@@ -28,6 +27,6 @@
 			<from-outcome>latestarticles</from-outcome>
 			<to-view-id>/latestarticles.xhtml</to-view-id>
 		</navigation-case>
-		
+
 	</navigation-rule>
 </faces-config>
