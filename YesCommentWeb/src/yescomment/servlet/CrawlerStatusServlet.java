@@ -2,6 +2,7 @@ package yescomment.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -20,12 +21,13 @@ import yescomment.crawler.CrawlerSingletonLocal;
 @HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL,
     rolesAllowed = {"yescommentadmin"}))
 public class CrawlerStatusServlet  extends HttpServlet{
-
+	private static Logger LOGGER = Logger.getLogger("CrawlerStatusServlet");
 	@EJB
 	CrawlerSingletonLocal crawlerSingleton;
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected synchronized void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		LOGGER.info(String.format("Crawler servlet accessed from %s:%d",req.getRemoteHost(),req.getRemotePort()));
 		String commandParameter=req.getParameter("command");
 		if (commandParameter!=null&&commandParameter.equals("start")) {
 			crawlerSingleton.startCrawler();

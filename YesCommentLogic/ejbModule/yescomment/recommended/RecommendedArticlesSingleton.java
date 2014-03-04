@@ -1,15 +1,11 @@
 package yescomment.recommended;
 
 import java.lang.management.ManagementFactory;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.management.InstanceAlreadyExistsException;
@@ -20,7 +16,6 @@ import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
 
 import yescomment.model.Article;
-import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
 
 /**
@@ -31,7 +26,7 @@ import yescomment.persistence.ArticleManager;
  */
 @Singleton
 @Startup
-public class RecommendedArticlesSingleton implements RecommendedArticlesSingletonLocal, RecommendedArticlesSingletonMBean {
+public class RecommendedArticlesSingleton implements RecommendedArticlesSingletonLocal {
 
 	
 	private int latestArticleLimit;

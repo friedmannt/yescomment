@@ -41,7 +41,7 @@ public class KeywordManagedBean implements Serializable {
 	}
 
 	public void searchForKeyword() {
-		if (keyword == null || keyword.equals("")) {
+		if (keyword == null) {
 			resultArticles = null;
 		} else {
 			resultArticles = articleManager.getArticlesWithKeyword(keyword);

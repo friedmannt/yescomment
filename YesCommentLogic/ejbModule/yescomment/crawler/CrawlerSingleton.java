@@ -39,8 +39,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
 
+import yescomment.crawler.nocommentdetector.NoCommentDetector;
+import yescomment.crawler.nocommentdetector.NoCommentDetectorService;
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
+import yescomment.util.ArticleCommentPermission;
 import yescomment.util.ArticleInfo;
 import yescomment.util.URLUtil;
 
@@ -71,15 +74,15 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 
 	@Override
 	@Lock(LockType.WRITE)
-	public void startCrawler()  {
-		
-			crawlerRuns.set(true);
+	public void startCrawler() {
+
+		crawlerRuns.set(true);
 	}
 
 	@Override
 	@Lock(LockType.WRITE)
 	public void stopCrawler() {
-		
+
 		crawlerRuns.set(false);
 
 	}
@@ -154,7 +157,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 		// read from xml configuration
 
 		String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfig.xml").getFile();
-		/* String filePath = "crawlerconfig.xml";*/ 
+		/* String filePath = "crawlerconfig.xml"; */
 		crawlerConfigs = CawlerConfigXMLHandler.unmarshal(new File(filePath));
 
 		LOGGER.info(String.format("Read crawler configs at startup : %s", crawlerConfigs));
@@ -169,16 +172,17 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 		if (isCrawlerRunning()) {
 
 			Calendar cal = Calendar.getInstance();
+			int currentHour = cal.get(Calendar.HOUR_OF_DAY);
 			int currentMinute = cal.get(Calendar.MINUTE);
 
-			LOGGER.info("Started crawling for minute " + currentMinute);
-			List<CrawlerConfig> crawlerConfigsForCurrentMinute = getCrawlerConfigsForMinute(currentMinute);
-			for (CrawlerConfig crawlerConfig : crawlerConfigsForCurrentMinute) {
+			LOGGER.info(String.format("Started crawling for hour %d minute %d",currentHour,currentMinute));
+			List<CrawlerConfig> crawlerConfigsForCurrentHourAndMinute = getCrawlerConfigsForHourAndMinute(currentHour, currentMinute);
+			for (CrawlerConfig crawlerConfig : crawlerConfigsForCurrentHourAndMinute) {
 				if (crawlerConfig.getEnabled()) {
 					crawlRss(crawlerConfig);
 				}
 			}
-			LOGGER.info("Finished crawling for minute " + currentMinute);
+			LOGGER.info(String.format("Finished crawling for hour %d minute %d",currentHour,currentMinute));
 		}
 	}
 
@@ -188,6 +192,8 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	 * @param crawlerConfig
 	 */
 	private void crawlRss(CrawlerConfig crawlerConfig) {
+		NoCommentDetector noCommentDetector = NoCommentDetectorService.getNoCommentDetector(crawlerConfig);
+
 		// getting rss items from rss urls
 		List<RSSItem> rssItems = null;
 		try {
@@ -211,7 +217,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 				for (RSSItem rssItem : rssItems) {
 
 					try {
-						crawlOneRSSItem(rssItem);
+						crawlOneRSSItem(rssItem, noCommentDetector);
 					} catch (IOException e) {
 
 						e.printStackTrace();
@@ -224,6 +230,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 				CrawlerTimerInfo crawlerTimerInfo = new CrawlerTimerInfo();
 				crawlerTimerInfo.setDuration(1000 * crawlerConfig.getDelaySec());
 				crawlerTimerInfo.setRssItems(rssItems);
+				crawlerTimerInfo.setNoCommentDetector(noCommentDetector);
 				Timer timer = timerService.createSingleActionTimer(crawlerTimerInfo.getDuration(), new TimerConfig(crawlerTimerInfo, false));
 			}
 		}
@@ -245,7 +252,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 
 			RSSItem firstRssItem = rssItems.remove(0);
 			try {
-				crawlOneRSSItem(firstRssItem);
+				crawlOneRSSItem(firstRssItem, crawlerTimerInfo.getNoCommentDetector());
 
 			} catch (IOException e) {
 
@@ -264,40 +271,47 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	 * Crawls one rss item Reads articleinfo, saves article
 	 * 
 	 * @param rssItem
+	 * @param noCommentDetector
 	 * @throws IOException
 	 */
-	private void crawlOneRSSItem(RSSItem rssItem) throws IOException {
+	private void crawlOneRSSItem(RSSItem rssItem, NoCommentDetector noCommentDetector) throws IOException {
 
 		// we have to check, whether article exists, assumes rss link is final,
 		// no unnecessary url params are added
 		if (articleManager.getArticleByURL(rssItem.getLink()) == null) {
 			LOGGER.finest(String.format("Crawling started for url: %s", rssItem.getLink()));
-			ArticleInfo newArticleInfo = URLUtil.getArticleInfoFromURL(rssItem.getLink(),rssItem);
+			ArticleInfo newArticleInfo = URLUtil.getArticleInfoFromURL(rssItem.getLink(), rssItem, noCommentDetector);
 			// we should check, whether the final article url is
 			// unique
 			Article articleWithSameURL = articleManager.getArticleByURL(newArticleInfo.getFinalURL());
 			if (articleWithSameURL == null) {
-				Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
-				Article savedArticle = articleManager.create(article);
+				// we should check, if comments are disabled. If no result, we
+				// assume comments are disabled
+				if (newArticleInfo.getArticleCommentPermission() == null || newArticleInfo.getArticleCommentPermission() == ArticleCommentPermission.NOT_ALLOWED) {
+
+					Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
+					Article savedArticle = articleManager.create(article);
+				}
 			}
 			LOGGER.finest(String.format("Crawling finished for url: %s", rssItem.getLink()));
 		}
 
 	}
 
-	private List<CrawlerConfig> getCrawlerConfigsForMinute(int minute) {
-		List<CrawlerConfig> crawlerConfigsForMinute = new ArrayList<CrawlerConfig>();
+	private List<CrawlerConfig> getCrawlerConfigsForHourAndMinute(final int hour, final int minute) {
+		List<CrawlerConfig> crawlerConfigsForHourAndMinute = new ArrayList<CrawlerConfig>();
 		for (CrawlerConfig crawlerConfig : crawlerConfigs) {
-			if (crawlerConfig.getMinute() == minute) {
-				crawlerConfigsForMinute.add(crawlerConfig);
+			if (crawlerConfig.getHour() == hour && crawlerConfig.getMinute() == minute) {
+				crawlerConfigsForHourAndMinute.add(crawlerConfig);
 			}
 		}
-		return crawlerConfigsForMinute;
+		return crawlerConfigsForHourAndMinute;
 	}
 
 	/**
 	 * TimerInfo class, for storing duration (delay for next timer), and rss
-	 * items that should be read
+	 * items that should be read, and a possible nocommentdetector, which can be
+	 * used for comment permission detection
 	 * 
 	 * @author Friedmann Tamás
 	 * 
@@ -305,6 +319,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	private static class CrawlerTimerInfo implements Serializable {
 		private long duration;
 		private List<RSSItem> rssItems;
+		private NoCommentDetector noCommentDetector;
 
 		public long getDuration() {
 			return duration;
@@ -320,6 +335,14 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 
 		public void setRssItems(List<RSSItem> rssItems) {
 			this.rssItems = rssItems;
+		}
+
+		public NoCommentDetector getNoCommentDetector() {
+			return noCommentDetector;
+		}
+
+		public void setNoCommentDetector(NoCommentDetector noCommentDetector) {
+			this.noCommentDetector = noCommentDetector;
 		}
 
 	}

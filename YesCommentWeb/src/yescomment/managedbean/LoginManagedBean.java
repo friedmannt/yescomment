@@ -64,7 +64,7 @@ public class LoginManagedBean implements Serializable {
 		boolean success = true;
 		if (selectedCaptchaOption==null||!selectedCaptchaOption.equals(correctCaptchaOption)) {
 			success = false;
-			FacesContext.getCurrentInstance().addMessage("loginform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,"sumc", "detc"));
+			FacesContext.getCurrentInstance().addMessage("loginform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
 		}
 		
 

@@ -2,6 +2,8 @@ package yescomment.crawler;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -35,11 +37,23 @@ public class CrawlerConfig implements Serializable{
 	@XmlAttribute
 	@NotNull
 	private String rssUrl;
+	
+	/**
+	 * fetches rss only if hour in day is this. Mandatory
+	 */
+	@XmlAttribute
+	@NotNull
+	@Min(0)
+	@Max(23)
+	private Integer hour;
+	
 	/**
 	 * fetches rss only if minute in hour is this. Mandatory
 	 */
 	@XmlAttribute
 	@NotNull
+	@Min(0)
+	@Max(59)
 	private Integer minute;
 	/**
 	 * delays between two rss items. If null, there is no delay
@@ -67,6 +81,14 @@ public class CrawlerConfig implements Serializable{
 	public void setRssUrl(String rssUrl) {
 		this.rssUrl = rssUrl;
 	}
+	
+	
+	public Integer getHour() {
+		return hour;
+	}
+	public void setHour(Integer hour) {
+		this.hour = hour;
+	}
 	public Integer getMinute() {
 		return minute;
 	}
@@ -82,7 +104,7 @@ public class CrawlerConfig implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "CrawlerConfig [enabled=" + enabled + ", name=" + name + ", rssUrl=" + rssUrl + ", minute=" + minute + ", delaySec=" + delaySec + "]";
+		return "CrawlerConfig [enabled=" + enabled + ", name=" + name + ", rssUrl=" + rssUrl + ", hour=" + hour + ", minute=" + minute + ", delaySec=" + delaySec + "]";
 	}
 	
 	

@@ -318,8 +318,8 @@ p {
 #tagcloud li a{
 	background-color: #fb1947;
 	text-align: center;
-	margin: 2px 5px;
-	padding: 2px 5px;
+	margin: 2px 6px;
+	padding: 2px 6px;
 	color: #FFFFFF;
 }
 
@@ -387,4 +387,10 @@ p {
 #contentwrapper #footer {
 	margin-left: 320px;
 	padding: 20px 40px 20px 40px;
+}
+
+.footerlink {
+	color:  #fb1947;
+	margin: 3;
+	font-size: 12px;
 }
