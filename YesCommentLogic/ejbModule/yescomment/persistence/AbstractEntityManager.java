@@ -1,7 +1,6 @@
 package yescomment.persistence;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,9 +10,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import yescomment.model.AbstractEntity;
-import yescomment.model.Article;
 
 public abstract class AbstractEntityManager<T extends AbstractEntity> implements EntityManagerInterface<T> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	protected abstract EntityManager getEntityManager();
 
@@ -59,7 +62,7 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 	}
 
 	@Override
-	public T find(Long id) {
+	public T find(String id) {
 		EntityManager em = getEntityManager();
 		return em.find(entityClass, id);
 	}
@@ -85,20 +88,20 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 	}
 
 	@Override
-	public List<Long> findAllIds() {
+	public List<String> findAllIds() {
 
 		EntityManager em = getEntityManager();
 
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+		CriteriaQuery<String> cq = cb.createQuery(String.class);
 		Root<T> r = cq.from(entityClass);
-		cq.select(r.<Long> get("id"));
-		TypedQuery<Long> tq = em.createQuery(cq);
+		cq.select(r.<String> get("id"));
+		TypedQuery<String> tq = em.createQuery(cq);
 		return tq.getResultList();
 	}
 
 	@Override
-	public List<T> find(List<Long> ids) {
+	public List<T> find(List<String> ids) {
 		if (ids.isEmpty()) {
 			return Collections.emptyList();
 		} else {
@@ -107,7 +110,7 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 			CriteriaQuery<T> cq = criteriaBuilder.createQuery(entityClass);
 			Root<T> r = cq.from(entityClass);
 			cq.select(r);
-			cq.where(r.<Long> get("id").in(ids));
+			cq.where(r.<String> get("id").in(ids));
 			final TypedQuery<T> tq = em.createQuery(cq);
 			return tq.getResultList();
 		}

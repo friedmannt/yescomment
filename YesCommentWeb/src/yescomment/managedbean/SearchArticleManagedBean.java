@@ -14,6 +14,11 @@ import yescomment.persistence.ArticleManager;
 @RequestScoped
 public class SearchArticleManagedBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@EJB
 	ArticleManager articleManager;
 
@@ -32,7 +37,7 @@ public class SearchArticleManagedBean implements Serializable {
 		// if not found, can create new article
 		
 		Article article = articleManager.getArticleByURL(searchedArticleURL);
-		Long articleId = null;
+		String articleId = null;
 		if (article != null) {
 			// redirect to searched article
 			articleId = article.getId();

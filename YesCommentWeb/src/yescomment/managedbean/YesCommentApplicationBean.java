@@ -15,6 +15,11 @@ import yescomment.util.URLUtil;
 @ManagedBean
 public class YesCommentApplicationBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public String getSiteOfArticle(final Article article) {
 		return URLUtil.getSiteOfURL(article.getUrl());
 	}

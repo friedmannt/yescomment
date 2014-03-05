@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<crawlerconfigs>
+<crawlerconfigs 
+xmlns="http://yescomment.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://yescomment.com crawlerconfigs.xsd">
     <crawlerconfig enabled="true" name="index" rssUrl="http://index.hu/24ora/rss/"  hour="12" minute="24" delaySec="60"/>
     <crawlerconfig enabled="true" name="portfolio.hu" rssUrl="http://www.portfolio.hu/rss/cikkek/all.xml" hour="12" minute="4"/>
     <crawlerconfig enabled="true" name="velvet" rssUrl="http://velvet.hu/24ora/rss/" hour="12" minute="15" delaySec="30"/>

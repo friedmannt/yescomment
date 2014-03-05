@@ -12,8 +12,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import org.primefaces.context.RequestContext;
-
 import yescomment.model.Article;
 import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
@@ -22,6 +20,11 @@ import yescomment.persistence.CommentManager;
 @ManagedBean
 @ViewScoped
 public class ViewArticleManagedBean implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
@@ -40,13 +43,13 @@ public class ViewArticleManagedBean implements Serializable {
 	@EJB
 	CommentManager commentManager;
 
-	private Long articleId;
+	private String articleId;
 
-	public Long getArticleId() {
+	public String getArticleId() {
 		return articleId;
 	}
 
-	public void setArticleId(Long articleId) {
+	public void setArticleId(String articleId) {
 		this.articleId = articleId;
 	}
 

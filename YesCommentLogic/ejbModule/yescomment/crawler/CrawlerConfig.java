@@ -20,28 +20,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CrawlerConfig implements Serializable{
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * RSS is only crawled if enabled
 	 */
-	@XmlAttribute
+	@XmlAttribute(required=true)
 	@NotNull
 	private Boolean enabled;
 	/**
 	 * Name of the config
 	 */
-	@XmlAttribute
+	@XmlAttribute(required=true)
+	@NotNull
 	private String name;
 	
 	/**
 	 * URL of the rss file
 	 */
-	@XmlAttribute
+	@XmlAttribute (required=true)
 	@NotNull
 	private String rssUrl;
 	
 	/**
 	 * fetches rss only if hour in day is this. Mandatory
 	 */
-	@XmlAttribute
+	@XmlAttribute(required=true)
 	@NotNull
 	@Min(0)
 	@Max(23)
@@ -50,7 +55,7 @@ public class CrawlerConfig implements Serializable{
 	/**
 	 * fetches rss only if minute in hour is this. Mandatory
 	 */
-	@XmlAttribute
+	@XmlAttribute(required=true)
 	@NotNull
 	@Min(0)
 	@Max(59)
@@ -58,7 +63,7 @@ public class CrawlerConfig implements Serializable{
 	/**
 	 * delays between two rss items. If null, there is no delay
 	 */
-	@XmlAttribute
+	@XmlAttribute(required=false)
 	private Integer delaySec;
 	
 	

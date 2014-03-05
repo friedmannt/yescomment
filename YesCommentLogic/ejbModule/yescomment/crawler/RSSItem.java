@@ -9,6 +9,10 @@ import java.util.Date;
  */
 public class RSSItem implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String link;
 	private Date pubDate;
 	private String title;

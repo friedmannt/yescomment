@@ -21,6 +21,10 @@ import yescomment.crawler.CrawlerSingletonLocal;
 @HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL,
     rolesAllowed = {"yescommentadmin"}))
 public class CrawlerStatusServlet  extends HttpServlet{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Logger LOGGER = Logger.getLogger("CrawlerStatusServlet");
 	@EJB
 	CrawlerSingletonLocal crawlerSingleton;

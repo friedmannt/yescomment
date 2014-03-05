@@ -56,8 +56,7 @@ public class RecommendedArticlesSingleton implements RecommendedArticlesSingleto
 	@EJB
 	ArticleManager articleManager;
 
-	private List<Long> articleIdsOrderedByRegistrationDate;// holds the article
-												// the top commented
+	
 
 	@PostConstruct
 	public void initializeArticleIdCache() {

@@ -16,6 +16,11 @@ import yescomment.persistence.ArticleManager;
 @RequestScoped
 public class KeywordManagedBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@ManagedProperty("#{param.keyword}")
 	private String keyword;
 

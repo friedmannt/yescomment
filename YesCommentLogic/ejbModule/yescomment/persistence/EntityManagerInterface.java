@@ -13,15 +13,15 @@ public interface EntityManagerInterface<T extends AbstractEntity> extends Serial
 
 	void remove(T entity);
 
-	T find(Long id);
+	T find(String id);
 
 	List<T> findAll();
 
 	int count();
 	
-	List<Long> findAllIds();
+	List<String> findAllIds();
 	
-	List<T> find (List<Long> ids);
+	List<T> find (List<String> ids);
 
 	List<T> getEntitiesOrdered(String attributeName, boolean isAscending, Integer maxResults);
 	

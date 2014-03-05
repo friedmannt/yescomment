@@ -11,10 +11,14 @@ import javax.persistence.PersistenceContext;
 
 import yescomment.model.Article;
 import yescomment.model.Comment;
-import yescomment.recommended.RecommendedArticlesSingletonLocal;
 
 @Stateless
 public class CommentManager extends AbstractEntityManager<Comment>{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Resource
 	EJBContext context;

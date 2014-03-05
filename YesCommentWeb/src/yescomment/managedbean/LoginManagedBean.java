@@ -6,10 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.context.RequestContext;
 
 import yescomment.managedbean.captcha.CaptchaOption;
 import yescomment.managedbean.captcha.CaptchaOption.Color;
@@ -19,12 +17,17 @@ import yescomment.util.LocalizationUtil;
 import yescomment.util.NumberUtil;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class LoginManagedBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final int CAPTCHA_OPTION_SIZE = 3;// this many options are
 														// presented
 
+	
 	public static int getCaptchaOptionSize() {
 		return CAPTCHA_OPTION_SIZE;
 	}
@@ -48,20 +51,26 @@ public class LoginManagedBean implements Serializable {
 	}
 
 
-	private String userName;
+	private String name;
 
-	public String getUserName() {
-		return userName;
+	public String getName() {
+		return name;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
-	
+
+
 	public void tryToLogin()  {
+		
 		boolean success = true;
+		if (name==null||name.length()==0) {
+			success = false;
+			FacesContext.getCurrentInstance().addMessage("loginform:name", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("empty_name", JSFUtil.getLocale()), null));
+		}
 		if (selectedCaptchaOption==null||!selectedCaptchaOption.equals(correctCaptchaOption)) {
 			success = false;
 			FacesContext.getCurrentInstance().addMessage("loginform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
@@ -69,10 +78,7 @@ public class LoginManagedBean implements Serializable {
 		
 
 		if (success) {
-			if (userName == null||userName.length()==0) {
-				userName="Anonymus";
-			}
-			userSessionBean.setLoginUserName(userName);
+			userSessionBean.setLoginUserName(name);
 		}
 		
 	}
@@ -80,7 +86,8 @@ public class LoginManagedBean implements Serializable {
 	
 	
 	@PostConstruct
-	public void initializeCaptcha() {
+	public void initialize() {
+		
 		correctCaptchaOption = new CaptchaOption(
 				CaptchaOption.Color.values()[NumberUtil.getRandomInt(6)],
 				NumberUtil.getRandomInt(100));

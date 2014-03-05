@@ -18,12 +18,15 @@ import javax.persistence.criteria.Root;
 
 import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.model.Article;
-import yescomment.recommended.RecommendedArticlesSingletonLocal;
-import yescomment.recommended.RecommendationAscpect;
 import yescomment.util.ArticleInfo;
 
 @Stateless
 public class ArticleManager extends AbstractEntityManager<Article> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@PersistenceContext(unitName = "YesCommentModel")
 	private EntityManager em;

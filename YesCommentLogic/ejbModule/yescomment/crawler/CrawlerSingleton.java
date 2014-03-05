@@ -156,7 +156,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 
 		// read from xml configuration
 
-		String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfig.xml").getFile();
+		String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfigs.xml").getFile();
 		/* String filePath = "crawlerconfig.xml"; */
 		crawlerConfigs = CawlerConfigXMLHandler.unmarshal(new File(filePath));
 
@@ -231,7 +231,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 				crawlerTimerInfo.setDuration(1000 * crawlerConfig.getDelaySec());
 				crawlerTimerInfo.setRssItems(rssItems);
 				crawlerTimerInfo.setNoCommentDetector(noCommentDetector);
-				Timer timer = timerService.createSingleActionTimer(crawlerTimerInfo.getDuration(), new TimerConfig(crawlerTimerInfo, false));
+				 timerService.createSingleActionTimer(crawlerTimerInfo.getDuration(), new TimerConfig(crawlerTimerInfo, false));
 			}
 		}
 
@@ -290,7 +290,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 				if (newArticleInfo.getArticleCommentPermission() == null || newArticleInfo.getArticleCommentPermission() == ArticleCommentPermission.NOT_ALLOWED) {
 
 					Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
-					Article savedArticle = articleManager.create(article);
+					 articleManager.create(article);
 				}
 			}
 			LOGGER.finest(String.format("Crawling finished for url: %s", rssItem.getLink()));
@@ -317,6 +317,10 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	 * 
 	 */
 	private static class CrawlerTimerInfo implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private long duration;
 		private List<RSSItem> rssItems;
 		private NoCommentDetector noCommentDetector;

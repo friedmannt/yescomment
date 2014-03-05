@@ -34,9 +34,9 @@
 						style="color: red;  font-style: oblique;" />
 				<br/>
 				<h:outputText value="#{yescommentmsg['name']}" />
-				<h:inputText id="username" value="#{loginManagedBean.userName}"
+				<h:inputText id="name" value="#{loginManagedBean.name}"
 					maxlength="#{loginManagedBean.getMaxAuthorSize()}" />
-				<h:message for="username" id="loginusernamemessage" showSummary="true" showDetail="false"
+				<h:message for="name" id="loginnamemessage" showSummary="true" showDetail="false"
 						style="color: red;  font-style: oblique;"/>
 				
 				
@@ -48,7 +48,7 @@
 						listener="#{loginManagedBean.tryToLogin()}"
 						onevent="function(data) {
 									 if (data.status === 'success') { 
-    											if(!document.getElementById('loginform:logincaptchamessage').innerHTML) {
+    											if(!document.getElementById('loginform:logincaptchamessage').innerHTML &amp;&amp; !document.getElementById('loginform:loginnamemessage').innerHTML) {
     												PF('logindialog').hide();
     												}
     											}

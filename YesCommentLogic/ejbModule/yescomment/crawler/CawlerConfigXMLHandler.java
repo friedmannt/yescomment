@@ -4,17 +4,12 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class for serializing and deserializing the crawler configurations to/from
@@ -25,29 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 public class CawlerConfigXMLHandler {
 
-	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlRootElement(name = "crawlerconfigs")
-	public static class CrawlerConfigs {
-
-		public CrawlerConfigs() {
-		}
-
-		public CrawlerConfigs(List<CrawlerConfig> crawlerConfigs) {
-			this.crawlerConfigs = crawlerConfigs;
-		}
-
-		@XmlElement(name = "crawlerconfig", type = CrawlerConfig.class)
-		private List<CrawlerConfig> crawlerConfigs = new ArrayList<CrawlerConfig>();
-
-		public List<CrawlerConfig> getCrawlerConfigs() {
-			return crawlerConfigs;
-		}
-
-		public void setCrawlerConfigs(List<CrawlerConfig> crawlerConfigs) {
-			this.crawlerConfigs = crawlerConfigs;
-		}
-
-	}
+	
 
 	/**
 	 * Export

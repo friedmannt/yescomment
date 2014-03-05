@@ -12,7 +12,6 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
-import yescomment.keyword.AllKeywordsSingleton;
 import yescomment.keyword.AllKeywordsSingletonLocal;
 import yescomment.keyword.KeywordUtil;
 
@@ -20,6 +19,10 @@ import yescomment.keyword.KeywordUtil;
 @ManagedBean
 public class KeywordTagCloudBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@EJB
 	AllKeywordsSingletonLocal allKeywordsSingleton;
 	

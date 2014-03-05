@@ -23,6 +23,11 @@ import yescomment.util.MapSorter;
  */
 @Singleton
 public class AllKeywordsSingleton implements AllKeywordsSingletonLocal {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@EJB
 	ArticleManager articleManager;
 

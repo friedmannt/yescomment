@@ -12,6 +12,10 @@ import javax.faces.bean.SessionScoped;
 public class UserSessionBean implements Serializable {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String loginUserName;
 
 	public String getLoginUserName() {
@@ -22,13 +26,13 @@ public class UserSessionBean implements Serializable {
 		this.loginUserName = loginUserName;
 	}
 	
-	private Set<Long> votedCommentIds=new HashSet<Long>();
+	private Set<String> votedCommentIds=new HashSet<String>();
 
-	public Set<Long> getVotedCommentIds() {
+	public Set<String> getVotedCommentIds() {
 		return votedCommentIds;
 	}
 
-	public void setVotedCommentIds(Set<Long> votedCommentIds) {
+	public void setVotedCommentIds(Set<String> votedCommentIds) {
 		this.votedCommentIds = votedCommentIds;
 	}
 

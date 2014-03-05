@@ -19,6 +19,11 @@ import yescomment.util.URLUtil;
 @ViewScoped
 public class NewArticleManagedBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@ManagedProperty(value="#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 
@@ -96,7 +101,7 @@ public class NewArticleManagedBean implements Serializable {
 
 		article =articleManager.create(article);
 		// redirect to new article
-		Long newArticleId = article.getId();
+		String newArticleId = article.getId();
 		return "/viewarticle.xhtml?faces-redirect=true&articleId=" + newArticleId;
 
 	}

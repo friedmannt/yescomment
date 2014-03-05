@@ -16,6 +16,11 @@ import yescomment.recommended.RecommendedArticlesSingletonLocal;
 @ViewScoped
 public class RecommendedArticlesManagedBean implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@EJB
 	RecommendedArticlesSingletonLocal recommendedArticlesSingleton;
 

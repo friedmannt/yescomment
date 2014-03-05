@@ -1,9 +1,8 @@
 package yescomment.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -11,19 +10,25 @@ import javax.persistence.MappedSuperclass;
 public abstract class AbstractEntity implements Serializable{
 	
 	/**
-	 * 
+	 * id is generated via uuid 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
+
+	public AbstractEntity() {
+		
+		id=UUID.randomUUID().toString();
+	}
+	
+	
 
 }
