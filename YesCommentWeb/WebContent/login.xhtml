@@ -31,13 +31,13 @@
 
 				</h:panelGroup>
 				<h:message for="captcha" id="logincaptchamessage" showSummary="true" showDetail="false"
-						style="color: red;  font-style: oblique;" />
+						errorClass="errorstyle" />
 				<br/>
 				<h:outputText value="#{yescommentmsg['name']}" />
 				<h:inputText id="name" value="#{loginManagedBean.name}"
 					maxlength="#{loginManagedBean.getMaxAuthorSize()}" />
 				<h:message for="name" id="loginnamemessage" showSummary="true" showDetail="false"
-						style="color: red;  font-style: oblique;"/>
+						errorClass="errorstyle"/>
 				
 				
 			</div>

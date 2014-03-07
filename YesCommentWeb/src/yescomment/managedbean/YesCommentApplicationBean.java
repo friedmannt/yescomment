@@ -20,8 +20,8 @@ public class YesCommentApplicationBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public String getSiteOfArticle(final Article article) {
-		return URLUtil.getSiteOfURL(article.getUrl());
+	public String getSiteOfURL(final String url) {
+		return URLUtil.getSiteOfURL(url);
 	}
 
 	/**

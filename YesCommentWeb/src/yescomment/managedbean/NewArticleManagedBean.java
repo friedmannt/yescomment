@@ -68,8 +68,7 @@ public class NewArticleManagedBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(
 					"newarticleform:newarticlepassedthecheck",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getClass()
-							.getName() + ":" + e.getMessage(), e.getClass()
-							.getName() + ":" + e.getMessage()));
+							.getName() + ":" + e.getMessage(),null));
 			return;
 
 		}
@@ -86,9 +85,7 @@ public class NewArticleManagedBean implements Serializable {
 						"newarticleform:newarticlepassedthecheck",
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, String
 								.format("Article already exists: %s",
-										newArticleInfo.getFinalURL()), String
-								.format("Article already exists: %s",
-										newArticleInfo.getFinalURL())));
+										newArticleInfo.getFinalURL()), null));
 
 			}
 

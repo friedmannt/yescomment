@@ -8,30 +8,60 @@
 			action="#{newArticleManagedBean.fillNewArticleURLFromSearch()}" />
 	</f:metadata>
 	<ui:define name="content">
-	
+		<h2>
+		<h:outputText value="#{yescommentmsg['article_not_found']}"/>
+		
+		</h2>
 		<h:form id="newarticleform">
 			<h:outputText value="#{yescommentmsg['newarticle_passed_the_check']}" />
 			<h:outputText id="newarticlepassedthecheck"
 				value="#{newArticleManagedBean.newArticlePassedTheCheck}" />
-			<h:message for="newarticlepassedthecheck" />
+			<h:message for="newarticlepassedthecheck" showSummary="true"
+				showDetail="false" errorClass="errorstyle" />
 			<h:panelGroup
 				rendered="#{newArticleManagedBean.newArticleInfo!=null}">
-				<h:outputText value="#{yescommentmsg['article_title']}" />
-				<h:outputText id="newarticletitle"
-					value="#{newArticleManagedBean.newArticleInfo.title}" />
-				<br />
-				<h:outputText value="#{yescommentmsg['article_description']}" />
-				<h:outputText id="newarticledescription"
-					value="#{newArticleManagedBean.newArticleInfo.description}" />
+				<div class="articlepreview">
+					<div class="articlepreviewheader">
+						<div class="articlepreviewimage">
 
-				<br />
-				<h:outputText value="#{yescommentmsg['keywords']}" />
-				<h:outputText id="newarticlekeywords"
-					value="#{newArticleManagedBean.newArticleInfo.keywords}" />
+
+							<img src="#{newArticleManagedBean.newArticleInfo.imageURL}"
+								alt="#{yescommentmsg['no_article_image']}" />
+
+
+
+						</div>
+					</div>
+					<div class="articlepreviewdata">
+
+						<h1>
+
+							<h:outputText
+								value="#{newArticleManagedBean.newArticleInfo.title}" />
+						</h1>
+						<p>
+							<cite> <h:outputText
+									value="#{yesCommentApplicationBean.getSiteOfURL(newArticleManagedBean.newArticleInfo.finalURL)}" />
+							</cite>
+						</p>
+						<p class="articledescriptiontext">
+							<h:outputText
+								value="#{newArticleManagedBean.newArticleInfo.description}" />
+						</p>
+
+						<p class="articlepreviewkeywords">
+							<h:outputText styleClass="newarticlekeyword"
+								value="#{newArticleManagedBean.newArticleInfo.keywords}" />
+						</p>
+					</div>
+
+				</div>
 
 			</h:panelGroup>
 
-			<h:commandButton value="#{yescommentmsg['article_not_found']} + #{yescommentmsg['import_new_article']}" type="submit" styleClass="button" 
+			<h:commandButton
+				value="#{yescommentmsg['import_article']}"
+				type="submit" styleClass="button"
 				disabled="#{!newArticleManagedBean.newArticlePassedTheCheck}"
 				action="#{newArticleManagedBean.createNewArticle()}">
 				<f:ajax render="@form" execute="@form" />
