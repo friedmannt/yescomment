@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.DOMException;
@@ -29,7 +30,7 @@ public class RSSLinkRetriever {
 	 * @throws DOMException
 	 * @throws ParseException
 	 */
-	public static List<RSSItem> getItemsFromRSS(String rssUrl,DocumentBuilder documentBuilder) throws SAXException, IOException, DOMException, ParseException {
+	public static List<RSSItem> getItemsFromRSS(@NotNull String rssUrl,@NotNull DocumentBuilder documentBuilder) throws SAXException, IOException, DOMException, ParseException {
 		DateFormat dateFormatterRssPubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 		List<RSSItem> rssItems=new ArrayList<RSSItem>();
 		Document doc = documentBuilder.parse(rssUrl);

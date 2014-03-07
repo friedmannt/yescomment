@@ -5,21 +5,23 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.validation.constraints.NotNull;
+
 public class LocalizationUtil {
 	static Map<Locale, ResourceBundle> resourceBundles = new HashMap<Locale, ResourceBundle>();
 
-	private static String getEnumResourceBundleKey(Enum<?> enumValue) {
+	private static String getEnumResourceBundleKey(@NotNull Enum<?> enumValue) {
 		return enumValue.getClass().getSimpleName().toLowerCase() + "_"
 				+ enumValue.toString().toLowerCase();
 
 	}
 
-	private static String getNumberBundleKey(Integer number) {
+	private static String getNumberBundleKey(@NotNull Integer number) {
 		
 		return "number_"+number;
 	}
 	
-	public static String getTranslation(String key, Locale locale) {
+	public static String getTranslation(@NotNull String key, @NotNull Locale locale) {
 	
 		if (resourceBundles.get(locale) == null) {
 			resourceBundles.put(locale, ResourceBundle.getBundle(
@@ -27,7 +29,7 @@ public class LocalizationUtil {
 		}
 		return resourceBundles.get(locale).getString(key);
 	}
-	public static String getEnumTranslation(Enum<?> enumValue, Locale locale) {
+	public static String getEnumTranslation(@NotNull Enum<?> enumValue, @NotNull Locale locale) {
 		if (enumValue == null) {
 			return null;
 		}
@@ -36,7 +38,7 @@ public class LocalizationUtil {
 		return getTranslation(enumKey,locale);
 	}
 	
-	public static String getNumberTranslation(Integer number, Locale locale) {
+	public static String getNumberTranslation(@NotNull Integer number,@NotNull  Locale locale) {
 		if (number == null) {
 			return null;
 		}

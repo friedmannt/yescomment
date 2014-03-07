@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.management.InstanceAlreadyExistsException;
@@ -14,18 +16,21 @@ import javax.management.MBeanRegistrationException;
 import javax.management.MalformedObjectNameException;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
+import javax.validation.constraints.NotNull;
 
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
 
 /**
- * Singleton,retrieving recommended articles. Does not cache, managable via MBean management
+ * Singleton,retrieving recommended articles. Does not cache, managable via MBean management.
+ * Has no internal state, so read locks are enough
  * 
  * @author Friedmann Tamás
  * 
  */
 @Singleton
 @Startup
+@Lock(LockType.READ)
 public class RecommendedArticlesSingleton implements RecommendedArticlesSingletonLocal {
 
 	
@@ -59,7 +64,8 @@ public class RecommendedArticlesSingleton implements RecommendedArticlesSingleto
 	
 
 	@PostConstruct
-	public void initializeArticleIdCache() {
+	
+	public void initialize() {
 		latestArticleLimit=10;//initial
 		mostCommentedArticleLimit=10;//initial
 	
@@ -82,7 +88,8 @@ public class RecommendedArticlesSingleton implements RecommendedArticlesSingleto
 	}
 
 	@PreDestroy
-	public void clearArticleIdCache() {
+	
+	public void clear() {
 
 		try {
 			ManagementFactory.getPlatformMBeanServer().unregisterMBean(new ObjectName("hu.yescomment", this.getClass().getSimpleName(), this.getClass().getSimpleName()));
@@ -99,7 +106,7 @@ public class RecommendedArticlesSingleton implements RecommendedArticlesSingleto
 	
 	
 	@Override
-	public List<Article> retrieveRecommendedArticles(RecommendationAscpect recommendationAscpect) {
+	public List<Article> retrieveRecommendedArticles(@NotNull RecommendationAscpect recommendationAscpect) {
 		
 		switch (recommendationAscpect) {
 		case LATEST: {

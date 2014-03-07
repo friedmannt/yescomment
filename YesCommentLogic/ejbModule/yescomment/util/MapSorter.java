@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Creates a sorted treemap based on paramater map, sorted by value ascending or desceding
  * @author Friedmann Tamás
@@ -11,7 +13,7 @@ import java.util.TreeMap;
  */
 public class MapSorter {
 	public static <K, V extends Comparable<V>> Map<K, V> sortByValues(
-			final Map<K, V> map, boolean ascending) {
+			@NotNull final Map<K, V> map, final boolean ascending) {
 		Comparator<K> valueComparatorAscending = new Comparator<K>() {
 			@Override
 			public int compare(K k1, K k2) {

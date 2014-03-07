@@ -3,6 +3,9 @@ package yescomment.util;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 /**
  * Utility class for paging a list
  * 
@@ -23,7 +26,7 @@ public class ListPaginator<T> implements Serializable {
 
 	private int pageSize;
 
-	public ListPaginator(List<T> model, int pageSize) {
+	public ListPaginator(@NotNull List<T> model,@Min(1) int pageSize) {
 
 		super();
 		if (model == null || pageSize < 1) {

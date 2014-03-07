@@ -2,6 +2,8 @@ package yescomment.crawler.nocommentdetector;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import net.htmlparser.jericho.Source;
 import yescomment.util.ArticleCommentPermission;
 
@@ -23,6 +25,6 @@ public interface NoCommentDetector extends Serializable{
 	 * @param source
 	 * @return
 	 */
-	ArticleCommentPermission getArticleCommentPermission(Source source);
+	ArticleCommentPermission getArticleCommentPermission(@NotNull Source source);
 	
 }

@@ -9,6 +9,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
+import javax.validation.constraints.NotNull;
+
 import net.htmlparser.jericho.Source;
 
 import org.apache.commons.validator.routines.UrlValidator;
@@ -17,13 +19,13 @@ import yescomment.crawler.RSSItem;
 import yescomment.crawler.nocommentdetector.NoCommentDetector;
 
 public class URLUtil {
-	private static Logger LOGGER = Logger.getLogger("URLUtil");
+	private static Logger LOGGER = Logger.getLogger(URLUtil.class.getName());
 
 	static {
 		CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
 	}
 
-	private static String getSchemaOfURL(String urlString) {
+	private static String getSchemaOfURL(@NotNull String urlString) {
 		if (urlString == null) {
 			throw new IllegalArgumentException();
 		}
@@ -34,7 +36,7 @@ public class URLUtil {
 		}
 	}
 
-	private static String addDefaultSchemaToURL(String urlString) {
+	private static String addDefaultSchemaToURL(@NotNull String urlString) {
 		if (getSchemaOfURL(urlString) == null) {
 			return "http://" + urlString;
 		} else {
@@ -42,7 +44,7 @@ public class URLUtil {
 		}
 	}
 
-	private static String removeFragmentFromURL(String urlString) {
+	private static String removeFragmentFromURL(@NotNull String urlString) {
 		int indexOfHashmark = urlString.lastIndexOf('#');
 		if (indexOfHashmark < 0) {
 			return urlString;
@@ -52,7 +54,7 @@ public class URLUtil {
 
 	}
 
-	public static String getSiteOfURL(String urlString) {
+	public static String getSiteOfURL(@NotNull String urlString) {
 
 		if (urlString == null) {
 			throw new IllegalArgumentException();
@@ -72,16 +74,16 @@ public class URLUtil {
 
 	}
 
-	public static ArticleInfo getArticleInfoFromURL(String urlString) throws IOException {
+	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString) throws IOException {
 		return getArticleInfoFromURL(urlString, null,null);
 
 	}
 	
-	public static ArticleInfo getArticleInfoFromURL(String urlString,RSSItem helpRssItem) throws IOException {
+	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString,RSSItem helpRssItem) throws IOException {
 		return getArticleInfoFromURL(urlString, helpRssItem,null);
 
 	}
-	public static ArticleInfo getArticleInfoFromURL(String urlString,NoCommentDetector noCommentDetector) throws IOException {
+	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString,NoCommentDetector noCommentDetector) throws IOException {
 		return getArticleInfoFromURL(urlString, null,noCommentDetector);
 
 	}
@@ -95,7 +97,7 @@ public class URLUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public static ArticleInfo getArticleInfoFromURL(String urlString, RSSItem helpRssItem,NoCommentDetector noCommentDetector) throws IOException {
+	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString, RSSItem helpRssItem,NoCommentDetector noCommentDetector) throws IOException {
 		LOGGER.info(String.format("Getting article info for %s", urlString));
 		ArticleInfo articleInfo = new ArticleInfo();
 		String urlStringWithSchema = addDefaultSchemaToURL(urlString);
@@ -156,7 +158,7 @@ public class URLUtil {
 
 	
 
-	private static String eliminateUnnecessaryURLParams(String finalURL) throws MalformedURLException, IOException {
+	private static String eliminateUnnecessaryURLParams(@NotNull String finalURL) throws MalformedURLException, IOException {
 		if (finalURL.indexOf("?") < 0) {
 			return finalURL;
 		} else {
@@ -194,7 +196,7 @@ public class URLUtil {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	private static boolean urlsAreSameContent(String referenceURL, String testURL) throws MalformedURLException, IOException {
+	private static boolean urlsAreSameContent(@NotNull String referenceURL, @NotNull String testURL) throws MalformedURLException, IOException {
 		Source sourceRef = new Source(new URL(referenceURL));
 		Source sourceTest = new Source(new URL(testURL));
 
@@ -224,7 +226,7 @@ public class URLUtil {
 	 * @param url
 	 * @return
 	 */
-	public static boolean urlIsValid(String url) {
+	public static boolean urlIsValid(@NotNull String url) {
 
 		String[] schemes = { "http", "https" };
 		UrlValidator urlValidator = new UrlValidator(schemes);

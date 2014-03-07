@@ -2,6 +2,8 @@ package yescomment.crawler.nocommentdetector;
 
 import java.util.ServiceLoader;
 
+import javax.validation.constraints.NotNull;
+
 import yescomment.crawler.CrawlerConfig;
 /**
  * returns the nocommentdetector for the given crawlerconfig. 
@@ -12,11 +14,11 @@ import yescomment.crawler.CrawlerConfig;
 public class NoCommentDetectorService {
 	private static ServiceLoader<NoCommentDetector> serviceLoader = ServiceLoader.load(NoCommentDetector.class);
 
-	public static NoCommentDetector getNoCommentDetector(CrawlerConfig crawlerConfig) {
+	public static NoCommentDetector getNoCommentDetector(@NotNull CrawlerConfig crawlerConfig) {
 		return getNoCommentDetector(crawlerConfig.getName());
 	}
 
-	public static NoCommentDetector getNoCommentDetector(String crawlerConfigName) {
+	public static NoCommentDetector getNoCommentDetector(@NotNull String crawlerConfigName) {
 		synchronized (serviceLoader) {
 			for (NoCommentDetector ncd : serviceLoader) {
 				if (ncd.getAcceptedCrawlerConfigName().equals(crawlerConfigName)) {

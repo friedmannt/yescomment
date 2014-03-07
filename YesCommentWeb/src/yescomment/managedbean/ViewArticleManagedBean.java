@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.NotNull;
 
 import yescomment.model.Article;
 import yescomment.model.Comment;
@@ -53,13 +54,13 @@ public class ViewArticleManagedBean implements Serializable {
 		this.articleId = articleId;
 	}
 
-	private Long highlightCommentId;
+	private String highlightCommentId;
 
-	public Long getHighlightCommentId() {
+	public String getHighlightCommentId() {
 		return highlightCommentId;
 	}
 
-	public void setHighlightCommentId(Long highlightCommentId) {
+	public void setHighlightCommentId(String highlightCommentId) {
 		this.highlightCommentId = highlightCommentId;
 	}
 
@@ -85,7 +86,7 @@ public class ViewArticleManagedBean implements Serializable {
 
 	
 	public void loadArticle() {
-
+		
 		if (articleId == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No id param given", "Please specify an article id"));
 		} else {
@@ -94,11 +95,14 @@ public class ViewArticleManagedBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
 			} else {
 				this.article = article;
-				if (reverseArticleOrder) {
-					firstPage();	
+				if (highlightCommentId==null) {
+					//jump to first page
+					firstPage();
 				}
 				else {
-					lastPage();
+					
+					//jump to the page of the highlighted comment
+					pageToComment(highlightCommentId);
 				}
 
 			}
@@ -107,12 +111,17 @@ public class ViewArticleManagedBean implements Serializable {
 
 	}
 
+	
+
 	public void postNewComment() {
 		if (userSessionBean.getLoginUserName() != null) {
 
 			article = commentManager.addCommentToArticle(article, newCommentText, userSessionBean.getLoginUserName());
 			newCommentText = null;
-			if (reverseArticleOrder) {
+			highlightCommentId=null;
+			//the newly added comment should be visible, based on ordering, it is on the first page or last page
+			//on first page, if comment order is reversed, last page, if comment order is not reserver
+			if (reverseCommentOrder) {
 				firstPage();	
 			}
 			else {
@@ -122,14 +131,15 @@ public class ViewArticleManagedBean implements Serializable {
 		}
 	}
 
-	private boolean reverseArticleOrder = true;// initialize with reverse
+	private boolean reverseCommentOrder = true;// initialize with reverse
 
-	public boolean isReverseArticleOrder() {
-		return reverseArticleOrder;
+	
+	public boolean isReverseCommentOrder() {
+		return reverseCommentOrder;
 	}
 
-	public void setReverseArticleOrder(boolean reverseArticleOrder) {
-		this.reverseArticleOrder = reverseArticleOrder;
+	public void setReverseCommentOrder(boolean reverseCommentOrder) {
+		this.reverseCommentOrder = reverseCommentOrder;
 	}
 
 	public List<Comment> getCommentsOfArticle() {
@@ -137,7 +147,7 @@ public class ViewArticleManagedBean implements Serializable {
 			return Collections.emptyList();
 		} else {
 			List<Comment> comments = new ArrayList<Comment>(article.getComments());
-			if (reverseArticleOrder) {
+			if (reverseCommentOrder) {
 				Collections.reverse(comments);
 			}
 			return comments;
@@ -209,5 +219,24 @@ public class ViewArticleManagedBean implements Serializable {
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
-	
+	//setting page start and end indices to show highlighted comment
+	private void pageToComment(@NotNull final String highlightCommentId) {
+		List<Comment> comments=getCommentsOfArticle();
+		Integer indexOfHighlightedComment = null;
+		for (int i=0;i<comments.size();i++) {
+			Comment comment=comments.get(i);
+			if (comment.getId().equals(highlightCommentId)) {
+				indexOfHighlightedComment=i;
+				break;
+			}
+		}
+		if (indexOfHighlightedComment!=null) {
+			commentStartIndex = indexOfHighlightedComment / COMMENT_PAGE_SIZE * COMMENT_PAGE_SIZE;
+			commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
+
+		}
+		
+		
+		
+	}
 }

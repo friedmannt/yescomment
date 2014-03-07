@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -30,7 +31,7 @@ public class CawlerConfigXMLHandler {
 	 * @throws IOException
 	 * @throws JAXBException
 	 */
-	public static void marshal(List<CrawlerConfig> crawlerConfigs, File selectedFile) throws IOException, JAXBException {
+	public static void marshal(@NotNull List<CrawlerConfig> crawlerConfigs, @NotNull File selectedFile) throws IOException, JAXBException {
 		JAXBContext context;
 		BufferedWriter writer = null;
 		writer = new BufferedWriter(new FileWriter(selectedFile));
@@ -48,7 +49,7 @@ public class CawlerConfigXMLHandler {
 	 * @return
 	 * @throws JAXBException
 	 */
-	public static List<CrawlerConfig> unmarshal(File importFile) throws JAXBException {
+	public static List<CrawlerConfig> unmarshal(@NotNull File importFile) throws JAXBException {
 		CrawlerConfigs crawlerConfigs = new CrawlerConfigs();
 
 		JAXBContext context = JAXBContext.newInstance(CrawlerConfigs.class);

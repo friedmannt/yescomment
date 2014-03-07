@@ -8,11 +8,7 @@
 			action="#{newArticleManagedBean.fillNewArticleURLFromSearch()}" />
 	</f:metadata>
 	<ui:define name="content">
-		<h:outputText id="articlenotfoundtext"
-			value="#{yescommentmsg['article_not_found']}" />
-		<h:outputText id="importnewarticletext"
-			value="#{yescommentmsg['import_new_article']}" />
-		<br />
+	
 		<h:form id="newarticleform">
 			<h:outputText value="#{yescommentmsg['newarticle_passed_the_check']}" />
 			<h:outputText id="newarticlepassedthecheck"
@@ -35,7 +31,7 @@
 
 			</h:panelGroup>
 
-			<h:commandButton value="#{yescommentmsg['submit']}" type="submit"
+			<h:commandButton value="#{yescommentmsg['article_not_found']} + #{yescommentmsg['import_new_article']}" type="submit" styleClass="button" 
 				disabled="#{!newArticleManagedBean.newArticlePassedTheCheck}"
 				action="#{newArticleManagedBean.createNewArticle()}">
 				<f:ajax render="@form" execute="@form" />

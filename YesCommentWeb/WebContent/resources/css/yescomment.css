@@ -19,6 +19,11 @@ p {
 	margin: 0 0 10px
 }
 
+.ui-dialog {
+	
+top: 30% !important; 
+}
+
 .button {
 	color: #FFFFFF;	
 	background-color: #fb1947;
@@ -128,7 +133,7 @@ p {
 
 #yellheader {
 	background-image:
-		url('#{request.contextPath}/resources/images/yescommentyell320.png');
+		url('#{request.contextPath}/resources/images/yescommentyell3200.png');/*direkt rossz, hogy ne látszódjon*/
 	width: 320px;
 	height: 100%;
 	position: fixed;

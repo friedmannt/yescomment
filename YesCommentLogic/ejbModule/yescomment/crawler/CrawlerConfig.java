@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Class for holding crawler configuration
@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="crawlerconfig")
+@XmlType(name="crawlerconfig")
 public class CrawlerConfig implements Serializable{
 
 	/**
