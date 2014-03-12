@@ -44,19 +44,11 @@ p {
 }
 
 .invertedbutton {
-	color: #fb1947;
-	background-color: #FFFFFF;
-	display: inline-block;
-	height: 40px;
-	text-transform: uppercase;
-	text-decoration: none;
-	text-align: center;
-	font-size: 16px;
-	font-weight: bold;
-	line-height: 40px;
-	padding: 0 10px;
-	border: 1px solid;
-	border-color: #fb1947;
+	color: #fb1947 !important; 
+	background-color: #FFFFFF !important; 
+	
+	border: 1px solid !important;
+	border-color: #fb1947 !important;
 }
 
 .button+.button {
@@ -390,4 +382,21 @@ p {
 
 .newarticlekeyword {
 	color: #aaaaaa;
+}
+
+.oneselectorbutton {
+	/*not disaled is not selected*/
+	color: #fb1947 !important; 
+	background-color: #FFFFFF !important; 
+	
+	border: 1px solid !important;
+	border-color: #fb1947 !important;
+}
+
+.oneselectorbutton:disabled {
+	/*disaled is selected*/
+	color: #FFFFFF !important;
+	background-color: #fb1947 !important;
+	border: 0 !important;
+	
 }

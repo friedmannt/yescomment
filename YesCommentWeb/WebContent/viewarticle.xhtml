@@ -46,7 +46,8 @@
 				<h:commandButton value="Post Coment" styleClass="button"
 					disabled="#{userSessionBean.loginUserName == null}"
 					actionListener="#{viewArticleManagedBean.postNewComment()}">
-					<f:ajax render=":comments :newcommentform :viewedarticlepreview" execute="@form" />
+					<f:ajax render=":comments :newcommentform :viewedarticlepreview"
+						execute="@form" />
 				</h:commandButton>
 				<h:outputText rendered="#{userSessionBean.loginUserName == null}"
 					value="In order to post comment, you should answer a capthca." />
@@ -56,7 +57,7 @@
 			</h:form>
 			<h:form>
 				<h:commandButton id="whoareyoubutton" value="Who are you?"
-					type="button" styleClass="invertedbutton"
+					type="button" styleClass="invertedbutton button"
 					onclick="PF('logindialog').show();" />
 			</h:form>
 			<ui:include src="login.xhtml" />
@@ -70,11 +71,18 @@
 			<hr />
 			<h2>Comments</h2>
 			<h:form id="commentorderform">
-				<p:selectBooleanButton
-					value="#{viewArticleManagedBean.reverseCommentOrder}"
-					onLabel="Newest first" offLabel="Oldest first">
-					<p:ajax event="change" update=":comments" />
-				</p:selectBooleanButton>
+				<h:commandButton value="#{yescommentmsg['newest first']}"
+					styleClass="button first oneselectorbutton"
+					actionListener="#{viewArticleManagedBean.setCommentSortOder('NEWESTFIRST')}"
+					disabled="#{viewArticleManagedBean.getCommentSortOder()=='NEWESTFIRST'}">
+					<f:ajax render=":comments @form" />
+				</h:commandButton>
+				<h:commandButton value="#{yescommentmsg['oldest first']}"
+					styleClass="button middle oneselectorbutton"
+					actionListener="#{viewArticleManagedBean.setCommentSortOder('OLDESTFIRST')}"
+					disabled="#{viewArticleManagedBean.getCommentSortOder()=='OLDESTFIRST'}">
+					<f:ajax render=":comments @form" />
+				</h:commandButton>
 			</h:form>
 			<h:panelGroup id="comments">
 

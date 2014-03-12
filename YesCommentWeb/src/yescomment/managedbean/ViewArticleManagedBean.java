@@ -22,6 +22,9 @@ import yescomment.persistence.CommentManager;
 @ViewScoped
 public class ViewArticleManagedBean implements Serializable {
 
+	public static enum CommentSortOrder {
+		OLDESTFIRST,NEWESTFIRST;
+	}
 	/**
 	 * 
 	 */
@@ -121,7 +124,7 @@ public class ViewArticleManagedBean implements Serializable {
 			highlightCommentId=null;
 			//the newly added comment should be visible, based on ordering, it is on the first page or last page
 			//on first page, if comment order is reversed, last page, if comment order is not reserver
-			if (reverseCommentOrder) {
+			if (commentSortOder==CommentSortOrder.NEWESTFIRST) {
 				firstPage();	
 			}
 			else {
@@ -131,15 +134,16 @@ public class ViewArticleManagedBean implements Serializable {
 		}
 	}
 
-	private boolean reverseCommentOrder = true;// initialize with reverse
+	private CommentSortOrder commentSortOder = CommentSortOrder.NEWESTFIRST;// initialize with newest first
 
 	
-	public boolean isReverseCommentOrder() {
-		return reverseCommentOrder;
+	
+	public CommentSortOrder getCommentSortOder() {
+		return commentSortOder;
 	}
 
-	public void setReverseCommentOrder(boolean reverseCommentOrder) {
-		this.reverseCommentOrder = reverseCommentOrder;
+	public void setCommentSortOder(CommentSortOrder commentSortOder) {
+		this.commentSortOder = commentSortOder;
 	}
 
 	public List<Comment> getCommentsOfArticle() {
@@ -147,7 +151,7 @@ public class ViewArticleManagedBean implements Serializable {
 			return Collections.emptyList();
 		} else {
 			List<Comment> comments = new ArrayList<Comment>(article.getComments());
-			if (reverseCommentOrder) {
+			if (commentSortOder==CommentSortOrder.NEWESTFIRST) {
 				Collections.reverse(comments);
 			}
 			return comments;

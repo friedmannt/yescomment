@@ -1,20 +1,25 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
 
 	<ui:define name="content">
 		<h:form>
 
-			<h:commandButton value="#{yescommentmsg['latest_articles']}" styleClass="button first"
-				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('LATEST')}">
+			
+		
+		<h:commandButton value="#{yescommentmsg['latest_articles']}" styleClass="button first oneselectorbutton"
+				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('LATEST')}" 
+				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='LATEST'}">
 				<f:ajax render="@form" />
 			</h:commandButton>
-			<h:commandButton value="#{yescommentmsg['most_commented']}"  styleClass="button middle"
-				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('MOSTCOMMENTED')}">
+			<h:commandButton value="#{yescommentmsg['most_commented']}"  styleClass="button middle oneselectorbutton"
+				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('MOSTCOMMENTED')}"
+				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='MOSTCOMMENTED'}" >
 				<f:ajax render="@form" />
 			</h:commandButton>
-
 
 			<h:panelGroup id="recommendedArticleContainer">
 				<h:panelGroup   styleClass="articlelist"
