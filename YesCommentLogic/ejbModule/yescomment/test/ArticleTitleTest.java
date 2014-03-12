@@ -14,7 +14,7 @@ public class ArticleTitleTest {
 	@Test
 	public void testArticleInfoTitle1() throws IOException {
 		ArticleInfo ai = URLUtil.getArticleInfoFromURL("plst.hu/recqq");
-		assertEquals("Első találkozásom a Bitcoinnal « Plastik média", ai.getTitle());
+		assertEquals("Első találkozásom a Bitcoinnal", ai.getTitle());
 
 	}
 
@@ -28,9 +28,9 @@ public class ArticleTitleTest {
 
 	@Test
 	public void testArticleInfoTitle3() throws IOException {
-		ArticleInfo ai = URLUtil.getArticleInfoFromURL("plastik.hu");
+		ArticleInfo ai = URLUtil.getArticleInfoFromURL("http://www.hasznaltauto.hu/");
 
-		assertEquals("Plastik média", ai.getTitle());
+		assertEquals("Használtautó.hu - eladó használt és új autó kereső", ai.getTitle());
 
 	}
 

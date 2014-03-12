@@ -13,7 +13,6 @@
 
 			<property name="javax.persistence.schema-generation.create-source"
 				value="metadata" />
-
 		</properties>
 	</persistence-unit>
 </persistence>

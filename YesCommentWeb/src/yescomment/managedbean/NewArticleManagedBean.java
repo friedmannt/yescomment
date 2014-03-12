@@ -2,6 +2,8 @@ package yescomment.managedbean;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -10,6 +12,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import yescomment.articleretriever.ArticleInfoRetriever;
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
 import yescomment.util.ArticleInfo;
@@ -24,6 +27,8 @@ public class NewArticleManagedBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	
+	
 	@ManagedProperty(value="#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 
@@ -37,6 +42,9 @@ public class NewArticleManagedBean implements Serializable {
 
 	@EJB
 	ArticleManager articleManager;
+	
+	@EJB
+	ArticleInfoRetriever articleInfoRetriever;
 	
 	ArticleInfo newArticleInfo;
 	boolean newArticlePassedTheCheck = false;
@@ -57,12 +65,13 @@ public class NewArticleManagedBean implements Serializable {
 		this.newArticlePassedTheCheck = newArticlePassedTheCheck;
 	}
 
-	public void retrieveNewArticleInfo(String url) {
+	public void retrieveNewArticleInfo(String url){
 
 		try {
-			newArticleInfo = URLUtil.getArticleInfoFromURL(url);
-			//create date is left empty
-		} catch (IOException e) {
+			Future<ArticleInfo> articleInfoFutureResult=articleInfoRetriever.retrieveArticleInfo(url);
+			newArticleInfo = articleInfoFutureResult.get();//use asynch future call instead on blocking get
+			//http://internetsupervision.com/scripts/urlcheck/report.aspx?reportid=slowest
+		} catch (Exception e) {
 			newArticlePassedTheCheck = false;
 			e.printStackTrace();
 			FacesContext.getCurrentInstance().addMessage(
@@ -70,8 +79,7 @@ public class NewArticleManagedBean implements Serializable {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getClass()
 							.getName() + ":" + e.getMessage(),null));
 			return;
-
-		}
+		} 
 		
 
 			// we should check, whether final article url is unique
