@@ -66,8 +66,8 @@ public class RecommendedArticlesSingleton implements RecommendedArticlesSingleto
 	@PostConstruct
 	
 	public void initialize() {
-		latestArticleLimit=10;//initial
-		mostCommentedArticleLimit=10;//initial
+		latestArticleLimit=50;//initial
+		mostCommentedArticleLimit=50;//initial
 	
 		try {
 			ManagementFactory.getPlatformMBeanServer().registerMBean(this, new ObjectName("hu.yescomment", this.getClass().getSimpleName(), this.getClass().getSimpleName()));

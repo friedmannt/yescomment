@@ -12,7 +12,7 @@ import org.primefaces.model.tagcloud.DefaultTagCloudItem;
 import org.primefaces.model.tagcloud.DefaultTagCloudModel;
 import org.primefaces.model.tagcloud.TagCloudModel;
 
-import yescomment.keyword.AllKeywordsSingletonLocal;
+import yescomment.keyword.AllKeywordsSingleton;
 import yescomment.keyword.KeywordUtil;
 
 @ApplicationScoped
@@ -23,15 +23,17 @@ public class KeywordTagCloudBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final int KEYWORDS_TAGCLOUD_SIZE=500;
 	@EJB
-	AllKeywordsSingletonLocal allKeywordsSingleton;
+	AllKeywordsSingleton allKeywordsSingleton;
 	
 	public TagCloudModel getTopKeywordsTagCloudModel()
 			throws UnsupportedEncodingException {
 
 		DefaultTagCloudModel model = new DefaultTagCloudModel();
 		Map<String, Integer> keywordsAndOccurenceCounts = allKeywordsSingleton
-				.retrieveTopKeywords(500);
+				.retrieveTopKeywords(KEYWORDS_TAGCLOUD_SIZE);
 		for (String keyword : keywordsAndOccurenceCounts.keySet()) {
 
 			model.addTag(new DefaultTagCloudItem(keyword, KeywordUtil.getURLofKeyword(keyword),

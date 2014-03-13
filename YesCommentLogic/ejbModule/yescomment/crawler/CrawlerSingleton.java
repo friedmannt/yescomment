@@ -3,34 +3,22 @@ package yescomment.crawler;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerConfig;
 import javax.ejb.TimerService;
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -55,8 +43,7 @@ import yescomment.util.URLUtil;
  */
 @Singleton
 @Startup
-@Local(CrawlerSingletonLocal.class)
-public class CrawlerSingleton implements CrawlerSingletonLocal {
+public class CrawlerSingleton {
 
 	@EJB
 	ArticleManager articleManager;
@@ -70,55 +57,23 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	private static DocumentBuilderFactory documentBuilderFactory;
 	private static DocumentBuilder documentBuilder;
 
-	private AtomicBoolean crawlerRuns = new AtomicBoolean(false);
+	
 
-	@Override
-	@Lock(LockType.WRITE)
-	public void startCrawler() {
-
-		crawlerRuns.set(true);
-	}
-
-	@Override
-	@Lock(LockType.WRITE)
-	public void stopCrawler() {
-
-		crawlerRuns.set(false);
-
-	}
-
-	@Override
-	@Lock(LockType.READ)
-	public boolean isCrawlerRunning() {
-
-		return crawlerRuns.get();
-	}
+	
 
 	/**
-	 * Initializes document builder and factory Registers singleton as mbean
+	 * Initializes document builder and factory
 	 */
 	@PostConstruct
-	public void readConfigAndRegisterMBean() {
+	public void readConfig() {
 
 		try {
 			// init dom documentbuilder and factory
 			documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			readCrawlerConfigs();
-			ManagementFactory.getPlatformMBeanServer().registerMBean(this, new ObjectName("hu.yescomment", this.getClass().getSimpleName(), this.getClass().getSimpleName()));
+			
 		} catch (ParserConfigurationException e) {
-
-			e.printStackTrace();
-		} catch (InstanceAlreadyExistsException e) {
-
-			e.printStackTrace();
-		} catch (MBeanRegistrationException e) {
-
-			e.printStackTrace();
-		} catch (NotCompliantMBeanException e) {
-
-			e.printStackTrace();
-		} catch (MalformedObjectNameException e) {
 
 			e.printStackTrace();
 		} catch (JAXBException e) {
@@ -127,23 +82,18 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 	}
 
 	/**
-	 * Clears document builder and factory UnRegisters singleton as mbean
+	 * Clears document builder and factory
 	 */
 	@PreDestroy
-	public void clearCrawlerConfigAndUnregisterMBean() {
+	public void clearConfig() {
 
-		try {
+		
+			crawlerConfigs = null;
 			documentBuilder = null;
 			documentBuilderFactory = null;
-			crawlerConfigs = null;
-			ManagementFactory.getPlatformMBeanServer().unregisterMBean(new ObjectName("hu.yescomment", this.getClass().getSimpleName(), this.getClass().getSimpleName()));
-		} catch (MBeanRegistrationException e) {
-			e.printStackTrace();
-		} catch (InstanceNotFoundException e) {
-			e.printStackTrace();
-		} catch (MalformedObjectNameException e) {
-			e.printStackTrace();
-		}
+			
+			
+		
 	}
 
 	/**
@@ -163,13 +113,10 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 		LOGGER.info(String.format("Read crawler configs at startup : %s", crawlerConfigs));
 	}
 
-	/**
-	 * crawl runs every minute, crawls rss if enabled, and set for current
-	 * minute
-	 */
-	@Schedule(hour = "*", minute = "*", second = "0", persistent = false)
+	
+	
 	public void crawl() {
-		if (isCrawlerRunning()) {
+		
 
 			Calendar cal = Calendar.getInstance();
 			int currentHour = cal.get(Calendar.HOUR_OF_DAY);
@@ -183,7 +130,7 @@ public class CrawlerSingleton implements CrawlerSingletonLocal {
 				}
 			}
 			LOGGER.info(String.format("Finished crawling for hour %d minute %d",currentHour,currentMinute));
-		}
+		
 	}
 
 	/**

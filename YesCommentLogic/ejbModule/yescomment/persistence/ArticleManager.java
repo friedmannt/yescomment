@@ -16,7 +16,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import yescomment.keyword.AllKeywordsSingletonLocal;
+import yescomment.keyword.AllKeywordsSingleton;
 import yescomment.model.Article;
 import yescomment.util.ArticleInfo;
 
@@ -32,7 +32,7 @@ public class ArticleManager extends AbstractEntityManager<Article> {
 	private EntityManager em;
 
 	@EJB
-	AllKeywordsSingletonLocal allKeywordsSingleton;
+	AllKeywordsSingleton allKeywordsSingleton;
 	
 	
 

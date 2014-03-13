@@ -4,9 +4,9 @@ xsi:noNamespaceSchemaLocation="crawlerconfigs.xsd">
     <crawlerconfig enabled="true" name="index" rssUrl="http://index.hu/24ora/rss/"  hour="13" minute="24" delaySec="60"/>
     <crawlerconfig enabled="true" name="portfolio.hu" rssUrl="http://www.portfolio.hu/rss/cikkek/all.xml" hour="13" minute="30"/>
     <crawlerconfig enabled="true" name="velvet" rssUrl="http://velvet.hu/24ora/rss/" hour="15" minute="13" delaySec="30"/>
-    <crawlerconfig enabled="true" name="indexvideo" rssUrl="http://index.hu/video/rss/" hour="13" minute="46" delaySec="30"/>
-    <crawlerconfig enabled="true" name="origo" rssUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" hour="13" minute="22" />
-    <crawlerconfig enabled="true" name="hvg" rssUrl="http://hvg.hu/rss" hour="13" minute="28" />
+    <crawlerconfig enabled="true" name="indexvideo" rssUrl="http://index.hu/video/rss/" hour="15" minute="01" delaySec="30"/>
+    <crawlerconfig enabled="true" name="origo" rssUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" hour="14" minute="58" />
+    <crawlerconfig enabled="true" name="hvg" rssUrl="http://hvg.hu/rss" hour="14" minute="55" />
     <crawlerconfig enabled="true" name="nol" rssUrl="http://nol.hu/feed/osszes.rss" hour="13" minute="29" />
     <crawlerconfig enabled="true" name="mno" rssUrl="http://mno.hu/rss" hour="13" minute="42" />
 </crawlerconfigs>
