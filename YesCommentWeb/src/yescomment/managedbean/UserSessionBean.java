@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import yescomment.model.Comment;
+
 @ManagedBean
 @SessionScoped
 public class UserSessionBean implements Serializable {
@@ -16,16 +18,17 @@ public class UserSessionBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String loginUserName;
+	private String userName;
 
-	public String getLoginUserName() {
-		return loginUserName;
-	}
-
-	public void setLoginUserName(String loginUserName) {
-		this.loginUserName = loginUserName;
-	}
 	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	private Set<String> votedCommentIds=new HashSet<String>();
 
 	public Set<String> getVotedCommentIds() {
@@ -36,6 +39,10 @@ public class UserSessionBean implements Serializable {
 		this.votedCommentIds = votedCommentIds;
 	}
 
+	
+	public int getMaxAuthorSize() {
+		return Comment.MAX_AUTHOR_SIZE;
+	}
 	
 	
 	

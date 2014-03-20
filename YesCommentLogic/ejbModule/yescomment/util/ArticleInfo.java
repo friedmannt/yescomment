@@ -1,6 +1,12 @@
 package yescomment.util;
 
-public class ArticleInfo {
+import java.io.Serializable;
+
+public class ArticleInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String finalURL;
 	private String imageURL;
 	private String title;

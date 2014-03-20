@@ -19,9 +19,7 @@ p {
 	margin: 0 0 10px
 }
 
-.ui-dialog {
-	top: 30% !important; /*nem kell, ha leveszem a dialogrol*/
-}
+
 
 .errorstyle {
 	color: red;
@@ -119,7 +117,7 @@ p {
 
 #yellheader {
 	background-image:
-		url('#{request.contextPath}/resources/images/yescommentyell3200.png');
+		url('#{request.contextPath}/resources/images/yescommentyell320.png');
 	/*direkt rossz, hogy ne látszódjon*/
 	width: 320px;
 	height: 100%;

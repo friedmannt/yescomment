@@ -2,8 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	>
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <f:view contentType="text/html" encoding="UTF-8">
 	<h:head>
 		<link rel="shortcut icon" type="image/x-icon"
@@ -11,7 +10,8 @@
 		<title>YesComment</title>
 		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 		<meta name="ROBOTS" content="ALL" />
-		<meta name="description" content="Yescomment is a free commenting site. Comments can be made on any aricle on the web"/>
+		<meta name="description"
+			content="Yescomment is a free commenting site. Comments can be made on any aricle on the web" />
 		<meta name="keywords" content="comment, yescomment" />
 		<h:outputStylesheet name="yescomment.css" library="css" />
 	</h:head>
@@ -22,22 +22,24 @@
 				<nav class="headerbuttons">
 					<h1>
 						<h:outputLink value="#{request.contextPath}">
-							<img src="#{request.contextPath}/resources/images/speaker.png" />
+							<img src="#{request.contextPath}/resources/images/speaker.png"
+								alt="yescommentspeaker" />
 						</h:outputLink>
 						<h:outputText class="yescommentheaderboxtext"
 							value="YES, COMMENT!" />
 					</h1>
-					<div class="clear"/>
+					<div class="clear" />
 					<h2>
 						<h:link outcome="recommendedarticles"
-							value="#{yescommentmsg['recommended']}" styleClass="first button"/>
-						<h:link outcome="keywords" value="#{yescommentmsg['keywords']}" styleClass="last button"/>
+							value="#{yescommentmsg['recommended']}" styleClass="first button" />
+						<h:link outcome="keywords" value="#{yescommentmsg['keywords']}"
+							styleClass="last button" />
 					</h2>
 				</nav>
 			</header>
 
 			<header id="top">
-					<ui:include src="search.xhtml" />
+				<ui:include src="search.xhtml" />
 			</header>
 
 			<article>
@@ -45,12 +47,12 @@
 			</article>
 			<footer id="footer">
 				<nav id="footerlinks">
-				<h:link outcome="legal" styleClass="footerlink">Legal</h:link>
-				<h:link outcome="archive" styleClass="footerlink">Archives</h:link>
-				<h:link outcome="faq" styleClass="footerlink">F.A.Q.</h:link>
-				<h:link outcome="about" styleClass="footerlink">About</h:link>
+					<h:link outcome="legal" styleClass="footerlink">Legal</h:link>
+					<h:link outcome="archive" styleClass="footerlink">Archives</h:link>
+					<h:link outcome="faq" styleClass="footerlink">F.A.Q.</h:link>
+					<h:link outcome="about" styleClass="footerlink">About</h:link>
 				</nav>
-			
+
 			</footer>
 
 

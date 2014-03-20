@@ -207,10 +207,10 @@ public class URLUtil {
 		String descTest = HTMLParser.getMetaValue(sourceTest, "description", "name");
 		String keywordsRef = HTMLParser.getMetaValue(sourceRef, "keywords", "name");
 		String keywordsTest = HTMLParser.getMetaValue(sourceTest, "keywords", "name");
-		if ((titleRef == null && titleTest == null) || titleRef.equals(titleTest)) {
-			if ((descRef == null && descTest == null) || descRef.equals(descTest)) {
+		if ((titleRef == null && titleTest == null) || (titleRef!=null&&titleTest!=null&& titleRef.equals(titleTest))) {
+			if ((descRef == null && descTest == null) || (descRef!=null&&descTest!=null&& descRef.equals(descTest))) {
 
-				if ((keywordsRef == null && keywordsTest == null) || keywordsRef.equals(keywordsTest)) {
+				if ((keywordsRef == null && keywordsTest == null) || (keywordsRef!=null&&keywordsTest!=null&& keywordsRef.equals(keywordsTest))) {
 					return true;
 				}
 			}

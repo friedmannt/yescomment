@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
-import yescomment.model.Article;
 import yescomment.util.URLUtil;
 
 @ApplicationScoped

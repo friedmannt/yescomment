@@ -1,6 +1,7 @@
 package yescomment.articleretriever;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.concurrent.Future;
 
 import javax.ejb.AsyncResult;
@@ -12,7 +13,12 @@ import yescomment.util.ArticleInfo;
 import yescomment.util.URLUtil;
 
 @Stateless
-public class ArticleInfoRetriever {
+public class ArticleInfoRetriever implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Asynchronous
 	public Future<ArticleInfo> retrieveArticleInfo(@NotNull String urlString) throws IOException {

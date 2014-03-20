@@ -37,9 +37,10 @@ public class Article extends AbstractEntity {
 	@Size( max=2048)
 	private String description;
 	
-	@Column(nullable=false,length=2048,unique=true)
+	public static final int MAX_URL_SIZE=2048;
+	@Column(nullable=false,length=MAX_URL_SIZE,unique=true)
 	@NotNull
-	@Size(max=2048)
+	@Size(max=MAX_URL_SIZE)
 	private String url;
 	
 

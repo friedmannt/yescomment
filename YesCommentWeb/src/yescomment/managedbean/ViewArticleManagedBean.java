@@ -23,8 +23,9 @@ import yescomment.persistence.CommentManager;
 public class ViewArticleManagedBean implements Serializable {
 
 	public static enum CommentSortOrder {
-		OLDESTFIRST,NEWESTFIRST;
+		OLDESTFIRST, NEWESTFIRST;
 	}
+
 	/**
 	 * 
 	 */
@@ -87,9 +88,8 @@ public class ViewArticleManagedBean implements Serializable {
 		this.newCommentText = newCommentText;
 	}
 
-	
 	public void loadArticle() {
-		
+
 		if (articleId == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No id param given", "Please specify an article id"));
 		} else {
@@ -98,46 +98,44 @@ public class ViewArticleManagedBean implements Serializable {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
 			} else {
 				this.article = article;
-				if (highlightCommentId==null) {
-					//jump to first page
+				if (highlightCommentId == null) {
+					// jump to first page
 					firstPage();
-				}
-				else {
-					
-					//jump to the page of the highlighted comment
+				} else {
+
+					// jump to the page of the highlighted comment
 					pageToComment(highlightCommentId);
 				}
 
 			}
 		}
-		
 
 	}
-
-	
 
 	public void postNewComment() {
-		if (userSessionBean.getLoginUserName() != null) {
 
-			article = commentManager.addCommentToArticle(article, newCommentText, userSessionBean.getLoginUserName());
-			newCommentText = null;
-			highlightCommentId=null;
-			//the newly added comment should be visible, based on ordering, it is on the first page or last page
-			//on first page, if comment order is reversed, last page, if comment order is not reserver
-			if (commentSortOder==CommentSortOrder.NEWESTFIRST) {
-				firstPage();	
-			}
-			else {
-				lastPage();
-			}
-			
+		String userName = userSessionBean.getUserName();
+		String author = userName != null && userName.length() > 0 ? userName : "Anonymus";
+		article = commentManager.addCommentToArticle(article, newCommentText, author);
+		newCommentText = null;
+		highlightCommentId = null;
+		// the newly added comment should be visible, based on ordering, it is
+		// on the first page or last page
+		// on first page, if comment order is reversed, last page, if comment
+		// order is not reserver
+		if (commentSortOder == CommentSortOrder.NEWESTFIRST) {
+			firstPage();
+		} else {
+			lastPage();
 		}
+
 	}
 
-	private CommentSortOrder commentSortOder = CommentSortOrder.NEWESTFIRST;// initialize with newest first
+	private CommentSortOrder commentSortOder = CommentSortOrder.NEWESTFIRST;// initialize
+																			// with
+																			// newest
+																			// first
 
-	
-	
 	public CommentSortOrder getCommentSortOder() {
 		return commentSortOder;
 	}
@@ -151,7 +149,7 @@ public class ViewArticleManagedBean implements Serializable {
 			return Collections.emptyList();
 		} else {
 			List<Comment> comments = new ArrayList<Comment>(article.getComments());
-			if (commentSortOder==CommentSortOrder.NEWESTFIRST) {
+			if (commentSortOder == CommentSortOrder.NEWESTFIRST) {
 				Collections.reverse(comments);
 			}
 			return comments;
@@ -161,8 +159,6 @@ public class ViewArticleManagedBean implements Serializable {
 	public int getOrderNumberOfComment(final Comment comment) {
 		return article.getComments().indexOf(comment) + 1;
 	}
-
-	
 
 	public void upvoteComment(Comment comment) {
 		comment.setPlusCount(comment.getPlusCount() + 1);
@@ -223,24 +219,22 @@ public class ViewArticleManagedBean implements Serializable {
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
-	//setting page start and end indices to show highlighted comment
+	// setting page start and end indices to show highlighted comment
 	private void pageToComment(@NotNull final String highlightCommentId) {
-		List<Comment> comments=getCommentsOfArticle();
+		List<Comment> comments = getCommentsOfArticle();
 		Integer indexOfHighlightedComment = null;
-		for (int i=0;i<comments.size();i++) {
-			Comment comment=comments.get(i);
+		for (int i = 0; i < comments.size(); i++) {
+			Comment comment = comments.get(i);
 			if (comment.getId().equals(highlightCommentId)) {
-				indexOfHighlightedComment=i;
+				indexOfHighlightedComment = i;
 				break;
 			}
 		}
-		if (indexOfHighlightedComment!=null) {
+		if (indexOfHighlightedComment != null) {
 			commentStartIndex = indexOfHighlightedComment / COMMENT_PAGE_SIZE * COMMENT_PAGE_SIZE;
 			commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 
 		}
-		
-		
-		
+
 	}
 }

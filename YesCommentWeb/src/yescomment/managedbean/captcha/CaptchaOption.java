@@ -1,6 +1,13 @@
 package yescomment.managedbean.captcha;
 
-public class CaptchaOption {
+import java.io.Serializable;
+
+public class CaptchaOption implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static enum Color {
 		YELLOW, ORANGE, RED, VIOLET, BLUE, GREEN
 	}

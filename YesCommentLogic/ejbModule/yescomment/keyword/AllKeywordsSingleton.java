@@ -1,5 +1,6 @@
 package yescomment.keyword;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,13 @@ import yescomment.util.MapSorter;
  */
 @Singleton
 @LocalBean
-public class AllKeywordsSingleton implements ArticleLifeCycleListener {
+public class AllKeywordsSingleton implements ArticleLifeCycleListener,Serializable {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@EJB
 	ArticleManager articleManager;

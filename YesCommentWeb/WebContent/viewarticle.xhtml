@@ -1,7 +1,7 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
+	
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	template="/template.xhtml">
@@ -35,32 +35,67 @@
 					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
 					id="newCommentText" rows="5" cols="80" required="true"
 					requiredMessage="Empty comment" />
-				<h:message for="newCommentText" />
+				<h:message for="newCommentText" showSummary="true" showDetail="false"
+						errorClass="errorstyle" />
 				<br />
-
-
-				<h:outputText value="Author" />
-				<h:outputText value="#{userSessionBean.loginUserName}" />
-				<br />
-
-				<h:commandButton value="Post Coment" styleClass="button"
-					disabled="#{userSessionBean.loginUserName == null}"
+				<h:outputText value="#{yescommentmsg['name']}" />
+				<h:inputText id="name" value="#{userSessionBean.userName}"
+					maxlength="#{userSessionBean.getMaxAuthorSize()}">
+					<f:ajax />
+				</h:inputText>
+				<h:commandButton value="Post Comment" styleClass="button" id="postcommentbutton"
+					disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
 					actionListener="#{viewArticleManagedBean.postNewComment()}">
-					<f:ajax render=":comments :newcommentform :viewedarticlepreview"
+					<f:ajax render=":comments @form :viewedarticlepreview"
 						execute="@form" />
 				</h:commandButton>
-				<h:outputText rendered="#{userSessionBean.loginUserName == null}"
-					value="In order to post comment, you should answer a capthca." />
-
-
 
 			</h:form>
-			<h:form>
-				<h:commandButton id="whoareyoubutton" value="Who are you?"
-					type="button" styleClass="invertedbutton button"
-					onclick="PF('logindialog').show();" />
+			<h:form id="captchaform">
+				<h:panelGroup
+					rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
+					<h:outputText value="Capcha already answered" />
+				</h:panelGroup>
+				<h:panelGroup
+					rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
+					<h:outputText
+						value="In order to post comment, you should answer a capthca." />
+
+					<h:outputText value="Please enter username and select:" />
+					<h:outputText
+						value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
+					<h:outputText value=" " />
+					<h:outputText
+						value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
+					<br />
+
+					<h:panelGroup id="captcha">
+						<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
+							var="captchaoption">
+							<h:commandLink
+								actionListener="#{captchaManagedBean.answer(captchaoption)}">
+								<h:outputText value="#{captchaoption.number}"
+									style="color:#{captchaoption.color}" />
+								<f:ajax render="@form :newcommentform:postcommentbutton" />
+							</h:commandLink>
+
+						</ui:repeat>
+
+					</h:panelGroup>
+					<h:message for="captcha" id="logincaptchamessage"
+						showSummary="true" showDetail="false" errorClass="errorstyle" />
+					<br />
+
+
+
+
+
+				</h:panelGroup>
+
 			</h:form>
-			<ui:include src="login.xhtml" />
+
+
+
 
 
 

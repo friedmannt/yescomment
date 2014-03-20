@@ -54,8 +54,8 @@ public class CrawlerSingleton {
 
 	private List<CrawlerConfig> crawlerConfigs;
 
-	private static DocumentBuilderFactory documentBuilderFactory;
-	private static DocumentBuilder documentBuilder;
+	private  DocumentBuilderFactory documentBuilderFactory;
+	private  DocumentBuilder documentBuilder;
 
 	
 
@@ -107,7 +107,8 @@ public class CrawlerSingleton {
 		// read from xml configuration
 
 		String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfigs.xml").getFile();
-		/* String filePath = "crawlerconfig.xml"; */
+		//jboss reads from home dir
+		// String filePath = "crawlerconfigs.xml"; 
 		crawlerConfigs = CawlerConfigXMLHandler.unmarshal(new File(filePath));
 
 		LOGGER.info(String.format("Read crawler configs at startup : %s", crawlerConfigs));

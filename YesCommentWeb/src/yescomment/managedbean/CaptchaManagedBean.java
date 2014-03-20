@@ -5,20 +5,18 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import yescomment.managedbean.captcha.CaptchaOption;
 import yescomment.managedbean.captcha.CaptchaOption.Color;
-import yescomment.model.Comment;
 import yescomment.util.JSFUtil;
 import yescomment.util.LocalizationUtil;
 import yescomment.util.NumberUtil;
 
 @ManagedBean
 @SessionScoped
-public class LoginManagedBean implements Serializable {
+public class CaptchaManagedBean implements Serializable {
 
 	/**
 	 * 
@@ -26,64 +24,31 @@ public class LoginManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int CAPTCHA_OPTION_SIZE = 3;// this many options are
 														// presented
-
-	
 	public static int getCaptchaOptionSize() {
 		return CAPTCHA_OPTION_SIZE;
 	}
 
-	
-	
-	
-	public static Integer getMaxAuthorSize() {
-		return Comment.MAX_AUTHOR_SIZE;
-	}
-
-	@ManagedProperty(value = "#{userSessionBean}")
-	private UserSessionBean userSessionBean;
-
-	public UserSessionBean getUserSessionBean() {
-		return userSessionBean;
-	}
-
-	public void setUserSessionBean(UserSessionBean userSessionBean) {
-		this.userSessionBean = userSessionBean;
-	}
-
-
-	private String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-
-
-
-	public void tryToLogin()  {
-		
-		boolean success = true;
-		if (name==null||name.length()==0) {
-			success = false;
-			FacesContext.getCurrentInstance().addMessage("loginform:name", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("empty_name", JSFUtil.getLocale()), null));
+	public void answer(CaptchaOption captchaOption)  {
+		if (captchaOption==null||!captchaOption.equals(correctCaptchaOption)) {
+			
+			FacesContext.getCurrentInstance().addMessage("captchaform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
 		}
-		if (selectedCaptchaOption==null||!selectedCaptchaOption.equals(correctCaptchaOption)) {
-			success = false;
-			FacesContext.getCurrentInstance().addMessage("loginform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
+		else {
+			setCaptchaCorrectlyAnswered(true);
 		}
-		
 
-		if (success) {
-			userSessionBean.setLoginUserName(name);
-		}
 		
 	}
 
-	
+	private boolean captchaCorrectlyAnswered;
+
+	public boolean isCaptchaCorrectlyAnswered() {
+		return captchaCorrectlyAnswered;
+	}
+
+	public void setCaptchaCorrectlyAnswered(boolean captchaCorrectlyAnswered) {
+		this.captchaCorrectlyAnswered = captchaCorrectlyAnswered;
+	}
 	
 	@PostConstruct
 	public void initialize() {
@@ -129,15 +94,6 @@ public class LoginManagedBean implements Serializable {
 		this.possibleCaptchaOptions = possibleCaptchaOptions;
 	}
 
-	private CaptchaOption selectedCaptchaOption;
-
-	public CaptchaOption getSelectedCaptchaOption() {
-		return selectedCaptchaOption;
-	}
-
-	public void setSelectedCaptchaOption(CaptchaOption selectedCaptchaOption) {
-		this.selectedCaptchaOption = selectedCaptchaOption;
-	}
 
 	public String localizeColor(Color color) {
 		return LocalizationUtil.getEnumTranslation(color, JSFUtil.getLocale());

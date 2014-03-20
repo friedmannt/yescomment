@@ -1,8 +1,6 @@
 package yescomment.managedbean;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.ejb.EJB;
@@ -16,7 +14,6 @@ import yescomment.articleretriever.ArticleInfoRetriever;
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
 import yescomment.util.ArticleInfo;
-import yescomment.util.URLUtil;
 
 @ManagedBean
 @ViewScoped
@@ -70,7 +67,7 @@ public class NewArticleManagedBean implements Serializable {
 		try {
 			Future<ArticleInfo> articleInfoFutureResult=articleInfoRetriever.retrieveArticleInfo(url);
 			newArticleInfo = articleInfoFutureResult.get();//use asynch future call instead on blocking get
-			//http://internetsupervision.com/scripts/urlcheck/report.aspx?reportid=slowest
+			
 		} catch (Exception e) {
 			newArticlePassedTheCheck = false;
 			e.printStackTrace();

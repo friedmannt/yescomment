@@ -3,10 +3,12 @@ package yescomment.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
+@Cacheable()
 public abstract class AbstractEntity implements Serializable{
 	
 	/**
