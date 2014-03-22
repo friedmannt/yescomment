@@ -1,7 +1,6 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	template="/template.xhtml">
@@ -25,81 +24,82 @@
 				</ui:include>
 			</h:panelGroup>
 			<h:form id="articlelinkform">
-				<h:outputLink value="#{viewArticleManagedBean.article.url}">#{yescommentmsg['open_original_article']}</h:outputLink>
+				<h:outputLink styleClass="originalarticlelink"
+					value="#{viewArticleManagedBean.article.url}">#{yescommentmsg['open_original_article']}</h:outputLink>
 
 			</h:form>
 			<hr />
 			<h:form id="newcommentform">
-				New Comment
+
 				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
-					id="newCommentText" rows="5" cols="80" required="true"
-					requiredMessage="Empty comment" />
-				<h:message for="newCommentText" showSummary="true" showDetail="false"
-						errorClass="errorstyle" />
-				<br />
-				<h:outputText value="#{yescommentmsg['name']}" />
-				<h:inputText id="name" value="#{userSessionBean.userName}"
-					maxlength="#{userSessionBean.getMaxAuthorSize()}">
-					<f:ajax />
-				</h:inputText>
-				<h:commandButton value="Post Comment" styleClass="button" id="postcommentbutton"
-					disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
-					actionListener="#{viewArticleManagedBean.postNewComment()}">
-					<f:ajax render=":comments @form :viewedarticlepreview"
-						execute="@form" />
-				</h:commandButton>
+					pt:placeHolder="Place your comment here..." id="newCommentText"
+					required="true" requiredMessage="Empty comment" />
+				<h:message for="newCommentText" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
 
+
+
+				<div>
+					<h:inputText id="name" value="#{userSessionBean.userName}"
+						maxlength="#{userSessionBean.getMaxAuthorSize()}"
+						pt:placeHolder="#{yescommentmsg['name']}">
+						<f:ajax />
+					</h:inputText>
+					<h:commandButton value="Post Comment" styleClass="button"
+						id="postcommentbutton"
+						disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
+						actionListener="#{viewArticleManagedBean.postNewComment()}">
+						<f:ajax render=":comments @form :viewedarticlepreview"
+							execute="@form" />
+					</h:commandButton>
+				</div>
 			</h:form>
-			<h:form id="captchaform">
-				<h:panelGroup
-					rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
-					<h:outputText value="Capcha already answered" />
-				</h:panelGroup>
-				<h:panelGroup
-					rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
-					<h:outputText
-						value="In order to post comment, you should answer a capthca." />
+			<div>
+				<h:form id="captchaform">
+					<h:panelGroup
+						rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
+						<h:outputText value="Capcha already answered" />
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
+						<h:outputText
+							value="In order to post comment, you should answer a capthca." />
 
-					<h:outputText value="Please enter username and select:" />
-					<h:outputText
-						value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
-					<h:outputText value=" " />
-					<h:outputText
-						value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
-					<br />
+						<h:outputText value="Please enter username and select:" />
+						<h:outputText
+							value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
+						<h:outputText value=" " />
+						<h:outputText
+							value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
+						<br />
 
-					<h:panelGroup id="captcha">
-						<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
-							var="captchaoption">
-							<h:commandLink
-								actionListener="#{captchaManagedBean.answer(captchaoption)}">
-								<h:outputText value="#{captchaoption.number}"
-									style="color:#{captchaoption.color}" />
-								<f:ajax render="@form :newcommentform:postcommentbutton" />
-							</h:commandLink>
+						<h:panelGroup id="captcha">
+							<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
+								var="captchaoption">
+								<h:commandLink
+									actionListener="#{captchaManagedBean.answer(captchaoption)}">
+									<h:outputText value="#{captchaoption.number}"
+										style="color:#{captchaoption.color}" />
+									<f:ajax render="@form :newcommentform:postcommentbutton" />
+								</h:commandLink>
 
-						</ui:repeat>
+							</ui:repeat>
+
+						</h:panelGroup>
+						<h:message for="captcha" id="logincaptchamessage"
+							showSummary="true" showDetail="false" errorClass="errorstyle" />
+						<br />
+
+
+
+
 
 					</h:panelGroup>
-					<h:message for="captcha" id="logincaptchamessage"
-						showSummary="true" showDetail="false" errorClass="errorstyle" />
-					<br />
 
+				</h:form>
 
-
-
-
-				</h:panelGroup>
-
-			</h:form>
-
-
-
-
-
-
-
+			</div>
 
 
 
@@ -124,20 +124,28 @@
 
 				<h:form id="commentpaginatorform"
 					rendered="#{!viewArticleManagedBean.article.comments.isEmpty()}">
-					<h:commandLink value="First Page"
+					<h:commandLink title="First Page"
 						actionListener="#{viewArticleManagedBean.firstPage()}">
+						<img src="#{request.contextPath}/resources/images/page_first.png"
+							alt="page_first" />
 						<f:ajax render=":comments" />
 					</h:commandLink>
-					<h:commandLink value="Prev Page"
+					<h:commandLink title="Prev Page"
 						actionListener="#{viewArticleManagedBean.prevPage()}">
+						<img src="#{request.contextPath}/resources/images/page_prev.png"
+							alt="page_prev" />
 						<f:ajax render=":comments" />
 					</h:commandLink>
-					<h:commandLink value="Next Page"
+					<h:commandLink title="Next Page"
 						actionListener="#{viewArticleManagedBean.nextPage()}">
+						<img src="#{request.contextPath}/resources/images/page_next.png"
+							alt="page_next" />
 						<f:ajax render=":comments" />
 					</h:commandLink>
-					<h:commandLink value="Last Page"
+					<h:commandLink title="Last Page"
 						actionListener="#{viewArticleManagedBean.lastPage()}">
+						<img src="#{request.contextPath}/resources/images/page_last.png"
+							alt="page_last" />
 						<f:ajax render=":comments" />
 					</h:commandLink>
 				</h:form>
@@ -146,50 +154,77 @@
 					var="comment" varStatus="varStatus">
 					<h:panelGroup
 						rendered="#{varStatus.index ge viewArticleManagedBean.commentStartIndex and varStatus.index le viewArticleManagedBean.commentEndIndex}">
-						<h:panelGrid columns="7">
-							<h:outputText value="#{comment.commentDate}">
-								<f:convertDateTime type="both" dateStyle="short" />
-							</h:outputText>
+						<hr />
+						<div
+							class="#{viewArticleManagedBean.commentShouldBeHighlighted(comment)?'onecomment highlighted':'onecomment'}">
+							<div class="commentheader">
+								<h:link title="Link to comment" styleClass="commentlink">
+									<f:param name="articleId"
+										value="#{viewArticleManagedBean.articleId}" />
+									<f:param name="highlightCommentId" value="#{comment.id}" />
+									<img
+										src="#{request.contextPath}/resources/images/comment_link.gif"
+										alt="comment_link" />
+								</h:link>
+								<div class="commentnumber">
+
+									<h:outputText
+										value="##{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
+								</div>
+								<div class="commentauthor">
+									<h:outputText value="#{comment.author}" />
+								</div>
+								<div class="commentdate ">
+									<h:outputText value="#{comment.commentDate}">
+										<f:convertDateTime type="both" dateStyle="short"
+											timeStyle="short" />
+									</h:outputText>
+								</div>
 
 
 
-							<h:outputText value="#{comment.author}" />
 
 
-							<h:outputText
-								value="#{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
-							<h:panelGroup>
-								<h:form>
-									<h:outputText value="#{comment.plusCount}" />
-									<h:commandLink value="Vote up"
+
+
+
+								<h:form styleClass="commentvoteform">
+									<h:outputText value="#{comment.plusCount}"
+										styleClass="upvotecount" />
+									<h:commandLink
 										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-										actionListener="#{viewArticleManagedBean.upvoteComment(comment)}">
+										actionListener="#{viewArticleManagedBean.upvoteComment(comment)}"
+										title="Vote up">
+										<img src="#{request.contextPath}/resources/images/vote_up.jpg"
+											alt="vote_up" />
+
+
 										<f:ajax render="@form" />
 									</h:commandLink>
 
-									<h:outputText value="#{comment.minusCount}" />
-									<h:commandLink value="Vote down"
+									<h:outputText value="#{comment.minusCount}"
+										styleClass="downvotecount" />
+									<h:commandLink
 										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-										actionListener="#{viewArticleManagedBean.downvoteComment(comment)}">
+										actionListener="#{viewArticleManagedBean.downvoteComment(comment)}"
+										title="Vote down">
+										<img
+											src="#{request.contextPath}/resources/images/vote_down.jpg"
+											alt="vote_down" />
 										<f:ajax render="@form" />
 									</h:commandLink>
 								</h:form>
-							</h:panelGroup>
-							<h:link value="Link to comment">
-								<f:param name="articleId"
-									value="#{viewArticleManagedBean.articleId}" />
-								<f:param name="highlightCommentId" value="#{comment.id}" />
-							</h:link>
-							<h:outputText
-								value="HIGHLIGHT:#{viewArticleManagedBean.commentShouldBeHighlighted(comment)}" />
-						</h:panelGrid>
-						<br />
-						<h:outputText value="#{comment.commentText}"
-							style="white-space:pre;" />
-						<!-- pre is needed for whitespacing -->
-						<hr />
-					</h:panelGroup>
 
+
+							</div>
+
+							<p class="clear">
+								<h:outputText value="#{comment.commentText}" id="commenttext"
+									styleClass="commenttext" />
+							</p>
+
+						</div>
+					</h:panelGroup>
 
 				</ui:repeat>
 			</h:panelGroup>

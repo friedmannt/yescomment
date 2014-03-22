@@ -18,7 +18,7 @@
 	<h:body>
 
 		<div id="contentwrapper">
-			<header id="yellheader">
+			<aside id="dotherightthing">
 				<nav class="headerbuttons">
 					<h1>
 						<h:outputLink value="#{request.contextPath}">
@@ -36,7 +36,7 @@
 							styleClass="last button" />
 					</h2>
 				</nav>
-			</header>
+			</aside>
 
 			<header id="top">
 				<ui:include src="search.xhtml" />
@@ -47,6 +47,7 @@
 			</article>
 			<footer id="footer">
 				<nav id="footerlinks">
+					<h:link outcome="feedback" styleClass="footerlink">Feedback</h:link>
 					<h:link outcome="legal" styleClass="footerlink">Legal</h:link>
 					<h:link outcome="archive" styleClass="footerlink">Archives</h:link>
 					<h:link outcome="faq" styleClass="footerlink">F.A.Q.</h:link>
@@ -54,6 +55,7 @@
 				</nav>
 
 			</footer>
+
 
 
 		</div>

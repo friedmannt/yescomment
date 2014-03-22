@@ -5,6 +5,7 @@ html,body {
 	font-family: Arial;
 	font-size: 14px;
 	line-height: 18px;
+	color: #3A3A3A;
 }
 
 input,textarea {
@@ -19,11 +20,17 @@ p {
 	margin: 0 0 10px
 }
 
-
+hr {
+	border: 0;
+	background-color: gray;
+	color: gray;
+	height: 1px;
+}
 
 .errorstyle {
 	color: red;
 	font-style: oblique;
+	display: block;
 }
 
 .button {
@@ -42,9 +49,8 @@ p {
 }
 
 .invertedbutton {
-	color: #fb1947 !important; 
-	background-color: #FFFFFF !important; 
-	
+	color: #fb1947 !important;
+	background-color: #FFFFFF !important;
 	border: 1px solid !important;
 	border-color: #fb1947 !important;
 }
@@ -115,10 +121,10 @@ p {
 	display: block
 }
 
-#yellheader {
+#dotherightthing {
 	background-image:
 		url('#{request.contextPath}/resources/images/yescommentyell320.png');
-	/*direkt rossz, hogy ne látszódjon*/
+	/*direkt lehet a kép url rossz, hogy ne látszódjon*/
 	width: 320px;
 	height: 100%;
 	position: fixed;
@@ -127,13 +133,13 @@ p {
 	background-repeat: no-repeat;
 }
 
-#yellheader .headerbuttons {
+#dotherightthing .headerbuttons {
 	margin: 20px auto 0 auto;
 	display: block;
 	width: 280px;
 }
 
-#yellheader h1 a {
+#dotherightthing h1 a {
 	display: block;
 	background-color: #fb1947;
 	width: 60px;
@@ -142,7 +148,7 @@ p {
 	margin: 0 10px 10px 0;
 }
 
-#yellheader h1 a img {
+#dotherightthing h1 a img {
 	display: block;
 	padding-left: 10px;
 	padding-top: 10px;
@@ -151,7 +157,7 @@ p {
 	width: 40px;
 }
 
-#yellheader .yescommentheaderboxtext {
+#dotherightthing .yescommentheaderboxtext {
 	float: left;
 	line-height: 60px;
 	color: #FFFFFF;
@@ -163,12 +169,12 @@ p {
 	width: 170px;
 }
 
-#yellheader h2 {
+#dotherightthing h2 {
 	margin: 0 auto;
 	width: 280px;
 }
 
-#yellheader h2 a {
+#dotherightthing h2 a {
 	display: block;
 	width: 135px;
 	padding: 0
@@ -384,9 +390,8 @@ p {
 
 .oneselectorbutton {
 	/*not disaled is not selected*/
-	color: #fb1947 !important; 
-	background-color: #FFFFFF !important; 
-	
+	color: #fb1947 !important;
+	background-color: #FFFFFF !important;
 	border: 1px solid !important;
 	border-color: #fb1947 !important;
 }
@@ -396,5 +401,69 @@ p {
 	color: #FFFFFF !important;
 	background-color: #fb1947 !important;
 	border: 0 !important;
-	
+}
+
+.onecomment {
+	display: block;
+	padding: 0px 20px;
+}
+
+.onecomment.highlighted {
+	background-color: rgba(251, 25, 71, 0.05);
+	padding: 10px 20px;
+}
+
+.upvotecount {
+	color: #75de87;
+	margin-left: 10px;
+}
+
+.downvotecount {
+	color: #fb1947;
+	margin-left: 10px;
+}
+
+.commentnumber,.commentauthor,.commentdate,.commentvoteform,.commentlink
+	{
+	display: inline-block;
+	line-height: 30px;
+}
+
+.commentnumber,.commentauthor,.upvotecount,.downvotecount {
+	font-size: 24px;
+}
+
+.commentvoteform {
+	float: right;
+}
+
+.commentvoteform {
+	margin-right: 10px;
+}
+
+.commenttext {
+	white-space: pre-wrap;
+	font-family: Georgia;
+	display: block;
+}
+
+.originalarticlelink {
+	text-align: right;
+	display: block;
+	color: #303030;
+}
+
+#newcommentform\:newCommentText {
+	width: 100%;
+	display: block;
+	height: 120px;
+}
+
+#newcommentform\:name {
+	display: block;
+	height: 40px;
+}
+
+#commentpaginatorform {
+	text-align: center
 }
