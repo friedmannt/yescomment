@@ -6,6 +6,7 @@ html,body {
 	font-size: 14px;
 	line-height: 18px;
 	color: #3A3A3A;
+	
 }
 
 input,textarea {
@@ -91,16 +92,26 @@ hr {
 #contentwrapper {
 	margin: 0 auto;
 	max-width: 1200px;
+	min-height: 960px;
 	width: 100%;
+	background-image:
+		url('#{request.contextPath}/resources/images/yescommentyell480.png');
+	background-repeat: no-repeat;
+	
+}
+
+#contentwrapper #main {
+	margin-left: 320px;
+	
+
 }
 
 #contentwrapper article {
-	margin-left: 320px;
 	padding: 10px 40px 10px 40px;
+	
 }
 
 #contentwrapper #top {
-	margin-left: 320px;
 	padding: 20px 40px 20px 40px;
 }
 
@@ -122,15 +133,11 @@ hr {
 }
 
 #dotherightthing {
-	background-image:
-		url('#{request.contextPath}/resources/images/yescommentyell320.png');
-	/*direkt lehet a kép url rossz, hogy ne látszódjon*/
 	width: 320px;
-	height: 100%;
-	position: fixed;
-	z-index: 999;
-	background-size: 100% auto;
-	background-repeat: no-repeat;
+	float: left;
+	
+	
+	
 }
 
 #dotherightthing .headerbuttons {
@@ -374,7 +381,6 @@ hr {
 }
 
 #contentwrapper #footer {
-	margin-left: 320px;
 	padding: 20px 40px 20px 40px;
 }
 
@@ -464,6 +470,17 @@ hr {
 	height: 40px;
 }
 
-#commentpaginatorform {
+.commentpaginator {
 	text-align: center
+}
+.paginatorlink {
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.paginatorpageinfo {
+	margin-left: 3px;
+	margin-right: 3px;
+	font-size: 24px;
+	color: #fb1947; 
 }

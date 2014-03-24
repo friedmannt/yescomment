@@ -37,25 +37,25 @@
 					</h2>
 				</nav>
 			</aside>
+			<div id="main">
+				<header id="top">
+					<ui:include src="search.xhtml" />
+				</header>
 
-			<header id="top">
-				<ui:include src="search.xhtml" />
-			</header>
+				<article>
+					<ui:insert name="content" />
+				</article>
+				<footer id="footer">
+					<nav id="footerlinks">
+						<h:link outcome="feedback" styleClass="footerlink">Feedback</h:link>
+						<h:link outcome="legal" styleClass="footerlink">Legal</h:link>
+						<h:link outcome="archive" styleClass="footerlink">Archives</h:link>
+						<h:link outcome="faq" styleClass="footerlink">F.A.Q.</h:link>
+						<h:link outcome="about" styleClass="footerlink">About</h:link>
+					</nav>
 
-			<article>
-				<ui:insert name="content" />
-			</article>
-			<footer id="footer">
-				<nav id="footerlinks">
-					<h:link outcome="feedback" styleClass="footerlink">Feedback</h:link>
-					<h:link outcome="legal" styleClass="footerlink">Legal</h:link>
-					<h:link outcome="archive" styleClass="footerlink">Archives</h:link>
-					<h:link outcome="faq" styleClass="footerlink">F.A.Q.</h:link>
-					<h:link outcome="about" styleClass="footerlink">About</h:link>
-				</nav>
-
-			</footer>
-
+				</footer>
+			</div>
 
 
 		</div>

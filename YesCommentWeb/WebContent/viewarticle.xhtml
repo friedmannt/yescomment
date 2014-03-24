@@ -38,8 +38,6 @@
 				<h:message for="newCommentText" showSummary="true"
 					showDetail="false" errorClass="errorstyle" />
 
-
-
 				<div>
 					<h:inputText id="name" value="#{userSessionBean.userName}"
 						maxlength="#{userSessionBean.getMaxAuthorSize()}"
@@ -90,18 +88,9 @@
 						<h:message for="captcha" id="logincaptchamessage"
 							showSummary="true" showDetail="false" errorClass="errorstyle" />
 						<br />
-
-
-
-
-
 					</h:panelGroup>
-
 				</h:form>
-
 			</div>
-
-
 
 			<hr />
 			<h2>Comments</h2>
@@ -121,34 +110,14 @@
 			</h:form>
 			<h:panelGroup id="comments">
 
+				<ui:include src="paginator.xhtml">
+					<ui:param name="paginatorshouldberendered"
+						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
+					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
+					<ui:param name="render" value=":comments :paginatorbelowcomments" />
+					<ui:param name="paginatorformid" value="paginatorabovecomments"/>
+				</ui:include>
 
-				<h:form id="commentpaginatorform"
-					rendered="#{!viewArticleManagedBean.article.comments.isEmpty()}">
-					<h:commandLink title="First Page"
-						actionListener="#{viewArticleManagedBean.firstPage()}">
-						<img src="#{request.contextPath}/resources/images/page_first.png"
-							alt="page_first" />
-						<f:ajax render=":comments" />
-					</h:commandLink>
-					<h:commandLink title="Prev Page"
-						actionListener="#{viewArticleManagedBean.prevPage()}">
-						<img src="#{request.contextPath}/resources/images/page_prev.png"
-							alt="page_prev" />
-						<f:ajax render=":comments" />
-					</h:commandLink>
-					<h:commandLink title="Next Page"
-						actionListener="#{viewArticleManagedBean.nextPage()}">
-						<img src="#{request.contextPath}/resources/images/page_next.png"
-							alt="page_next" />
-						<f:ajax render=":comments" />
-					</h:commandLink>
-					<h:commandLink title="Last Page"
-						actionListener="#{viewArticleManagedBean.lastPage()}">
-						<img src="#{request.contextPath}/resources/images/page_last.png"
-							alt="page_last" />
-						<f:ajax render=":comments" />
-					</h:commandLink>
-				</h:form>
 
 				<ui:repeat value="#{viewArticleManagedBean.getCommentsOfArticle()}"
 					var="comment" varStatus="varStatus">
@@ -163,7 +132,7 @@
 										value="#{viewArticleManagedBean.articleId}" />
 									<f:param name="highlightCommentId" value="#{comment.id}" />
 									<img
-										src="#{request.contextPath}/resources/images/comment_link.gif"
+										src="#{request.contextPath}/resources/images/comment_link.png"
 										alt="comment_link" />
 								</h:link>
 								<div class="commentnumber">
@@ -176,17 +145,10 @@
 								</div>
 								<div class="commentdate ">
 									<h:outputText value="#{comment.commentDate}">
-										<f:convertDateTime type="both" dateStyle="short"
-											timeStyle="short" />
+										<f:convertDateTime type="both" dateStyle="medium"
+											timeStyle="medium" />
 									</h:outputText>
 								</div>
-
-
-
-
-
-
-
 
 								<h:form styleClass="commentvoteform">
 									<h:outputText value="#{comment.plusCount}"
@@ -227,6 +189,15 @@
 					</h:panelGroup>
 
 				</ui:repeat>
+			<ui:include src="paginator.xhtml">
+					<ui:param name="paginatorshouldberendered"
+						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
+					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
+					<ui:param name="render" value=":comments :paginatorabovecomments" />
+					<ui:param name="paginatorformid" value="paginatorbelowcomments"/>
+				</ui:include>
+
+			
 			</h:panelGroup>
 
 

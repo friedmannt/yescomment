@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * 
  * @param <T>
  */
-public class ListPaginator<T> implements Serializable {
+public class ListPaginator<T> implements Serializable,Paginator {
 
 	/**
 	 * 
@@ -52,28 +52,32 @@ public class ListPaginator<T> implements Serializable {
 		return model.subList(startingIndex, endingIndex);
 	}
 
-	public void first() {
+	@Override
+	public void firstPage() {
 		currentPage = 1;
 	}
 
-	public void previous() {
+	@Override
+	public void prevPage() {
 		if (currentPage > 1) {
 			currentPage--;
 		}
 	}
 
-	public void next() {
+	@Override
+	public void nextPage() {
 		if (currentPage < getTotalPage()) {
 			currentPage++;
 		}
 	}
-
-	public void last() {
+	
+	@Override
+	public void lastPage() {
 		currentPage = getTotalPage();
 	}
 
 
-
+	@Override
 	public int getTotalPage() {
 		if (model.size() % pageSize == 0) {
 			return model.size() / pageSize;
@@ -82,6 +86,7 @@ public class ListPaginator<T> implements Serializable {
 		}
 	}
 
+	@Override
 	public int getCurrentPage() {
 		return currentPage;
 	}

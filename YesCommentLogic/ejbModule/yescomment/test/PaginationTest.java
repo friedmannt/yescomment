@@ -48,18 +48,18 @@ public class PaginationTest {
 	@Test
 	public void testFirstLast() {
 		ListPaginator<Integer> paginator=new ListPaginator<Integer>(model, 10);
-		paginator.last();
+		paginator.lastPage();
 		assertEquals(Arrays.asList(91,92,93,94,95,96,97,98,99,100), paginator.getCurrentViewOfModel());
-		paginator.first();
+		paginator.firstPage();
 		assertEquals(Arrays.asList(1,2,3,4,5,6,7,8,9,10), paginator.getCurrentViewOfModel());
 	}
 	
 	@Test
 	public void testPrevNext() {
 		ListPaginator<Integer> paginator=new ListPaginator<Integer>(model, 10);
-		paginator.next();
+		paginator.nextPage();
 		assertEquals(Arrays.asList(11,12,13,14,15,16,17,18,19,20), paginator.getCurrentViewOfModel());
-		paginator.previous();
+		paginator.prevPage();
 		assertEquals(Arrays.asList(1,2,3,4,5,6,7,8,9,10), paginator.getCurrentViewOfModel());
 	}
 	
@@ -67,11 +67,11 @@ public class PaginationTest {
 	public void testPrevNextMultipleTimes() {
 		ListPaginator<Integer> paginator=new ListPaginator<Integer>(model, 10);
 		for (int i=1;i<20;i++) {
-			paginator.next();	
+			paginator.nextPage();	
 		}
 		assertEquals(Arrays.asList(91,92,93,94,95,96,97,98,99,100), paginator.getCurrentViewOfModel());
 		for (int i=1;i<20;i++) {
-			paginator.previous();	
+			paginator.prevPage();	
 		}
 		assertEquals(Arrays.asList(1,2,3,4,5,6,7,8,9,10), paginator.getCurrentViewOfModel());
 	}
@@ -79,7 +79,7 @@ public class PaginationTest {
 	@Test
 	public void testChangeModel() {
 		ListPaginator<Integer> paginator=new ListPaginator<Integer>(model, 10);
-		paginator.last();
+		paginator.lastPage();
 		assertEquals(10, paginator.getCurrentPage());
 		List<Integer> newmodel=new ArrayList<Integer>();
 		for (int i=1;i<50;i++) {
@@ -97,7 +97,7 @@ public class PaginationTest {
 		paginator.setPageSize(5);
 		assertEquals(1, paginator.getCurrentPage());
 		assertEquals(Arrays.asList(1,2,3,4,5), paginator.getCurrentViewOfModel());
-		paginator.last();
+		paginator.lastPage();
 		assertEquals(20, paginator.getCurrentPage());
 		assertEquals(Arrays.asList(96,97,98,99,100), paginator.getCurrentViewOfModel());
 

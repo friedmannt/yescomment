@@ -17,10 +17,11 @@ import yescomment.model.Article;
 import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
 import yescomment.persistence.CommentManager;
+import yescomment.util.Paginator;
 
 @ManagedBean
 @ViewScoped
-public class ViewArticleManagedBean implements Serializable {
+public class ViewArticleManagedBean implements Serializable,Paginator {
 
 	public static enum CommentSortOrder {
 		OLDESTFIRST, NEWESTFIRST;
@@ -198,27 +199,46 @@ public class ViewArticleManagedBean implements Serializable {
 		return commentEndIndex;
 	}
 
+	
+	@Override
 	public void firstPage() {
 		commentStartIndex = 0;
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
+	@Override
 	public void prevPage() {
 		commentStartIndex = Math.max(0, commentStartIndex - COMMENT_PAGE_SIZE);
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
+	@Override
 	public void nextPage() {
 		commentStartIndex = Math.min((article.getCommentCount() - 1) / COMMENT_PAGE_SIZE * COMMENT_PAGE_SIZE, commentStartIndex + COMMENT_PAGE_SIZE);
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 
 	}
 
+	@Override
 	public void lastPage() {
 		commentStartIndex = (article.getCommentCount() - 1) / COMMENT_PAGE_SIZE * COMMENT_PAGE_SIZE;
 		commentEndIndex = commentStartIndex + COMMENT_PAGE_SIZE - 1;
 	}
 
+	@Override
+	public int getCurrentPage() {
+		return (commentStartIndex) / COMMENT_PAGE_SIZE +1;
+	}
+
+	@Override
+	public int getTotalPage() {
+		
+		return (article.getCommentCount()-1) / COMMENT_PAGE_SIZE +1;
+	}
+	
+	
+	
+	
 	// setting page start and end indices to show highlighted comment
 	private void pageToComment(@NotNull final String highlightCommentId) {
 		List<Comment> comments = getCommentsOfArticle();
@@ -237,4 +257,6 @@ public class ViewArticleManagedBean implements Serializable {
 		}
 
 	}
+
+	
 }

@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<h:form styleClass="commentpaginator" id="#{paginatorformid}"
+		rendered="#{paginatorshouldberendered}">
+		<h:commandLink title="First Page" styleClass="paginatorlink"
+			actionListener="#{paginator.firstPage()}">
+			<img src="#{request.contextPath}/resources/images/page_first.png"
+				alt="page_first" />
+			<f:ajax render="#{render} @form" />
+		</h:commandLink>
+		<h:commandLink title="Prev Page" styleClass="paginatorlink"
+			actionListener="#{paginator.prevPage()}">
+			<img src="#{request.contextPath}/resources/images/page_prev.png"
+				alt="page_prev" />
+			<f:ajax render="#{render} @form" />
+		</h:commandLink>
+		<h:outputText value="#{paginator.getCurrentPage()}/#{paginator.getTotalPage()}" styleClass="paginatorpageinfo"/>
+		<h:commandLink title="Next Page" styleClass="paginatorlink"
+			actionListener="#{paginator.nextPage()}">
+			<img src="#{request.contextPath}/resources/images/page_next.png"
+				alt="page_next" />
+			<f:ajax render="#{render} @form" />
+		</h:commandLink>
+		<h:commandLink title="Last Page" styleClass="paginatorlink"
+			actionListener="#{paginator.lastPage()}">
+			<img src="#{request.contextPath}/resources/images/page_last.png"
+				alt="page_last" />
+			<f:ajax render="#{render} @form" />
+		</h:commandLink>
+	</h:form>
+
+</ui:composition>

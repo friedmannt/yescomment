@@ -21,28 +21,32 @@
 		<div class="articlepreviewdata">
 
 			<h1>
-				
-					<h:link outcome="viewarticle" value="#{article.title}">
-						<f:param name="articleId" value="#{article.id}" />
 
-					</h:link>
-				
+				<h:link outcome="viewarticle" value="#{article.title}">
+					<f:param name="articleId" value="#{article.id}" />
+
+				</h:link>
+
 			</h1>
 			<p>
-			<cite>
-				<h:outputText
-					value="#{yesCommentApplicationBean.getSiteOfURL(article.url)}" />
-			</cite>
+				<cite> <h:outputText
+						value="#{yesCommentApplicationBean.getSiteOfURL(article.url)}" />
+				</cite>
+				<cite>
+				<h:outputText value="#{article.registrationDate}">
+					<f:convertDateTime type="date" />
+				</h:outputText>
+				</cite>
 			</p>
-			<p class="articledescriptiontext">	
+			<p class="articledescriptiontext">
 				<h:outputText value="#{article.description}" />
 			</p>
-			
+
 			<p class="articlepreviewkeywords">
 				<ui:repeat var="keyword"
 					value="#{yesCommentApplicationBean.getSetAsList(article.keywords)}"
 					varStatus="status">
-					<h:outputText value=" " rendered="#{!status.first}"/>
+					<h:outputText value=" " rendered="#{!status.first}" />
 					<h:link outcome="keywords" value="#{keyword}">
 						<f:param name="keyword" value="#{keyword}" />
 					</h:link>
