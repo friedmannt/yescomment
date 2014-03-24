@@ -6,7 +6,6 @@ html,body {
 	font-size: 14px;
 	line-height: 18px;
 	color: #3A3A3A;
-	
 }
 
 input,textarea {
@@ -34,8 +33,12 @@ hr {
 	display: block;
 }
 
+.halfseethrough{
+	background-color: rgba(255,255,255,0.5);
+}
+
 .button {
-	color: #FFFFFF;
+	color: white;
 	background-color: #fb1947;
 	display: inline-block;
 	height: 40px;
@@ -51,7 +54,7 @@ hr {
 
 .invertedbutton {
 	color: #fb1947 !important;
-	background-color: #FFFFFF !important;
+	background-color: rgba(255,255,255,0.5) !important;
 	border: 1px solid !important;
 	border-color: #fb1947 !important;
 }
@@ -97,18 +100,14 @@ hr {
 	background-image:
 		url('#{request.contextPath}/resources/images/yescommentyell480.png');
 	background-repeat: no-repeat;
-	
 }
 
 #contentwrapper #main {
 	margin-left: 320px;
-	
-
 }
 
 #contentwrapper article {
 	padding: 10px 40px 10px 40px;
-	
 }
 
 #contentwrapper #top {
@@ -135,9 +134,6 @@ hr {
 #dotherightthing {
 	width: 320px;
 	float: left;
-	
-	
-	
 }
 
 #dotherightthing .headerbuttons {
@@ -167,7 +163,7 @@ hr {
 #dotherightthing .yescommentheaderboxtext {
 	float: left;
 	line-height: 60px;
-	color: #FFFFFF;
+	color: white;
 	background-color: rgba(0, 0, 0, 0.4);
 	font-size: 19px;
 	text-align: center;
@@ -397,14 +393,14 @@ hr {
 .oneselectorbutton {
 	/*not disaled is not selected*/
 	color: #fb1947 !important;
-	background-color: #FFFFFF !important;
+	background-color: rgba(255,255,255,0.5) !important;
 	border: 1px solid !important;
 	border-color: #fb1947 !important;
 }
 
 .oneselectorbutton:disabled {
 	/*disaled is selected*/
-	color: #FFFFFF !important;
+	color: white !important;
 	background-color: #fb1947 !important;
 	border: 0 !important;
 }
@@ -463,16 +459,13 @@ hr {
 	width: 100%;
 	display: block;
 	height: 120px;
-}
-
-#newcommentform\:name {
-	display: block;
-	height: 40px;
+	font-family: "Arial";
 }
 
 .commentpaginator {
 	text-align: center
 }
+
 .paginatorlink {
 	margin-left: 3px;
 	margin-right: 3px;
@@ -482,5 +475,38 @@ hr {
 	margin-left: 3px;
 	margin-right: 3px;
 	font-size: 24px;
-	color: #fb1947; 
+	color: #fb1947;
+}
+
+#newcommentauthordiv {
+	float: left;
+	height: 50px;
+	width: 25%;
+}
+
+#newcommentcaptchadiv {
+	float: left;
+	height: 50px;
+	width: 50%;
+}
+#newcommentpostdiv {
+	float: left;
+	height: 50px;
+	width: 25%;
+}
+
+
+#newcommentform\:name {
+
+	font-family: "Arial";
+	font-size: 18px;
+}
+
+.captchaoption {
+	margin: 2px;
+	font-size: 14px;
+}
+
+#newcommentform\:postcommentbutton {
+	width:100%;
 }

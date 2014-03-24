@@ -22,16 +22,17 @@ public class CaptchaManagedBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int CAPTCHA_OPTION_SIZE = 3;// this many options are
+	private static final int CAPTCHA_OPTION_SIZE = 10;// this many options are
 														// presented
 	public static int getCaptchaOptionSize() {
 		return CAPTCHA_OPTION_SIZE;
 	}
 
 	public void answer(CaptchaOption captchaOption)  {
+		
 		if (captchaOption==null||!captchaOption.equals(correctCaptchaOption)) {
 			
-			FacesContext.getCurrentInstance().addMessage("captchaform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
+			FacesContext.getCurrentInstance().addMessage("newcommentform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
 		}
 		else {
 			setCaptchaCorrectlyAnswered(true);
@@ -54,7 +55,7 @@ public class CaptchaManagedBean implements Serializable {
 	public void initialize() {
 		
 		correctCaptchaOption = new CaptchaOption(
-				CaptchaOption.Color.values()[NumberUtil.getRandomInt(6)],
+				CaptchaOption.Color.values()[NumberUtil.getRandomInt(CaptchaOption.Color.values().length)],
 				NumberUtil.getRandomInt(100));
 		int numberOfCorrectCaptchaOption = NumberUtil
 				.getRandomInt(CAPTCHA_OPTION_SIZE);
@@ -66,7 +67,7 @@ public class CaptchaManagedBean implements Serializable {
 						correctCaptchaOption.getNumber());
 			} else {
 				possibleCaptchaOptions[i] = new CaptchaOption(
-						CaptchaOption.Color.values()[NumberUtil.getRandomInt(6)],
+						CaptchaOption.Color.values()[NumberUtil.getRandomInt(CaptchaOption.Color.values().length)],
 						NumberUtil.getRandomInt(100));
 				// TODO ensure, no options are the same. If options are same,
 				// continue randomize it

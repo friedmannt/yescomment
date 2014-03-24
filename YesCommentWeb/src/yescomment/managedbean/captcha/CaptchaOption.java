@@ -9,7 +9,7 @@ public class CaptchaOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static enum Color {
-		YELLOW, ORANGE, RED, VIOLET, BLUE, GREEN
+		 AQUA, BLACK, BLUE, FUCHSIA, GRAY, GREEN, LIME, MAROON, NAVY, OLIVE, ORANGE, PURPLE, RED, SILVER, TEAL,  YELLOW;
 	}
 
 	private Color color;

@@ -34,65 +34,72 @@
 				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
 					pt:placeHolder="Place your comment here..." id="newCommentText"
-					required="true" requiredMessage="Empty comment" />
+					required="true" requiredMessage="Empty comment"  styleClass="halfseethrough"/>
 				<h:message for="newCommentText" showSummary="true"
 					showDetail="false" errorClass="errorstyle" />
-
 				<div>
-					<h:inputText id="name" value="#{userSessionBean.userName}"
-						maxlength="#{userSessionBean.getMaxAuthorSize()}"
-						pt:placeHolder="#{yescommentmsg['name']}">
-						<f:ajax />
-					</h:inputText>
-					<h:commandButton value="Post Comment" styleClass="button"
-						id="postcommentbutton"
-						disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
-						actionListener="#{viewArticleManagedBean.postNewComment()}">
-						<f:ajax render=":comments @form :viewedarticlepreview"
-							execute="@form" />
-					</h:commandButton>
-				</div>
-			</h:form>
-			<div>
-				<h:form id="captchaform">
-					<h:panelGroup
-						rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
-						<h:outputText value="Capcha already answered" />
-					</h:panelGroup>
-					<h:panelGroup
-						rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
+					<div id="newcommentauthordiv">
+						<h:outputLabel for="name" value="Your name" />
+						<h:inputText id="name" value="#{userSessionBean.userName}"
+							maxlength="#{userSessionBean.getMaxAuthorSize()}"
+							pt:placeHolder="#{yescommentmsg['your_name']}"
+							title="#{yescommentmsg['your_name']}" styleClass="halfseethrough">
+							<f:ajax />
+						</h:inputText>
+					</div>
+					<div id="newcommentcaptchadiv">
 						<h:outputText
 							value="In order to post comment, you should answer a capthca." />
-
-						<h:outputText value="Please enter username and select:" />
-						<h:outputText
-							value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
-						<h:outputText value=" " />
-						<h:outputText
-							value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
 						<br />
-
-						<h:panelGroup id="captcha">
-							<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
-								var="captchaoption">
-								<h:commandLink
-									actionListener="#{captchaManagedBean.answer(captchaoption)}">
-									<h:outputText value="#{captchaoption.number}"
-										style="color:#{captchaoption.color}" />
-									<f:ajax render="@form :newcommentform:postcommentbutton" />
-								</h:commandLink>
-
-							</ui:repeat>
-
+						<h:panelGroup styleClass="newcommentbox captchapanel"
+							rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
+							<h:outputText value="Capcha already answered" />
 						</h:panelGroup>
-						<h:message for="captcha" id="logincaptchamessage"
-							showSummary="true" showDetail="false" errorClass="errorstyle" />
-						<br />
-					</h:panelGroup>
-				</h:form>
-			</div>
+						<h:panelGroup styleClass="newcommentbox captchapanel"
+							rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
 
-			<hr />
+							<h:outputText value="Please enter username and select:" />
+							<h:outputText
+								value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
+							<h:outputText value=" " />
+							<h:outputText
+								value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
+
+							<br />
+							<h:panelGroup id="captcha">
+								<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
+									var="captchaoption">
+									<h:commandLink
+										actionListener="#{captchaManagedBean.answer(captchaoption)}" immediate="true">
+										<h:outputText value="#{captchaoption.number}"
+											style="color:#{captchaoption.color}"
+											styleClass="captchaoption" />
+										<f:ajax render="@form" />
+									</h:commandLink>
+
+								</ui:repeat>
+
+							</h:panelGroup>
+							<h:message for="captcha" id="captchamessage"
+								showSummary="true" showDetail="false" errorClass="errorstyle" />
+						</h:panelGroup>
+					</div>
+
+
+					<div id="newcommentpostdiv">
+						<h:commandButton value="Post Comment" styleClass="button"
+							id="postcommentbutton"
+							disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
+							actionListener="#{viewArticleManagedBean.postNewComment()}">
+							<f:ajax render=":comments @form :viewedarticlepreview"
+								execute="@form" />
+						</h:commandButton>
+					</div>
+
+
+				</div>
+			</h:form>
+			<div class="clear" />
 			<h2>Comments</h2>
 			<h:form id="commentorderform">
 				<h:commandButton value="#{yescommentmsg['newest first']}"
@@ -115,7 +122,7 @@
 						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
 					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
 					<ui:param name="render" value=":comments :paginatorbelowcomments" />
-					<ui:param name="paginatorformid" value="paginatorabovecomments"/>
+					<ui:param name="paginatorformid" value="paginatorabovecomments" />
 				</ui:include>
 
 
@@ -189,15 +196,15 @@
 					</h:panelGroup>
 
 				</ui:repeat>
-			<ui:include src="paginator.xhtml">
+				<ui:include src="paginator.xhtml">
 					<ui:param name="paginatorshouldberendered"
 						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
 					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
 					<ui:param name="render" value=":comments :paginatorabovecomments" />
-					<ui:param name="paginatorformid" value="paginatorbelowcomments"/>
+					<ui:param name="paginatorformid" value="paginatorbelowcomments" />
 				</ui:include>
 
-			
+
 			</h:panelGroup>
 
 

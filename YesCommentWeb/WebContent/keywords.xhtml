@@ -13,7 +13,7 @@
 		<h:form id="searchkeywordform">
 			<table>
 				<TR>
-					<TD><h:inputText id="searchedkeyword" type="search"
+					<TD><h:inputText id="searchedkeyword" type="search" styleClass="halfseethrough"
 							value="#{keywordManagedBean.keyword}" required="true"
 							requiredMessage="#{yescommentmsg['keyword_empty']}"
 							pt:placeholder="#{yescommentmsg['enter_keyword']}">
@@ -34,7 +34,7 @@
 
 		</h:form>
 		<p:tagCloud id="tagcloud"
-			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}">
+			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}" styleClass="halfseethrough">
 		</p:tagCloud>
 
 
