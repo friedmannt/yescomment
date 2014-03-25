@@ -33,6 +33,7 @@ public class CaptchaManagedBean implements Serializable {
 		if (captchaOption==null||!captchaOption.equals(correctCaptchaOption)) {
 			
 			FacesContext.getCurrentInstance().addMessage("newcommentform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
+			randomizeCaptcha();
 		}
 		else {
 			setCaptchaCorrectlyAnswered(true);
@@ -54,6 +55,10 @@ public class CaptchaManagedBean implements Serializable {
 	@PostConstruct
 	public void initialize() {
 		
+		randomizeCaptcha();
+	}
+
+	public void randomizeCaptcha() {
 		correctCaptchaOption = new CaptchaOption(
 				CaptchaOption.Color.values()[NumberUtil.getRandomInt(CaptchaOption.Color.values().length)],
 				NumberUtil.getRandomInt(100));

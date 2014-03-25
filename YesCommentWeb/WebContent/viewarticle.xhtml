@@ -34,7 +34,8 @@
 				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
 					pt:placeHolder="Place your comment here..." id="newCommentText"
-					required="true" requiredMessage="Empty comment"  styleClass="halfseethrough"/>
+					required="true" requiredMessage="Empty comment"
+					styleClass="halfseethrough" />
 				<h:message for="newCommentText" showSummary="true"
 					showDetail="false" errorClass="errorstyle" />
 				<div>
@@ -58,19 +59,26 @@
 						<h:panelGroup styleClass="newcommentbox captchapanel"
 							rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
 
-							<h:outputText value="Please enter username and select:" />
+							<h:outputText value="Please select:" />
 							<h:outputText
 								value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
 							<h:outputText value=" " />
 							<h:outputText
 								value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
-
+							<h:commandLink title="Refresh captcha"
+								styleClass="captcharefresh"
+								actionListener="#{captchaManagedBean.randomizeCaptcha()}">
+								<img src="#{request.contextPath}/resources/images/captcha_randomize.png"
+									alt="captcha_randomize" />
+								<f:ajax render="@form" />
+							</h:commandLink>
 							<br />
 							<h:panelGroup id="captcha">
 								<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
 									var="captchaoption">
 									<h:commandLink
-										actionListener="#{captchaManagedBean.answer(captchaoption)}" immediate="true">
+										actionListener="#{captchaManagedBean.answer(captchaoption)}"
+										immediate="true">
 										<h:outputText value="#{captchaoption.number}"
 											style="color:#{captchaoption.color}"
 											styleClass="captchaoption" />
@@ -80,8 +88,8 @@
 								</ui:repeat>
 
 							</h:panelGroup>
-							<h:message for="captcha" id="captchamessage"
-								showSummary="true" showDetail="false" errorClass="errorstyle" />
+							<h:message for="captcha" id="captchamessage" showSummary="true"
+								showDetail="false" errorClass="errorstyle" />
 						</h:panelGroup>
 					</div>
 
@@ -128,13 +136,16 @@
 
 				<ui:repeat value="#{viewArticleManagedBean.getCommentsOfArticle()}"
 					var="comment" varStatus="varStatus">
+
 					<h:panelGroup
 						rendered="#{varStatus.index ge viewArticleManagedBean.commentStartIndex and varStatus.index le viewArticleManagedBean.commentEndIndex}">
 						<hr />
 						<div
 							class="#{viewArticleManagedBean.commentShouldBeHighlighted(comment)?'onecomment highlighted':'onecomment'}">
+
 							<div class="commentheader">
-								<h:link title="Link to comment" styleClass="commentlink">
+								<h:link title="Link to comment" styleClass="commentlink"
+									fragment="comments">
 									<f:param name="articleId"
 										value="#{viewArticleManagedBean.articleId}" />
 									<f:param name="highlightCommentId" value="#{comment.id}" />
