@@ -463,7 +463,8 @@ hr {
 }
 
 .commentpaginator {
-	text-align: center
+	text-align: center;
+	display:block;
 }
 
 .paginatorlink {

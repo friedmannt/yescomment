@@ -68,7 +68,8 @@
 							<h:commandLink title="Refresh captcha"
 								styleClass="captcharefresh"
 								actionListener="#{captchaManagedBean.randomizeCaptcha()}">
-								<img src="#{request.contextPath}/resources/images/captcha_randomize.png"
+								<img
+									src="#{request.contextPath}/resources/images/captcha_randomize.png"
 									alt="captcha_randomize" />
 								<f:ajax render="@form" />
 							</h:commandLink>
@@ -123,14 +124,13 @@
 					<f:ajax render=":comments @form" />
 				</h:commandButton>
 			</h:form>
-			<h:panelGroup id="comments">
+			<h:form id="comments">
 
 				<ui:include src="paginator.xhtml">
 					<ui:param name="paginatorshouldberendered"
 						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
 					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
-					<ui:param name="render" value=":comments :paginatorbelowcomments" />
-					<ui:param name="paginatorformid" value="paginatorabovecomments" />
+
 				</ui:include>
 
 
@@ -168,7 +168,7 @@
 									</h:outputText>
 								</div>
 
-								<h:form styleClass="commentvoteform">
+								<h:panelGroup styleClass="commentvoteform">
 									<h:outputText value="#{comment.plusCount}"
 										styleClass="upvotecount" />
 									<h:commandLink
@@ -193,8 +193,8 @@
 											alt="vote_down" />
 										<f:ajax render="@form" />
 									</h:commandLink>
-								</h:form>
 
+								</h:panelGroup>
 
 							</div>
 
@@ -211,12 +211,11 @@
 					<ui:param name="paginatorshouldberendered"
 						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
 					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
-					<ui:param name="render" value=":comments :paginatorabovecomments" />
-					<ui:param name="paginatorformid" value="paginatorbelowcomments" />
+
 				</ui:include>
 
 
-			</h:panelGroup>
+			</h:form>
 
 
 		</h:panelGroup>
