@@ -113,14 +113,14 @@
 			<h:form id="commentorderform">
 				<h:commandButton value="#{yescommentmsg['newest first']}"
 					styleClass="button first oneselectorbutton"
-					actionListener="#{viewArticleManagedBean.setCommentSortOder('NEWESTFIRST')}"
-					disabled="#{viewArticleManagedBean.getCommentSortOder()=='NEWESTFIRST'}">
+					actionListener="#{viewArticleManagedBean.setCommentSortOrder('NEWESTFIRST')}"
+					disabled="#{viewArticleManagedBean.getCommentSortOrder()=='NEWESTFIRST'}">
 					<f:ajax render=":comments @form" />
 				</h:commandButton>
 				<h:commandButton value="#{yescommentmsg['oldest first']}"
 					styleClass="button middle oneselectorbutton"
-					actionListener="#{viewArticleManagedBean.setCommentSortOder('OLDESTFIRST')}"
-					disabled="#{viewArticleManagedBean.getCommentSortOder()=='OLDESTFIRST'}">
+					actionListener="#{viewArticleManagedBean.setCommentSortOrder('OLDESTFIRST')}"
+					disabled="#{viewArticleManagedBean.getCommentSortOrder()=='OLDESTFIRST'}">
 					<f:ajax render=":comments @form" />
 				</h:commandButton>
 			</h:form>

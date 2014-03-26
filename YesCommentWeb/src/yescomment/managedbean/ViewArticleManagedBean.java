@@ -124,7 +124,7 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 		// on the first page or last page
 		// on first page, if comment order is reversed, last page, if comment
 		// order is not reserver
-		if (commentSortOder == CommentSortOrder.NEWESTFIRST) {
+		if (commentSortOrder == CommentSortOrder.NEWESTFIRST) {
 			firstPage();
 		} else {
 			lastPage();
@@ -132,17 +132,17 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 
 	}
 
-	private CommentSortOrder commentSortOder = CommentSortOrder.NEWESTFIRST;// initialize
+	private CommentSortOrder commentSortOrder = CommentSortOrder.NEWESTFIRST;// initialize
 																			// with
 																			// newest
 																			// first
 
-	public CommentSortOrder getCommentSortOder() {
-		return commentSortOder;
+	public CommentSortOrder getCommentSortOrder() {
+		return commentSortOrder;
 	}
 
-	public void setCommentSortOder(CommentSortOrder commentSortOder) {
-		this.commentSortOder = commentSortOder;
+	public void setCommentSortOrder(CommentSortOrder commentSortOrder) {
+		this.commentSortOrder = commentSortOrder;
 	}
 
 	public List<Comment> getCommentsOfArticle() {
@@ -150,12 +150,14 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 			return Collections.emptyList();
 		} else {
 			List<Comment> comments = new ArrayList<Comment>(article.getComments());
-			if (commentSortOder == CommentSortOrder.NEWESTFIRST) {
+			if (commentSortOrder == CommentSortOrder.NEWESTFIRST) {
 				Collections.reverse(comments);
 			}
 			return comments;
 		}
 	}
+
+	
 
 	public int getOrderNumberOfComment(final Comment comment) {
 		return article.getComments().indexOf(comment) + 1;

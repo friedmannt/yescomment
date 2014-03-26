@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- crawler configurations -->
 <crawlerconfigs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:noNamespaceSchemaLocation="crawlerconfigs.xsd">
     <crawlerconfig enabled="true" name="index" rssUrl="http://index.hu/24ora/rss/"  hour="1" minute="24" delaySec="60"/>

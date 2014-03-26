@@ -13,7 +13,7 @@ import yescomment.test.URLErrorTest;
 import yescomment.test.URLTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ HTMLParseTest.class, ArticleImageTest.class, ArticleTitleTest.class, CommentPermissionTest.class, HTMLParseTest.class, PaginationTest.class, URLErrorTest.class, URLTest.class })
+@SuiteClasses({ HTMLParseTest.class, ArticleImageTest.class, ArticleTitleTest.class,/* CommentPermissionTest.class,*/ HTMLParseTest.class, PaginationTest.class, URLErrorTest.class, URLTest.class })
 public class AllTestsSuite {
 
 }
