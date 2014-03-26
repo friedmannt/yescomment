@@ -1,4 +1,4 @@
-package yescomment.managedbean.captcha;
+package yescomment.captcha;
 
 import java.io.Serializable;
 

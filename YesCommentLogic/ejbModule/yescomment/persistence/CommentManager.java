@@ -8,9 +8,11 @@ import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.constraints.NotNull;
 
 import yescomment.model.Article;
 import yescomment.model.Comment;
+import yescomment.util.VoteDirection;
 
 @Stateless
 public class CommentManager extends AbstractEntityManager<Comment>{
@@ -20,8 +22,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Resource
-	EJBContext context;
+	
 	
 	@EJB
 	ArticleManager articleManager;
@@ -58,7 +59,7 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 		return em;
 	}
 	
-	public Article addCommentToArticle(Article article,final String commentText,final String commentAuthor ) {
+	public Article addCommentToArticle(@NotNull Article article,@NotNull final  String commentText,@NotNull final String commentAuthor ) {
 		article = articleManager.find(article.getId());//reread
 		Comment comment = new Comment();
 		comment.setCommentText(commentText);
@@ -71,5 +72,21 @@ public class CommentManager extends AbstractEntityManager<Comment>{
 		return article;
 
 	}
+	
+	 public Comment voteOnComment(@NotNull Comment comment,@NotNull final VoteDirection voteDirection) {
+		comment=find(comment.getId());//reread
+		if (voteDirection==VoteDirection.UP) {
+			comment.setPlusCount(comment.getPlusCount() + 1);	
+		}
+		if (voteDirection==VoteDirection.DOWN) {
+			comment.setMinusCount(comment.getMinusCount() + 1);
+		}
+		
+		return merge(comment);
+		
+		 
+		
+	 }
+	
 	
 }

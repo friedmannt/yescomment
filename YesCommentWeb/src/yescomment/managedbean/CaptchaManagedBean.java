@@ -8,11 +8,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import yescomment.managedbean.captcha.CaptchaOption;
-import yescomment.managedbean.captcha.CaptchaOption.Color;
+import yescomment.captcha.Captcha;
+import yescomment.captcha.CaptchaOption;
 import yescomment.util.JSFUtil;
 import yescomment.util.LocalizationUtil;
-import yescomment.util.NumberUtil;
 
 @ManagedBean
 @SessionScoped
@@ -24,22 +23,14 @@ public class CaptchaManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final int CAPTCHA_OPTION_SIZE = 10;// this many options are
 														// presented
-	public static int getCaptchaOptionSize() {
-		return CAPTCHA_OPTION_SIZE;
+	private Captcha captcha;
+	
+	public Captcha getCaptcha() {
+		return captcha;
 	}
 
-	public void answer(CaptchaOption captchaOption)  {
-		
-		if (captchaOption==null||!captchaOption.equals(correctCaptchaOption)) {
-			
-			FacesContext.getCurrentInstance().addMessage("newcommentform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
-			randomizeCaptcha();
-		}
-		else {
-			setCaptchaCorrectlyAnswered(true);
-		}
-
-		
+	public void setCaptcha(Captcha captcha) {
+		this.captcha = captcha;
 	}
 
 	private boolean captchaCorrectlyAnswered;
@@ -54,54 +45,30 @@ public class CaptchaManagedBean implements Serializable {
 	
 	@PostConstruct
 	public void initialize() {
+		captcha=new Captcha(CAPTCHA_OPTION_SIZE);
 		
-		randomizeCaptcha();
 	}
+	
 
-	public void randomizeCaptcha() {
-		correctCaptchaOption = new CaptchaOption(
-				CaptchaOption.Color.values()[NumberUtil.getRandomInt(CaptchaOption.Color.values().length)],
-				NumberUtil.getRandomInt(100));
-		int numberOfCorrectCaptchaOption = NumberUtil
-				.getRandomInt(CAPTCHA_OPTION_SIZE);
-		// fill options
-		for (int i = 0; i < CAPTCHA_OPTION_SIZE; i++) {
-			if (i == numberOfCorrectCaptchaOption) {
-				possibleCaptchaOptions[i] = new CaptchaOption(
-						correctCaptchaOption.getColor(),
-						correctCaptchaOption.getNumber());
-			} else {
-				possibleCaptchaOptions[i] = new CaptchaOption(
-						CaptchaOption.Color.values()[NumberUtil.getRandomInt(CaptchaOption.Color.values().length)],
-						NumberUtil.getRandomInt(100));
-				// TODO ensure, no options are the same. If options are same,
-				// continue randomize it
-			}
+	public void answer(CaptchaOption captchaOption)  {
+		
+		if (captchaOption==null||!captcha.answer(captchaOption)) {
+			
+			FacesContext.getCurrentInstance().addMessage("newcommentform:captcha", new FacesMessage(FacesMessage.SEVERITY_ERROR,LocalizationUtil.getTranslation("incorrect_captcha_answer", JSFUtil.getLocale()), null));
+			randomizeCaptcha();
 		}
+		else {
+			setCaptchaCorrectlyAnswered(true);
+		}
+
+		
 	}
-
-	private CaptchaOption correctCaptchaOption;
-
-	public CaptchaOption getCorrectCaptchaOption() {
-		return correctCaptchaOption;
+	public void randomizeCaptcha() {
+		captcha=new Captcha(CAPTCHA_OPTION_SIZE);//recreate the captcha
 	}
+	
 
-	public void setCorrectCaptchaOption(CaptchaOption correctCaptchaOption) {
-		this.correctCaptchaOption = correctCaptchaOption;
-	}
-
-	private CaptchaOption[] possibleCaptchaOptions = new CaptchaOption[CAPTCHA_OPTION_SIZE];
-
-	public CaptchaOption[] getPossibleCaptchaOptions() {
-		return possibleCaptchaOptions;
-	}
-
-	public void setPossibleCaptchaOptions(CaptchaOption[] possibleCaptchaOptions) {
-		this.possibleCaptchaOptions = possibleCaptchaOptions;
-	}
-
-
-	public String localizeColor(Color color) {
+	public String localizeColor(CaptchaOption.Color color) {
 		return LocalizationUtil.getEnumTranslation(color, JSFUtil.getLocale());
 	}
 	

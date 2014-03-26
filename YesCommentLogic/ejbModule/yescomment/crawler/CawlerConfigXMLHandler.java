@@ -33,8 +33,8 @@ public class CawlerConfigXMLHandler {
 	 */
 	public static void marshal(@NotNull List<CrawlerConfig> crawlerConfigs, @NotNull File selectedFile) throws IOException, JAXBException {
 		JAXBContext context;
-		BufferedWriter writer = null;
-		writer = new BufferedWriter(new FileWriter(selectedFile));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile));
+		
 		context = JAXBContext.newInstance(CrawlerConfigs.class);
 		Marshaller m = context.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -50,11 +50,11 @@ public class CawlerConfigXMLHandler {
 	 * @throws JAXBException
 	 */
 	public static List<CrawlerConfig> unmarshal(@NotNull File importFile) throws JAXBException {
-		CrawlerConfigs crawlerConfigs = new CrawlerConfigs();
+		 
 
 		JAXBContext context = JAXBContext.newInstance(CrawlerConfigs.class);
 		Unmarshaller um = context.createUnmarshaller();
-		crawlerConfigs = (CrawlerConfigs) um.unmarshal(importFile);
+		CrawlerConfigs crawlerConfigs = (CrawlerConfigs) um.unmarshal(importFile);
 
 		return crawlerConfigs.getCrawlerConfigs();
 	}

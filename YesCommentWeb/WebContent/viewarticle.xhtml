@@ -61,10 +61,10 @@
 
 							<h:outputText value="Please select:" />
 							<h:outputText
-								value="#{captchaManagedBean.localizeColor(captchaManagedBean.correctCaptchaOption.color)}" />
+								value="#{captchaManagedBean.localizeColor(captchaManagedBean.captcha.correctCaptchaOption.color)}" />
 							<h:outputText value=" " />
 							<h:outputText
-								value="#{captchaManagedBean.localizeNumber(captchaManagedBean.correctCaptchaOption.number)}" />
+								value="#{captchaManagedBean.localizeNumber(captchaManagedBean.captcha.correctCaptchaOption.number)}" />
 							<h:commandLink title="Refresh captcha"
 								styleClass="captcharefresh"
 								actionListener="#{captchaManagedBean.randomizeCaptcha()}">
@@ -75,7 +75,7 @@
 							</h:commandLink>
 							<br />
 							<h:panelGroup id="captcha">
-								<ui:repeat value="#{captchaManagedBean.possibleCaptchaOptions}"
+								<ui:repeat value="#{captchaManagedBean.captcha.possibleCaptchaOptions}"
 									var="captchaoption">
 									<h:commandLink
 										actionListener="#{captchaManagedBean.answer(captchaoption)}"
@@ -173,7 +173,7 @@
 										styleClass="upvotecount" />
 									<h:commandLink
 										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-										actionListener="#{viewArticleManagedBean.upvoteComment(comment)}"
+										actionListener="#{viewArticleManagedBean.voteOnComment(comment,'UP')}"
 										title="Vote up">
 										<img src="#{request.contextPath}/resources/images/vote_up.jpg"
 											alt="vote_up" />
@@ -186,7 +186,7 @@
 										styleClass="downvotecount" />
 									<h:commandLink
 										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-										actionListener="#{viewArticleManagedBean.downvoteComment(comment)}"
+										actionListener="#{viewArticleManagedBean.voteOnComment(comment,'DOWN')}"
 										title="Vote down">
 										<img
 											src="#{request.contextPath}/resources/images/vote_down.jpg"

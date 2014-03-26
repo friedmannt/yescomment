@@ -46,7 +46,6 @@ public class Article extends AbstractEntity {
 
 	
 	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.LAZY)
-	@OrderBy(value="commentDate")
 	private List<Comment> comments=new ArrayList<Comment>();
 
 	@Column(nullable=false)

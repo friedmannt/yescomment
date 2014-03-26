@@ -3,6 +3,7 @@ package yescomment.managedbean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -18,10 +19,11 @@ import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
 import yescomment.persistence.CommentManager;
 import yescomment.util.Paginator;
+import yescomment.util.VoteDirection;
 
 @ManagedBean
 @ViewScoped
-public class ViewArticleManagedBean implements Serializable,Paginator {
+public class ViewArticleManagedBean implements Serializable, Paginator {
 
 	public static enum CommentSortOrder {
 		OLDESTFIRST, NEWESTFIRST;
@@ -99,6 +101,15 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
 			} else {
 				this.article = article;
+				// sorting the comments ascending
+				Collections.sort(article.getComments(), new Comparator<Comment>() {
+
+					@Override
+					public int compare(Comment o1, Comment o2) {
+
+						return o1.getCommentDate().compareTo(o2.getCommentDate());
+					}
+				});
 				if (highlightCommentId == null) {
 					// jump to first page
 					firstPage();
@@ -133,9 +144,9 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 	}
 
 	private CommentSortOrder commentSortOrder = CommentSortOrder.NEWESTFIRST;// initialize
-																			// with
-																			// newest
-																			// first
+																				// with
+																				// newest
+																				// first
 
 	public CommentSortOrder getCommentSortOrder() {
 		return commentSortOrder;
@@ -157,23 +168,21 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 		}
 	}
 
-	
-
 	public int getOrderNumberOfComment(final Comment comment) {
 		return article.getComments().indexOf(comment) + 1;
 	}
 
-	public void upvoteComment(Comment comment) {
-		comment.setPlusCount(comment.getPlusCount() + 1);
+	
+	
+	
+	public void voteOnComment(@NotNull  Comment comment,@NotNull final VoteDirection voteDirection) {
 		userSessionBean.getVotedCommentIds().add(comment.getId());
-		commentManager.merge(comment);
+		Comment votedComment=commentManager.voteOnComment(comment, voteDirection);
+		comment.setPlusCount(votedComment.getPlusCount());
+		comment.setMinusCount(votedComment.getMinusCount());
 	}
 
-	public void downvoteComment(Comment comment) {
-		comment.setMinusCount(comment.getMinusCount() + 1);
-		userSessionBean.getVotedCommentIds().add(comment.getId());
-		commentManager.merge(comment);
-	}
+
 
 	public boolean alreadyVotedOnComment(Comment comment) {
 		return userSessionBean.getVotedCommentIds().contains(comment.getId());
@@ -201,7 +210,6 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 		return commentEndIndex;
 	}
 
-	
 	@Override
 	public void firstPage() {
 		commentStartIndex = 0;
@@ -229,18 +237,15 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 
 	@Override
 	public int getCurrentPage() {
-		return (commentStartIndex) / COMMENT_PAGE_SIZE +1;
+		return (commentStartIndex) / COMMENT_PAGE_SIZE + 1;
 	}
 
 	@Override
 	public int getTotalPage() {
-		
-		return (article.getCommentCount()-1) / COMMENT_PAGE_SIZE +1;
+
+		return (article.getCommentCount() - 1) / COMMENT_PAGE_SIZE + 1;
 	}
-	
-	
-	
-	
+
 	// setting page start and end indices to show highlighted comment
 	private void pageToComment(@NotNull final String highlightCommentId) {
 		List<Comment> comments = getCommentsOfArticle();
@@ -260,5 +265,4 @@ public class ViewArticleManagedBean implements Serializable,Paginator {
 
 	}
 
-	
 }
