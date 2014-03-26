@@ -39,7 +39,8 @@
 				<h:message for="newCommentText" showSummary="true"
 					showDetail="false" errorClass="errorstyle" />
 				<div>
-					<div id="newcommentauthordiv">
+					<h:panelGroup id="newcommentauthor">
+
 						<h:outputLabel for="name" value="Your name" />
 						<h:inputText id="name" value="#{userSessionBean.userName}"
 							maxlength="#{userSessionBean.getMaxAuthorSize()}"
@@ -47,8 +48,8 @@
 							title="#{yescommentmsg['your_name']}" styleClass="halfseethrough">
 							<f:ajax />
 						</h:inputText>
-					</div>
-					<div id="newcommentcaptchadiv">
+					</h:panelGroup>
+					<h:panelGroup id="newcommentcaptcha">
 						<h:outputText
 							value="In order to post comment, you should answer a capthca." />
 						<br />
@@ -71,11 +72,12 @@
 								<img
 									src="#{request.contextPath}/resources/images/captcha_randomize.png"
 									alt="captcha_randomize" />
-								<f:ajax render="@form" />
+								<f:ajax render=":newcommentform:newcommentcaptcha" />
 							</h:commandLink>
 							<br />
 							<h:panelGroup id="captcha">
-								<ui:repeat value="#{captchaManagedBean.captcha.possibleCaptchaOptions}"
+								<ui:repeat
+									value="#{captchaManagedBean.captcha.possibleCaptchaOptions}"
 									var="captchaoption">
 									<h:commandLink
 										actionListener="#{captchaManagedBean.answer(captchaoption)}"
@@ -83,7 +85,8 @@
 										<h:outputText value="#{captchaoption.number}"
 											style="color:#{captchaoption.color}"
 											styleClass="captchaoption" />
-										<f:ajax render="@form" />
+										<f:ajax
+											render=":newcommentform:newcommentcaptcha :newcommentform:postcommentbutton" />
 									</h:commandLink>
 
 								</ui:repeat>
@@ -92,18 +95,17 @@
 							<h:message for="captcha" id="captchamessage" showSummary="true"
 								showDetail="false" errorClass="errorstyle" />
 						</h:panelGroup>
-					</div>
+					</h:panelGroup>
 
+					<h:panelGroup id="newcommentpost">
 
-					<div id="newcommentpostdiv">
 						<h:commandButton value="Post Comment" styleClass="button"
 							id="postcommentbutton"
 							disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
 							actionListener="#{viewArticleManagedBean.postNewComment()}">
-							<f:ajax render=":comments @form :viewedarticlepreview"
-								execute="@form" />
+							<f:ajax render=":comments :viewedarticlepreview @form" execute="@form" />
 						</h:commandButton>
-					</div>
+					</h:panelGroup>
 
 
 				</div>

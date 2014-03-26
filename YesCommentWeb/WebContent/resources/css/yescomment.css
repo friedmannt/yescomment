@@ -479,18 +479,18 @@ hr {
 	color: #fb1947;
 }
 
-#newcommentauthordiv {
+#newcommentform\:newcommentauthor {
 	float: left;
 	height: 50px;
 	width: 25%;
 }
 
-#newcommentcaptchadiv {
+#newcommentform\:newcommentcaptcha {
 	float: left;
 	height: 50px;
 	width: 50%;
 }
-#newcommentpostdiv {
+#newcommentform\:newcommentpost {
 	float: left;
 	height: 50px;
 	width: 25%;
