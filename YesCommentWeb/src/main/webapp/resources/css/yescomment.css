@@ -33,8 +33,8 @@ hr {
 	display: block;
 }
 
-.halfseethrough{
-	background-color: rgba(255,255,255,0.5);
+.halfseethrough {
+	background-color: rgba(255, 255, 255, 0.5);
 }
 
 .button {
@@ -54,7 +54,7 @@ hr {
 
 .invertedbutton {
 	color: #fb1947 !important;
-	background-color: rgba(255,255,255,0.5) !important;
+	background-color: rgba(255, 255, 255, 0.5) !important;
 	border: 1px solid !important;
 	border-color: #fb1947 !important;
 }
@@ -98,7 +98,7 @@ hr {
 	min-height: 960px;
 	width: 100%;
 	background-image:
-		url('#{request.contextPath}/resources/images/yescommentyell4800.png');
+		url('#{request.contextPath}/resources/images/yescommentyell480.png');
 	background-repeat: no-repeat;
 }
 
@@ -303,29 +303,6 @@ hr {
 	
 }
 
-#tagcloud {
-	width: 100%;
-	border: 1px solid;
-	border-color: #fb1947;
-	line-height: 30px;
-	margin-top: 10px;
-}
-
-#tagcloud li a {
-	background-color: #fb1947;
-	text-align: center;
-	margin: 2px 6px;
-	padding: 2px 6px;
-	color: #FFFFFF;
-}
-
-#tagcloud li a.ui-state-hover {
-	/*disable primefaces hover*/
-	background: none;
-	background-color: #fb1947;
-	box-shadow: none;
-}
-
 #searchkeywordform table {
 	border-collapse: collapse;
 	width: 75%
@@ -393,7 +370,7 @@ hr {
 .oneselectorbutton {
 	/*not disaled is not selected*/
 	color: #fb1947 !important;
-	background-color: rgba(255,255,255,0.5) !important;
+	background-color: rgba(255, 255, 255, 0.5) !important;
 	border: 1px solid !important;
 	border-color: #fb1947 !important;
 }
@@ -464,7 +441,7 @@ hr {
 
 .commentpaginator {
 	text-align: center;
-	display:block;
+	display: block;
 }
 
 .paginatorlink {
@@ -490,15 +467,14 @@ hr {
 	height: 50px;
 	width: 50%;
 }
+
 #newcommentform\:newcommentpost {
 	float: left;
 	height: 50px;
 	width: 25%;
 }
 
-
 #newcommentform\:name {
-
 	font-family: "Arial";
 	font-size: 18px;
 }
@@ -509,10 +485,57 @@ hr {
 }
 
 #newcommentform\:postcommentbutton {
-	width:100%;
+	width: 100%;
 }
 
 .captcharefresh {
-	margin-left:5px;
-	margin-right:5px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+#tagcloud {
+	width: 100%;
+	border: 1px solid;
+	border-color: #fb1947;
+	line-height: 30px;
+	margin-top: 10px;
+	border-radius: 3px;
+}
+
+#tagcloud ul {
+	margin: 1em;
+	padding: 0.1em;
+	text-align: center;
+}
+
+#tagcloud ul li {
+	margin: 0px;
+	padding: 0px;
+	list-style: none outside none;
+	display: inline-block;
+}
+
+#tagcloud ul li a {
+	background-color: #fb1947;
+	text-align: center;
+	margin: 2px 6px;
+	padding: 2px 6px;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.tagclouditem-strength-5 {
+	font-size: 180%;
+}
+.tagclouditem-strength-4 {
+	font-size: 160%;
+}
+.tagclouditem-strength-3 {
+	font-size: 140%;
+}
+.tagclouditem-strength-2 {
+	font-size: 120%;
+}
+.tagclouditem-strength-1 {
+	font-size: 100%;
 }

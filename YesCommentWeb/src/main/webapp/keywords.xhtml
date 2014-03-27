@@ -1,7 +1,6 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	template="/template.xhtml">
@@ -13,8 +12,9 @@
 		<h:form id="searchkeywordform">
 			<table>
 				<TR>
-					<TD><h:inputText id="searchedkeyword" type="search" styleClass="halfseethrough"
-							value="#{keywordManagedBean.keyword}" required="true"
+					<TD><h:inputText id="searchedkeyword" type="search"
+							styleClass="halfseethrough" value="#{keywordManagedBean.keyword}"
+							required="true"
 							requiredMessage="#{yescommentmsg['keyword_empty']}"
 							pt:placeholder="#{yescommentmsg['enter_keyword']}">
 							<f:passThroughAttribute name="required" value="required" />
@@ -33,13 +33,26 @@
 			</table>
 
 		</h:form>
-		<p:tagCloud id="tagcloud"
-			model="#{keywordTagCloudBean.getTopKeywordsTagCloudModel()}" styleClass="halfseethrough">
-		</p:tagCloud>
+
+		<div id="tagcloud" class="halfseethrough">
+			<ul>
+				<ui:repeat
+					value="#{keywordTagCloudBean.getTopKeywordsTagCloudItems()}"
+					var="tagCloudItem">
+					<li class="tagclouditem-strength-#{tagCloudItem.strength}"><h:outputLink
+							value="#{tagCloudItem.url}">
+							<h:outputText value="#{tagCloudItem.tag}" />
+						</h:outputLink></li>
+				</ui:repeat>
+
+			</ul>
+		</div>
 
 
 
-		 
+
+
+
 		<h:panelGroup id="resultarticlesforkeyword" styleClass="articlelist">
 			<h:outputText id="noresultarticles"
 				value="#{yescommentmsg['no_results']}"
