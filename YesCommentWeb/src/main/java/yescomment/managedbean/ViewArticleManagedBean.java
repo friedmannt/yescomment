@@ -125,7 +125,6 @@ public class ViewArticleManagedBean implements Serializable, Paginator {
 	}
 
 	public void postNewComment() {
-
 		String userName = userSessionBean.getUserName();
 		String author = userName != null && userName.length() > 0 ? userName : "Anonymus";
 		article = commentManager.addCommentToArticle(article, newCommentText, author);

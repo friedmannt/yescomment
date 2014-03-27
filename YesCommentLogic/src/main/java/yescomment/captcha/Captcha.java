@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Random;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
-import com.sun.istack.NotNull;
+
 
 public class Captcha {
 	private CaptchaOption correctCaptchaOption;

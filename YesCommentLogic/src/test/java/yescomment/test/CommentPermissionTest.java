@@ -13,7 +13,7 @@ import yescomment.util.URLUtil;
 
 public class CommentPermissionTest {
 
-	
+	/*
 	@Test
 	public void testNoCommentsAllowedOrigo1() throws IOException {
 		NoCommentDetector nd=NoCommentDetectorService.getNoCommentDetector("origo");
@@ -29,4 +29,5 @@ public class CommentPermissionTest {
 		org.junit.Assert.assertEquals(ArticleCommentPermission.NOT_ALLOWED, ai.getArticleCommentPermission());
 	
 	}
+	*/
 }
