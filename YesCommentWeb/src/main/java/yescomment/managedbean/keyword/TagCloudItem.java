@@ -16,9 +16,7 @@ public class TagCloudItem implements Serializable {
 	@NotNull
 	private String tag;
 	private String url;
-	@Min(1)
-	@Max(5)
-	private int strength;
+	private double strength;
 	public String getTag() {
 		return tag;
 	}
@@ -31,19 +29,19 @@ public class TagCloudItem implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public int getStrength() {
+	public double getStrength() {
 		return strength;
 	}
-	public void setStrength(int strength) {
+	public void setStrength(double strength) {
 		this.strength = strength;
 	}
-	public TagCloudItem(String tag, String url, int strength) {
+	public TagCloudItem(String tag, String url, double strength) {
 		super();
 		this.tag = tag;
 		this.url = url;
 		this.strength = strength;
 	}
-	public TagCloudItem(String tag, int strength) {
+	public TagCloudItem(String tag, double strength) {
 		this(tag, null, strength);
 		
 	}
@@ -55,7 +53,9 @@ public class TagCloudItem implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + strength;
+		long temp;
+		temp = Double.doubleToLongBits(strength);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((tag == null) ? 0 : tag.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
 		return result;
@@ -72,7 +72,7 @@ public class TagCloudItem implements Serializable {
 			return false;
 		}
 		TagCloudItem other = (TagCloudItem) obj;
-		if (strength != other.strength) {
+		if (Double.doubleToLongBits(strength) != Double.doubleToLongBits(other.strength)) {
 			return false;
 		}
 		if (tag == null) {

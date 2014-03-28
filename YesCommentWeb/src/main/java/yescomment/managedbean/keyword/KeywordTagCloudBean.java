@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
@@ -35,36 +37,27 @@ public class KeywordTagCloudBean implements Serializable {
 		Map<String, Integer> keywordsAndOccurenceCounts = allKeywordsSingleton
 				.retrieveTopKeywords(KEYWORDS_TAGCLOUD_SIZE);
 		int sumOccurenceCount=0;//all occurences for all keywords, for relative strength;
+		double avgOccurenceCount=0d;
 		for (String keyword : keywordsAndOccurenceCounts.keySet()) {
 				Integer occurenceCount=keywordsAndOccurenceCounts.get(keyword);
 				sumOccurenceCount=sumOccurenceCount+occurenceCount;
-
+				
 
 		}
-
+		avgOccurenceCount=(double)sumOccurenceCount/keywordsAndOccurenceCounts.keySet().size();
+		
 		for (String keyword : keywordsAndOccurenceCounts.keySet()) {
 			Integer occurenceCount=keywordsAndOccurenceCounts.get(keyword);
 			String urlOfTagCloudItem=getURLofKeyword(contextRoot,keyword);// create keyword url
-			float ratio=(float) occurenceCount/(float)sumOccurenceCount;
-			int strength = 0;
-			if (ratio>0.1) {
-				strength=5;
-			}
-			else if (ratio>0.05) {
-				strength=4;
-			}
-			else if (ratio>0.02) {
-				strength=3;
-			}
-			else if (ratio>0.01) {
-				strength=2;
-			}
-			else {
-				strength=1;
-			}
-			System.out.println("keyword="+keyword+" ratio="+ratio);
+			double ratio=occurenceCount/avgOccurenceCount;
+		
+			//flattening, sqrt twice
+			ratio= Math.sqrt(Math.sqrt(ratio));
+			//rounding for two decimal places
+			ratio=Math.round(ratio*100d)/100d;
+			
 			tagCloudItems.add(new TagCloudItem(keyword,urlOfTagCloudItem,
-					strength));
+					ratio));
 
 		}
 		
@@ -77,5 +70,8 @@ public class KeywordTagCloudBean implements Serializable {
 				"%s/faces/keywords.xhtml?keyword=%s#resultarticlesforkeyword",contextRoot,
 				URLEncoder.encode(keyword, "UTF-8"));
 	}
-
+	
+	
+	
+	
 }
