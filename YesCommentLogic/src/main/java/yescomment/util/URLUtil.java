@@ -128,19 +128,8 @@ public class URLUtil {
 		}
 		String keywords = HTMLParser.getMetaValue(source, "keywords", "name");
 		articleInfo.setKeywords(keywords);
-		// opengraph meta tags are the strongest
-		String openGraphTitle = HTMLParser.getMetaValue(source, "og:title", "property");
-		if (openGraphTitle != null) {
-			articleInfo.setTitle(openGraphTitle);
-		}
-		String openGraphImage = HTMLParser.getMetaValue(source, "og:image", "property");
-		if (openGraphImage != null) {
-			articleInfo.setImageURL(openGraphImage);
-		}
-		String openGraphDescription = HTMLParser.getMetaValue(source, "og:description", "property");
-		if (openGraphDescription != null) {
-			articleInfo.setDescription(openGraphDescription);
-		}
+		// opengraph meta tags are the strongest, they are retireved in the end
+		retrieveOpenGraphTags(articleInfo, source);
 		if (noCommentDetector!=null) {
 			//article is read via crawler,comment permission should be checked
 			ArticleCommentPermission acp=noCommentDetector.getArticleCommentPermission(source);
@@ -154,6 +143,40 @@ public class URLUtil {
 		LOGGER.fine(String.format("Got article info for %s", urlString));
 		return articleInfo;
 
+	}
+
+	private static void retrieveOpenGraphTags(ArticleInfo articleInfo, Source source) {
+		//property is the basic keyname, but sometimes it is name
+		String openGraphTitle = HTMLParser.getMetaValue(source, "og:title", "property");
+		if (openGraphTitle != null) {
+			articleInfo.setTitle(openGraphTitle);
+		}
+		else {
+			openGraphTitle=HTMLParser.getMetaValue(source, "og:title", "name");
+			if (openGraphTitle != null) {
+				articleInfo.setTitle(openGraphTitle);
+			}
+		}
+		String openGraphImage = HTMLParser.getMetaValue(source, "og:image", "property");
+		if (openGraphImage != null) {
+			articleInfo.setImageURL(openGraphImage);
+		}
+		else {
+			openGraphImage = HTMLParser.getMetaValue(source, "og:image", "name");
+			if (openGraphImage != null) {
+				articleInfo.setImageURL(openGraphImage);
+			}
+		}
+		String openGraphDescription = HTMLParser.getMetaValue(source, "og:description", "property");
+		if (openGraphDescription != null) {
+			articleInfo.setDescription(openGraphDescription);
+		}
+		else {
+			openGraphDescription = HTMLParser.getMetaValue(source, "og:description", "name");
+			if (openGraphDescription != null) {
+				articleInfo.setDescription(openGraphDescription);
+			}
+		}
 	}
 
 	

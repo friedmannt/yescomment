@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -18,6 +19,8 @@ import yescomment.model.Article;
 import yescomment.model.Comment;
 import yescomment.persistence.ArticleManager;
 import yescomment.persistence.CommentManager;
+import yescomment.util.JSFUtil;
+import yescomment.util.LocalizationUtil;
 import yescomment.util.Paginator;
 import yescomment.util.VoteDirection;
 
@@ -92,13 +95,13 @@ public class ViewArticleManagedBean implements Serializable, Paginator {
 	}
 
 	public void loadArticle() {
-
+		Locale locale=JSFUtil.getLocale();
 		if (articleId == null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No id param given", "Please specify an article id"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("no_id_param_err_sum", locale), LocalizationUtil.getTranslation("no_id_param_err_det", locale)));
 		} else {
 			Article article = articleManager.find(articleId);
 			if (article == null) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Article not found", "Article not found"));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("article_id_not_found_err_sum", locale),  LocalizationUtil.getTranslation("article_id_not_found_err_det", locale)));
 			} else {
 				this.article = article;
 				// sorting the comments ascending

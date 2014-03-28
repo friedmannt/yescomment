@@ -31,6 +31,15 @@ public class ArticleImageTest {
 		
 	}
 
+	@Test
+	public void testArticleInfoImage3() throws IOException {
+		ArticleInfo ai= URLUtil.getArticleInfoFromURL("http://www.speedshop.hu/termekek/2011422/caterpillar-b100.html");
+		
+		assertEquals("http://www.speedshop.hu/Caterpillar_B-i314161.png", ai.getImageURL());
+
+		
+	}
+
 
 	
 }

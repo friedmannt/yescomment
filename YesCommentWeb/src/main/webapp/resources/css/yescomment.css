@@ -500,6 +500,7 @@ hr {
 	line-height: 30px;
 	margin-top: 10px;
 	border-radius: 3px;
+	font-size: 20px;
 }
 
 #tagcloud ul {
@@ -523,4 +524,3 @@ hr {
 	color: #FFFFFF;
 	text-decoration: none;
 }
-

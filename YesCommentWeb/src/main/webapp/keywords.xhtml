@@ -6,9 +6,11 @@
 	template="/template.xhtml">
 
 	<ui:define name="content">
-		<h:outputText escape="false"
-			value="Itt található a rendszerben szereplő összes kulcsszó. &lt;br/&gt;
-		Egy kulcsszóra kattintva feljönnek a rá vonatkozó cikkek, de használható a kulcsszókereső is." />
+		<h:outputText value="#{yescommentmsg['keyword_introline1']}"/>
+		<br/>
+		<h:outputText value="#{yescommentmsg['keyword_introline2']}"/>
+		<br/>
+		<h:outputText value="#{yescommentmsg['keyword_introline3']}"/>
 		<h:form id="searchkeywordform">
 			<table>
 				<TR>
@@ -19,7 +21,7 @@
 							pt:placeholder="#{yescommentmsg['enter_keyword']}">
 							<f:passThroughAttribute name="required" value="required" />
 						</h:inputText></TD>
-					<TD><h:commandButton type="submit" id="keywordsearchbutton"
+					<TD><h:commandButton type="submit" id="keywordsearchbutton" 
 							actionListener="#{keywordManagedBean.searchForKeyword()}">
 							<f:ajax render=":resultarticlesforkeyword @form" execute="@form" />
 						</h:commandButton></TD>
