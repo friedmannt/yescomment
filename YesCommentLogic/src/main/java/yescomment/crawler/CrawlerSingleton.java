@@ -106,9 +106,9 @@ public class CrawlerSingleton {
 
 		// read from xml configuration
 
-		String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfigs.xml").getFile();
-		//jboss reads from home dir
-		// String filePath = "crawlerconfigs.xml"; 
+		//String filePath = Thread.currentThread().getContextClassLoader().getResource("crawlerconfigs.xml").getFile();
+		//JBOSS: reads from home dir
+		String filePath = "crawlerconfigs.xml"; 
 		crawlerConfigs = CawlerConfigXMLHandler.unmarshal(new File(filePath));
 
 		LOGGER.info(String.format("Read crawler configs at startup : %s", crawlerConfigs));

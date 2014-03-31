@@ -28,7 +28,7 @@ public class Comment extends AbstractEntity {
 	@Column(nullable = false, length = MAX_COMMENT_SIZE)
 	@NotNull
 	@Size(max = MAX_COMMENT_SIZE)
-	@Lob /*jboss does it bad*/
+	/*@Lob*/ /*JBOSS does it bad*/
 	private String commentText;
 	
 	@Temporal(TemporalType.TIMESTAMP)

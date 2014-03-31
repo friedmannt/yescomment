@@ -504,23 +504,22 @@ hr {
 }
 
 #tagcloud ul {
-	margin: 1em;
-	padding: 0.1em;
+	margin: 10px;
+	padding: 0;
 	text-align: center;
 }
 
 #tagcloud ul li {
-	margin: 0px;
-	padding: 0px;
+	
 	list-style: none outside none;
 	display: inline-block;
+	padding: 2px;
 }
 
 #tagcloud ul li a {
 	background-color: #fb1947;
 	text-align: center;
-	margin: 2px 6px;
-	padding: 2px 6px;
+	
 	color: #FFFFFF;
 	text-decoration: none;
 }

@@ -173,36 +173,6 @@ public class ArticleManager extends AbstractEntityManager<Article> {
 
 	
 	
-	//Overrides for jboss:iterate through comments
-	/*@Override
-	public Article find(String id) {
-		
-		Article a= super.find(id);
-		a.getComments().size();
-		return a;
-	}
-
-	@Override
-	public List<Article> findAll() {
-		List<Article> al=super.findAll();
-		for (Article a:al) {
-			a.getComments().size();
-		}
-		return al;
-	}
-
-	
-	@Override
-	public List<Article> find(List<String> ids) {
-		List<Article> al=super.find(ids);
-		for (Article a:al) {
-			a.getComments().size();
-		}
-		return al;
-		
-	}
-*/
-	
 	
 	
 	
