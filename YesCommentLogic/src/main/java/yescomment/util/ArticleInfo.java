@@ -12,7 +12,7 @@ public class ArticleInfo implements Serializable{
 	private String title;
 	private String description;
 	private String keywords;
-	private ArticleCommentPermission articleCommentPermission;
+	
 	
 
 	public String getFinalURL() {
@@ -55,19 +55,12 @@ public class ArticleInfo implements Serializable{
 		this.description = description;
 	}
 
-	
-	public ArticleCommentPermission getArticleCommentPermission() {
-		return articleCommentPermission;
-	}
-
-	public void setArticleCommentPermission(ArticleCommentPermission articleCommentPermission) {
-		this.articleCommentPermission = articleCommentPermission;
-	}
-
 	@Override
 	public String toString() {
-		return "ArticleInfo [finalURL=" + finalURL + ", imageURL=" + imageURL + ", title=" + title + ", description=" + description + ", keywords=" + keywords + ", articleCommentPermission=" + articleCommentPermission + "]";
+		return "ArticleInfo [finalURL=" + finalURL + ", imageURL=" + imageURL + ", title=" + title + ", description=" + description + ", keywords=" + keywords + "]";
 	}
 
+	
+	
 	
 }

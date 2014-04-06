@@ -6,26 +6,26 @@
 		rendered="#{paginatorshouldberendered}">
 		<h:commandLink title="#{yescommentmsg['paginator_firstpage']}" styleClass="paginatorlink"
 			actionListener="#{paginator.firstPage()}">
-			<img src="#{request.contextPath}/resources/images/page_first.png"
+			<img src="#{request.contextPath}/resources/images/page_first.svg" class="paginatoricon"
 				alt="page_first" />
 			<f:ajax render="@form" />
 		</h:commandLink>
 		<h:commandLink title="#{yescommentmsg['paginator_prevpage']}" styleClass="paginatorlink"
 			actionListener="#{paginator.prevPage()}">
-			<img src="#{request.contextPath}/resources/images/page_prev.png"
+			<img src="#{request.contextPath}/resources/images/page_prev.svg" class="paginatoricon"
 				alt="page_prev" />
 			<f:ajax render="@form" />
 		</h:commandLink>
 		<h:outputText value="#{paginator.getCurrentPage()}/#{paginator.getTotalPage()}" styleClass="paginatorpageinfo"/>
 		<h:commandLink title="#{yescommentmsg['paginator_nextpage']}" styleClass="paginatorlink"
 			actionListener="#{paginator.nextPage()}">
-			<img src="#{request.contextPath}/resources/images/page_next.png"
+			<img src="#{request.contextPath}/resources/images/page_next.svg" class="paginatoricon"
 				alt="page_next" />
 			<f:ajax render="@form" />
 		</h:commandLink>
 		<h:commandLink title="#{yescommentmsg['paginator_lastpage']}" styleClass="paginatorlink"
 			actionListener="#{paginator.lastPage()}">
-			<img src="#{request.contextPath}/resources/images/page_last.png"
+			<img src="#{request.contextPath}/resources/images/page_last.svg" class="paginatoricon"
 				alt="page_last" />
 			<f:ajax render="@form" />
 		</h:commandLink>

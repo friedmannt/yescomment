@@ -33,15 +33,15 @@
 
 				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
-					pt:placeHolder="Place your comment here..." id="newCommentText"
-					required="true" requiredMessage="Empty comment"
+					pt:placeHolder="#{yescommentmsg['place_your_comment']}" id="newCommentText"
+					required="true" requiredMessage="#{yescommentmsg['empty_comment']}"
 					styleClass="halfseethrough" />
 				<h:message for="newCommentText" showSummary="true"
 					showDetail="false" errorClass="errorstyle" />
 				<div>
 					<h:panelGroup id="newcommentauthor">
 
-						<h:outputLabel for="name" value="Your name" />
+						<h:outputLabel for="name" value="#{yescommentmsg['your_name']}" />
 						<h:inputText id="name" value="#{userSessionBean.userName}"
 							maxlength="#{userSessionBean.getMaxAuthorSize()}"
 							pt:placeHolder="#{yescommentmsg['your_name']}"
@@ -51,59 +51,62 @@
 					</h:panelGroup>
 					<h:panelGroup id="newcommentcaptcha">
 						<h:outputText
-							value="In order to post comment, you should answer a capthca." />
-						<br />
-						<h:panelGroup styleClass="newcommentbox captchapanel"
+							value="#{yescommentmsg['captcha_intro']}" />
+
+						<h:panelGroup
 							rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
-							<h:outputText value="Capcha already answered" />
+							<h:outputText value="#{yescommentmsg['captcha_already_answered']}" />
 						</h:panelGroup>
-						<h:panelGroup styleClass="newcommentbox captchapanel"
+						<h:panelGroup
 							rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
+							<div>
+								<h:outputText value="#{yescommentmsg['please_select']}:" />
+								<h:outputText
+									value="#{captchaManagedBean.localizeColor(captchaManagedBean.captcha.correctCaptchaOption.color)}" />
+								<h:outputText value=" " />
+								<h:outputText
+									value="#{captchaManagedBean.localizeNumber(captchaManagedBean.captcha.correctCaptchaOption.number)}" />
 
-							<h:outputText value="Please select:" />
-							<h:outputText
-								value="#{captchaManagedBean.localizeColor(captchaManagedBean.captcha.correctCaptchaOption.color)}" />
-							<h:outputText value=" " />
-							<h:outputText
-								value="#{captchaManagedBean.localizeNumber(captchaManagedBean.captcha.correctCaptchaOption.number)}" />
-							<h:commandLink title="Refresh captcha"
-								styleClass="captcharefresh"
-								actionListener="#{captchaManagedBean.randomizeCaptcha()}">
-								<img
-									src="#{request.contextPath}/resources/images/captcha_randomize.png"
-									alt="captcha_randomize" />
-								<f:ajax render=":newcommentform:newcommentcaptcha" />
-							</h:commandLink>
-							<br />
-							<h:panelGroup id="captcha">
-								<ui:repeat
-									value="#{captchaManagedBean.captcha.possibleCaptchaOptions}"
-									var="captchaoption">
-									<h:commandLink
-										actionListener="#{captchaManagedBean.answer(captchaoption)}"
-										immediate="true">
-										<h:outputText value="#{captchaoption.number}"
-											style="color:#{captchaoption.color}"
-											styleClass="captchaoption" />
-										<f:ajax
-											render=":newcommentform:newcommentcaptcha :newcommentform:postcommentbutton" />
-									</h:commandLink>
+								<br />
+								<h:panelGroup id="captcha">
+									<ui:repeat
+										value="#{captchaManagedBean.captcha.possibleCaptchaOptions}"
+										var="captchaoption">
+										<h:commandLink
+											actionListener="#{captchaManagedBean.answer(captchaoption)}"
+											immediate="true">
+											<h:outputText value="#{captchaoption.number}"
+												style="color:#{captchaoption.color}"
+												styleClass="captchaoption" />
+											<f:ajax
+												render=":newcommentform:newcommentcaptcha :newcommentform:newcommentcaptcharefresh :newcommentform:postcommentbutton" />
+										</h:commandLink>
 
-								</ui:repeat>
+									</ui:repeat>
 
-							</h:panelGroup>
-							<h:message for="captcha" id="captchamessage" showSummary="true"
-								showDetail="false" errorClass="errorstyle" />
+								</h:panelGroup>
+								<h:message for="captcha" id="captchamessage" showSummary="true"
+									showDetail="false" errorClass="errorstyle" />
+							</div>
 						</h:panelGroup>
 					</h:panelGroup>
-
+					<h:panelGroup id="newcommentcaptcharefresh">
+						<h:commandLink title="#{yescommentmsg['refresh_captcha']}"  rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}"
+							actionListener="#{captchaManagedBean.randomizeCaptcha()}">
+							<img
+								src="#{request.contextPath}/resources/images/captcha_randomize.svg"
+								alt="captcha_randomize" class="captcharefreshicon" />
+							<f:ajax render=":newcommentform:newcommentcaptcha" />
+						</h:commandLink>
+					</h:panelGroup>
 					<h:panelGroup id="newcommentpost">
 
-						<h:commandButton value="Post Comment" styleClass="button"
+						<h:commandButton value="#{yescommentmsg['post_comment']}" styleClass="button"
 							id="postcommentbutton"
 							disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
 							actionListener="#{viewArticleManagedBean.postNewComment()}">
-							<f:ajax render=":comments :viewedarticlepreview @form" execute="@form" />
+							<f:ajax render=":comments :viewedarticlepreview @form"
+								execute="@form" />
 						</h:commandButton>
 					</h:panelGroup>
 
@@ -111,21 +114,35 @@
 				</div>
 			</h:form>
 			<div class="clear" />
-			<h2>Comments</h2>
+
+			<h2 class="commentformheadertext">#{yescommentmsg['comments']}</h2>
 			<h:form id="commentorderform">
-				<h:commandButton value="#{yescommentmsg['newest first']}"
-					styleClass="button first oneselectorbutton"
+
+				<h:commandLink title="#{yescommentmsg['newest_comment_first']}"
 					actionListener="#{viewArticleManagedBean.setCommentSortOrder('NEWESTFIRST')}"
 					disabled="#{viewArticleManagedBean.getCommentSortOrder()=='NEWESTFIRST'}">
+					<h:graphicImage value="/resources/images/arrow_up.svg"
+						styleClass="commentordericon" alt="newest_comment_first"
+						rendered="#{viewArticleManagedBean.getCommentSortOrder()!='NEWESTFIRST'}" />
+					<h:graphicImage value="/resources/images/arrow_up_disabled.svg"
+						styleClass="commentordericon" alt="newest_comment_first"
+						rendered="#{viewArticleManagedBean.getCommentSortOrder()=='NEWESTFIRST'}" />
 					<f:ajax render=":comments @form" />
-				</h:commandButton>
-				<h:commandButton value="#{yescommentmsg['oldest first']}"
-					styleClass="button middle oneselectorbutton"
+				</h:commandLink>
+				<h:commandLink title="#{yescommentmsg['oldest_comment_first']}"
 					actionListener="#{viewArticleManagedBean.setCommentSortOrder('OLDESTFIRST')}"
 					disabled="#{viewArticleManagedBean.getCommentSortOrder()=='OLDESTFIRST'}">
+					<h:graphicImage value="/resources/images/arrow_down.svg"
+						styleClass="commentordericon" alt="oldest_comment_first"
+						rendered="#{viewArticleManagedBean.getCommentSortOrder()!='OLDESTFIRST'}" />
+					<h:graphicImage value="/resources/images/arrow_down_disabled.svg"
+						styleClass="commentordericon" alt="newest_comment_first"
+						rendered="#{viewArticleManagedBean.getCommentSortOrder()=='OLDESTFIRST'}" />
 					<f:ajax render=":comments @form" />
-				</h:commandButton>
+
+				</h:commandLink>
 			</h:form>
+			<div class="clear" />
 			<h:form id="comments">
 
 				<ui:include src="paginator.xhtml">
@@ -146,14 +163,14 @@
 							class="#{viewArticleManagedBean.commentShouldBeHighlighted(comment)?'onecomment highlighted':'onecomment'}">
 
 							<div class="commentheader">
-								<h:link title="Link to comment" styleClass="commentlink"
+								<h:link title="#{yescommentmsg['link_to_comment']}" styleClass="commentlink"
 									fragment="comments">
 									<f:param name="articleId"
 										value="#{viewArticleManagedBean.articleId}" />
 									<f:param name="highlightCommentId" value="#{comment.id}" />
 									<img
-										src="#{request.contextPath}/resources/images/comment_link.png"
-										alt="comment_link" />
+										src="#{request.contextPath}/resources/images/comment_link.svg"
+										class="commentlinkicon" alt="comment_link" />
 								</h:link>
 								<div class="commentnumber">
 

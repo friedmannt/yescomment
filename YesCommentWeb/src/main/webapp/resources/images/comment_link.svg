@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" 
+              "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" height="100" width="100">
+   <circle cx="25" cy="75" r="25"  fill="#fb1947" />
+   <circle cx="25" cy="75" r="15"  fill="white" />
+   <circle cx="75" cy="25" r="25"  fill="#fb1947" />
+   <circle cx="75" cy="25" r="15"  fill="white" />
+   <rect  x="40" y="-40" width="60" height="80"  fill="white" transform="rotate(45)"/>
+   <rect x="46.4" y="-40.5"  width="10" height="80.5"  fill="#fb1947" transform="rotate(45)"/>
+   <rect x="85" y="-40.5"  width="10" height="80.5"  fill="#fb1947" transform="rotate(45)"/>
+   <rect x="-15" y="-100"  width="30" height="60"  fill="white" transform="rotate(135)"/> 	
+   <rect x="66" y="-30"  width="10" height="60"  fill="#fb1947" transform="rotate(45)"/>
+</svg> 

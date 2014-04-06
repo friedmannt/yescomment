@@ -71,7 +71,6 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <configuration>
                     <outputDirectory>deployments</outputDirectory>
-              		  <finalName>YesComment</finalName>
                 </configuration>
             </plugin>
         </plugins>

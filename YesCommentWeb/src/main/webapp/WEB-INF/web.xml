@@ -28,4 +28,21 @@
   <listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
+   <security-constraint>
+      <display-name>Yescomment security</display-name>
+      <web-resource-collection>
+         <web-resource-name>admin pages</web-resource-name>
+         <url-pattern>/faces/secured/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+         <role-name>yescommentadmin</role-name>
+      </auth-constraint>
+   </security-constraint>
+   <security-role>
+      <role-name>yescommentadmin</role-name>
+   </security-role>
+     <login-config>
+      <auth-method>BASIC</auth-method>
+      <realm-name>yescomment_realm</realm-name>
+   </login-config>
 </web-app>

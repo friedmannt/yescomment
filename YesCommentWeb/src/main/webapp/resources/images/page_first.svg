@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" 
+              "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" height="200" width="300">
+   <rect x="90" y="0" width="50" height="200" fill="#fb1947"/>
+   <polygon points="300,200 150,100 300,0" fill="#fb1947"/>
+</svg> 

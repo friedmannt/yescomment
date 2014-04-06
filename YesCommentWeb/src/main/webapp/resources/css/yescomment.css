@@ -1,6 +1,6 @@
 html,body {
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 	width: 100%;
 	font-family: Arial;
 	font-size: 14px;
@@ -13,15 +13,15 @@ input,textarea {
 }
 
 a {
-	text-decoration: none
+	text-decoration: none;
 }
 
 p {
-	margin: 0 0 10px
+	margin: 0px 0px 10px;
 }
 
 hr {
-	border: 0;
+	border: 0px;
 	background-color: gray;
 	color: gray;
 	height: 1px;
@@ -48,8 +48,8 @@ hr {
 	font-size: 16px;
 	font-weight: bold;
 	line-height: 40px;
-	padding: 0 10px;
-	border: 0;
+	padding: 0px 10px;
+	border: 0px;
 }
 
 .invertedbutton {
@@ -93,12 +93,12 @@ hr {
 }
 
 #contentwrapper {
-	margin: 0 auto;
+	margin: 0px auto;
 	max-width: 1200px;
 	min-height: 960px;
 	width: 100%;
 	background-image:
-		url('#{request.contextPath}/resources/images/yescommentyell480.png');
+		url('#{request.contextPath}/resources/images/yescommentyell480highcontrast.png');
 	background-repeat: no-repeat;
 }
 
@@ -116,19 +116,19 @@ hr {
 
 #contentwrapper #top table {
 	border-collapse: collapse;
-	width: 100%
+	width: 100%;
 }
 
 #contentwrapper #top td {
-	padding: 0
+	padding: 0px;
 }
 
 #contentwrapper #top td:first-of-type {
-	width: 100%
+	width: 100%;
 }
 
 #contentwrapper #top input {
-	display: block
+	display: block;
 }
 
 #dotherightthing {
@@ -137,7 +137,7 @@ hr {
 }
 
 #dotherightthing .headerbuttons {
-	margin: 20px auto 0 auto;
+	margin: 20px auto 0px auto;
 	display: block;
 	width: 280px;
 }
@@ -148,7 +148,7 @@ hr {
 	width: 60px;
 	height: 60px;
 	float: left;
-	margin: 0 10px 10px 0;
+	margin: 0px 10px 10px 0px;
 }
 
 #dotherightthing h1 a img {
@@ -168,23 +168,23 @@ hr {
 	font-size: 19px;
 	text-align: center;
 	white-space: nowrap;
-	padding: 0 20px;
+	padding: 0px 20px;
 	width: 170px;
 }
 
 #dotherightthing h2 {
-	margin: 0 auto;
+	margin: 0px auto;
 	width: 280px;
 }
 
 #dotherightthing h2 a {
 	display: block;
 	width: 135px;
-	padding: 0
+	padding: 0px;
 }
 
 #searcharticleform {
-	margin: 0;
+	margin: 0px;
 }
 
 #searcharticleform:hover #searcharticleform\:searchbutton {
@@ -201,7 +201,7 @@ hr {
 	height: 60px;
 	width: 100%;
 	line-height: 60px;
-	border-radius: 0;
+	border-radius: 0px;
 	color: #fb1947;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -214,14 +214,14 @@ hr {
 	min-width: 60px;
 	width: 60px;
 	height: 60px;
-	border: 0;
-	border-radius: 0;
+	border: 0px;
+	border-radius: 0px;
 }
 
 #searcharticleform\:searchedurlmessage {
 	max-width: 735px;
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 
 .articlepreview {
@@ -231,7 +231,7 @@ hr {
 }
 
 .articlepreview .articlepreviewheader {
-	display: table-cell
+	display: table-cell;
 }
 
 .articlepreview .articlepreviewimage {
@@ -249,7 +249,7 @@ hr {
 
 .articlepreview .articlepreviewheader .button {
 	width: 45px;
-	padding: 0 10px 0 45px;
+	padding: 0px 10px 0px 45px;
 	text-align: left;
 	background-image:
 		url('#{request.contextPath}/resources/images/speaker.png');
@@ -258,13 +258,13 @@ hr {
 }
 
 .articlepreview .articlepreviewdata {
-	padding: 0 0 0 10px;
+	padding: 0px 0px 0px 10px;
 	display: table-cell;
 	vertical-align: top;
 }
 
 .articlepreview .articlepreviewdata h1 {
-	margin: 0 0 5px;
+	margin: 0px 0px 5px;
 }
 
 .articlepreview .articlepreviewdata h1 a {
@@ -277,7 +277,7 @@ hr {
 .articlepreview .articlepreviewdata p cite {
 	font-size: 10px;
 	line-height: 12px;
-	margin: 0 0 5px;
+	margin: 0px 0px 5px;
 }
 
 .articlepreview .articlepreviewdata p.articledescriptiontext {
@@ -309,11 +309,11 @@ hr {
 }
 
 #searchkeywordform  td {
-	padding: 0;
+	padding: 0px;
 }
 
 #searchkeywordform {
-	margin: 0;
+	margin: 0px;
 }
 
 #searchkeywordform:hover #searchkeywordform\:keywordsearchbutton {
@@ -330,7 +330,7 @@ hr {
 	height: 50px;
 	width: 100%;
 	line-height: 50px;
-	border-radius: 0;
+	border-radius: 0px;
 	color: #fb1947;
 	padding-left: 5px;
 	padding-right: 5px;
@@ -343,14 +343,14 @@ hr {
 	min-width: 50px;
 	width: 50px;
 	height: 50px;
-	border: 0;
-	border-radius: 0;
+	border: 0px;
+	border-radius: 0px;
 }
 
 #searchkeywordform\:searchedkeywordmessage {
 	max-width: 535px;
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 
 #contentwrapper #footer {
@@ -359,7 +359,7 @@ hr {
 
 .footerlink {
 	color: #fb1947;
-	margin: 3;
+	margin: 3px;
 	font-size: 12px;
 }
 
@@ -368,7 +368,7 @@ hr {
 }
 
 .oneselectorbutton {
-	/*not disaled is not selected*/
+	/*not disabled is not selected*/
 	color: #fb1947 !important;
 	background-color: rgba(255, 255, 255, 0.5) !important;
 	border: 1px solid !important;
@@ -376,10 +376,10 @@ hr {
 }
 
 .oneselectorbutton:disabled {
-	/*disaled is selected*/
+	/*disabled is selected*/
 	color: white !important;
 	background-color: #fb1947 !important;
-	border: 0 !important;
+	border: 0px !important;
 }
 
 .onecomment {
@@ -437,6 +437,7 @@ hr {
 	display: block;
 	height: 120px;
 	font-family: "Arial";
+	font-size: 14px;
 }
 
 .commentpaginator {
@@ -449,6 +450,13 @@ hr {
 	margin-right: 3px;
 }
 
+.paginatoricon {
+	width: 30px;
+	height: 20px;
+
+}
+
+
 .paginatorpageinfo {
 	margin-left: 3px;
 	margin-right: 3px;
@@ -460,23 +468,33 @@ hr {
 	float: left;
 	height: 50px;
 	width: 25%;
+	min-width:50px;
 }
 
 #newcommentform\:newcommentcaptcha {
 	float: left;
 	height: 50px;
-	width: 50%;
+	width: 45%;
+	min-width:50px;
+}
+
+#newcommentform\:newcommentcaptcharefresh {
+	float: left;
+	height: 50px;
+	width: 10%;
+	min-width:35px;
 }
 
 #newcommentform\:newcommentpost {
 	float: left;
 	height: 50px;
-	width: 25%;
+	width: 20%;
 }
 
 #newcommentform\:name {
 	font-family: "Arial";
 	font-size: 18px;
+	max-width: 100%;
 }
 
 .captchaoption {
@@ -484,13 +502,15 @@ hr {
 	font-size: 14px;
 }
 
-#newcommentform\:postcommentbutton {
-	width: 100%;
+
+
+.captcharefreshicon{
+	width: 40px; 
+	height: 40px
 }
 
-.captcharefresh {
-	margin-left: 5px;
-	margin-right: 5px;
+#newcommentform\:postcommentbutton {
+	width: 100%;
 }
 
 #tagcloud {
@@ -510,7 +530,6 @@ hr {
 }
 
 #tagcloud ul li {
-	
 	list-style: none outside none;
 	display: inline-block;
 	padding: 2px;
@@ -519,7 +538,28 @@ hr {
 #tagcloud ul li a {
 	background-color: #fb1947;
 	text-align: center;
-	
 	color: #FFFFFF;
 	text-decoration: none;
+}
+
+#commentorderform {
+	float: left;
+	margin-top: 30px;
+}
+
+.commentformheadertext {
+	margin-top: 45px;
+	margin-right: 10px;
+	float: left;
+	font-size:30px;
+}
+
+.commentordericon {
+	width: 50px;
+	height: 50px;
+}
+
+.commentlinkicon {
+	width:20px;
+	height:20px;
 }

@@ -6,25 +6,25 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	<h:form id="searcharticleform">
 		<table>
-			<TR>
-				<TD><h:inputText id="searchedurl" type="search" styleClass="halfseethrough"
+			<tr>
+				<td><h:inputText id="searchedurl" type="search"
+						styleClass="halfseethrough"
 						value="#{searchArticleManagedBean.searchedArticleURL}"
 						required="true" requiredMessage="#{yescommentmsg['url_empty']}"
 						pt:placeholder="#{yescommentmsg['enter_article_url']}">
 						<f:validator validatorId="URLValidator" />
 						<f:passThroughAttribute name="required" value="required" />
-					</h:inputText></TD>
-				<TD><h:commandButton type="submit" id="searchbutton"
+					</h:inputText></td>
+				<td><h:commandButton type="submit" id="searchbutton"
 						action="#{searchArticleManagedBean.searchForArticle()}">
 						<f:ajax render="@form" execute="@form" />
-					</h:commandButton></TD>
-			</TR>
-			<TR>
-				<TD><h:message for="searchedurl" id="searchedurlmessage"
-						showSummary="true" showDetail="false"
-						errorClass="errorstyle" /></TD>
-				<TD />
-			</TR>
+					</h:commandButton></td>
+			</tr>
+			<tr>
+				<td><h:message for="searchedurl" id="searchedurlmessage"
+						showSummary="true" showDetail="false" errorClass="errorstyle" /></td>
+				<td />
+			</tr>
 
 
 		</table>

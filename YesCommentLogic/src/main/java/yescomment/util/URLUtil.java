@@ -15,9 +15,6 @@ import net.htmlparser.jericho.Source;
 
 import org.apache.commons.validator.routines.UrlValidator;
 
-import yescomment.crawler.RSSItem;
-import yescomment.crawler.nocommentdetector.NoCommentDetector;
-
 public class URLUtil {
 	private static Logger LOGGER = Logger.getLogger(URLUtil.class.getName());
 
@@ -74,30 +71,17 @@ public class URLUtil {
 
 	}
 
-	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString) throws IOException {
-		return getArticleInfoFromURL(urlString, null,null);
-
-	}
-	
-	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString,RSSItem helpRssItem) throws IOException {
-		return getArticleInfoFromURL(urlString, helpRssItem,null);
-
-	}
-	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString,NoCommentDetector noCommentDetector) throws IOException {
-		return getArticleInfoFromURL(urlString, null,noCommentDetector);
-
-	}
-
 	/**
 	 * 
 	 * @param urlString
-	 * @param helpRssItem  ,With the help of an rssItem, many information is supplied, so
+	 * @param helpRssItem
+	 *            ,With the help of an rssItem, many information is supplied, so
 	 *            no need to read again from html source
 	 * @param noCommentDetector
 	 * @return
 	 * @throws IOException
 	 */
-	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString, RSSItem helpRssItem,NoCommentDetector noCommentDetector) throws IOException {
+	public static ArticleInfo getArticleInfoFromURL(@NotNull String urlString) throws IOException {
 		LOGGER.info(String.format("Getting article info for %s", urlString));
 		ArticleInfo articleInfo = new ArticleInfo();
 		String urlStringWithSchema = addDefaultSchemaToURL(urlString);
@@ -114,29 +98,18 @@ public class URLUtil {
 
 		articleInfo.setFinalURL(connection.getURL().toString());
 		Source source = new Source(connection);
-		if (helpRssItem != null) {
-			articleInfo.setTitle(helpRssItem.getTitle());
-		} else {
-			String title = HTMLParser.getTitle(source);
-			articleInfo.setTitle(title);
-		}
-		if (helpRssItem != null) {
-			articleInfo.setDescription(helpRssItem.getDescription());
-		} else {
-			String description = HTMLParser.getMetaValue(source, "description", "name");
-			articleInfo.setDescription(description);
-		}
+
+		String title = HTMLParser.getTitle(source);
+		articleInfo.setTitle(title);
+
+		String description = HTMLParser.getMetaValue(source, "description", "name");
+		articleInfo.setDescription(description);
+
 		String keywords = HTMLParser.getMetaValue(source, "keywords", "name");
 		articleInfo.setKeywords(keywords);
 		// opengraph meta tags are the strongest, they are retireved in the end
 		retrieveOpenGraphTags(articleInfo, source);
-		if (noCommentDetector!=null) {
-			//article is read via crawler,comment permission should be checked
-			ArticleCommentPermission acp=noCommentDetector.getArticleCommentPermission(source);
-			articleInfo.setArticleCommentPermission(acp);
-		}
 		
-
 		articleInfo.setFinalURL(eliminateUnnecessaryURLParams(articleInfo.getFinalURL()));
 
 		connection.disconnect();
@@ -146,13 +119,12 @@ public class URLUtil {
 	}
 
 	private static void retrieveOpenGraphTags(ArticleInfo articleInfo, Source source) {
-		//property is the basic keyname, but sometimes it is name
+		// property is the basic keyname, but sometimes it is name
 		String openGraphTitle = HTMLParser.getMetaValue(source, "og:title", "property");
 		if (openGraphTitle != null) {
 			articleInfo.setTitle(openGraphTitle);
-		}
-		else {
-			openGraphTitle=HTMLParser.getMetaValue(source, "og:title", "name");
+		} else {
+			openGraphTitle = HTMLParser.getMetaValue(source, "og:title", "name");
 			if (openGraphTitle != null) {
 				articleInfo.setTitle(openGraphTitle);
 			}
@@ -160,8 +132,7 @@ public class URLUtil {
 		String openGraphImage = HTMLParser.getMetaValue(source, "og:image", "property");
 		if (openGraphImage != null) {
 			articleInfo.setImageURL(openGraphImage);
-		}
-		else {
+		} else {
 			openGraphImage = HTMLParser.getMetaValue(source, "og:image", "name");
 			if (openGraphImage != null) {
 				articleInfo.setImageURL(openGraphImage);
@@ -170,16 +141,13 @@ public class URLUtil {
 		String openGraphDescription = HTMLParser.getMetaValue(source, "og:description", "property");
 		if (openGraphDescription != null) {
 			articleInfo.setDescription(openGraphDescription);
-		}
-		else {
+		} else {
 			openGraphDescription = HTMLParser.getMetaValue(source, "og:description", "name");
 			if (openGraphDescription != null) {
 				articleInfo.setDescription(openGraphDescription);
 			}
 		}
 	}
-
-	
 
 	private static String eliminateUnnecessaryURLParams(@NotNull String finalURL) throws MalformedURLException, IOException {
 		if (finalURL.indexOf("?") < 0) {
@@ -230,10 +198,10 @@ public class URLUtil {
 		String descTest = HTMLParser.getMetaValue(sourceTest, "description", "name");
 		String keywordsRef = HTMLParser.getMetaValue(sourceRef, "keywords", "name");
 		String keywordsTest = HTMLParser.getMetaValue(sourceTest, "keywords", "name");
-		if ((titleRef == null && titleTest == null) || (titleRef!=null&&titleTest!=null&& titleRef.equals(titleTest))) {
-			if ((descRef == null && descTest == null) || (descRef!=null&&descTest!=null&& descRef.equals(descTest))) {
+		if ((titleRef == null && titleTest == null) || (titleRef != null && titleTest != null && titleRef.equals(titleTest))) {
+			if ((descRef == null && descTest == null) || (descRef != null && descTest != null && descRef.equals(descTest))) {
 
-				if ((keywordsRef == null && keywordsTest == null) || (keywordsRef!=null&&keywordsTest!=null&& keywordsRef.equals(keywordsTest))) {
+				if ((keywordsRef == null && keywordsTest == null) || (keywordsRef != null && keywordsTest != null && keywordsRef.equals(keywordsTest))) {
 					return true;
 				}
 			}

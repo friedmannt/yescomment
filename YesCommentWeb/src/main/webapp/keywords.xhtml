@@ -6,32 +6,32 @@
 	template="/template.xhtml">
 
 	<ui:define name="content">
-		<h:outputText value="#{yescommentmsg['keyword_introline1']}"/>
-		<br/>
-		<h:outputText value="#{yescommentmsg['keyword_introline2']}"/>
-		<br/>
-		<h:outputText value="#{yescommentmsg['keyword_introline3']}"/>
+		<h:outputText value="#{yescommentmsg['keyword_introline1']}" />
+		<br />
+		<h:outputText value="#{yescommentmsg['keyword_introline2']}" />
+		<br />
+		<h:outputText value="#{yescommentmsg['keyword_introline3']}" />
 		<h:form id="searchkeywordform">
 			<table>
-				<TR>
-					<TD><h:inputText id="searchedkeyword" type="search"
+				<tr>
+					<td><h:inputText id="searchedkeyword" type="search"
 							styleClass="halfseethrough" value="#{keywordManagedBean.keyword}"
 							required="true"
 							requiredMessage="#{yescommentmsg['keyword_empty']}"
 							pt:placeholder="#{yescommentmsg['enter_keyword']}">
 							<f:passThroughAttribute name="required" value="required" />
-						</h:inputText></TD>
-					<TD><h:commandButton type="submit" id="keywordsearchbutton" 
+						</h:inputText></td>
+					<td><h:commandButton type="submit" id="keywordsearchbutton"
 							actionListener="#{keywordManagedBean.searchForKeyword()}">
 							<f:ajax render=":resultarticlesforkeyword @form" execute="@form" />
-						</h:commandButton></TD>
-				</TR>
-				<TR>
-					<TD><h:message for="searchedkeyword"
+						</h:commandButton></td>
+				</tr>
+				<tr>
+					<td><h:message for="searchedkeyword"
 							id="searchedkeywordmessage" showSummary="true" showDetail="false"
-							errorClass="errorstyle" /></TD>
-					<TD />
-				</TR>
+							errorClass="errorstyle" /></td>
+					<td />
+				</tr>
 			</table>
 
 		</h:form>
@@ -41,7 +41,7 @@
 				<ui:repeat
 					value="#{keywordTagCloudBean.getTopKeywordsTagCloudItems()}"
 					var="tagCloudItem">
-					<li style="font-size:#{tagCloudItem.strength*100}%"><h:outputLink
+					<li style="font-size: #{tagCloudItem.strength*100}%"><h:outputLink
 							value="#{tagCloudItem.url}">
 							<h:outputText value="#{tagCloudItem.tag}" />
 						</h:outputLink></li>
