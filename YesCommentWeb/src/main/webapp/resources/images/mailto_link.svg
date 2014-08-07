@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" 
+              "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" height="50" width="60" viewBox="15 25 70 60">
+    <polyline points="50 30,20 30, 20 80,80 80, 80 30,50 30"  stroke="rgb(68,68,68)" fill="transparent" stroke-width="5" stroke-linejoin="round"/>
+	<polyline points="20 35,50 60,80 35"  stroke="rgb(68,68,68)" fill="transparent" stroke-width="5" stroke-linejoin="round"/>
+</svg>

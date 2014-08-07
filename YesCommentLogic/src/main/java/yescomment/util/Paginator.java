@@ -2,11 +2,22 @@ package yescomment.util;
 
 public interface Paginator {
 
+	void firstPage();
+
+	void prevPage();
+
+	void nextPage();
+
+	void lastPage();
+
+	int getCurrentPage();
 	
-	public void firstPage();
-	public void lastPage();
-	public void nextPage();
-	public void prevPage();
-	public int getCurrentPage();
-	public int getTotalPage();
+	int getTotalPage();
+
+	void jumpToItem(int itemIndex);
+
+	
+
+	
+	
 }

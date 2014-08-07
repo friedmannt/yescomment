@@ -2,9 +2,17 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
-
+<ui:define name="pageheadmeta">
+		<title>Legal statement</title>
+		<meta name="description"
+			content="Legal statement" />
+		<meta name="keywords" content="comment, yescomment, legal" />
+			<meta name="og:title" content="Legal statement" />
+		<meta name="og:description"
+			content="Legal statement" />
+	</ui:define>
 	<ui:define name="content">
-			<h1>#{yescommentmsg['legal_statement_title']}</h1>
-			#{yescommentmsg['legal_statement_line1']}
+			<h1 class="spacedheading">#{yescommentmsg['legal_statement_title']}</h1>
+			<h:outputText value="#{yescommentmsg['legal_statement_line1']}"/>
 	</ui:define>
 </ui:composition>

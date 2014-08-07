@@ -1,18 +1,16 @@
 package yescomment.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,64 +19,63 @@ import javax.validation.constraints.Size;
 
 /**
  * Entity implementation class for Entity: Article
- *
+ * 
  */
 @Entity
-@Table(name="yescomment_article")
+@Table(name = "yescomment_article")
+
 public class Article extends AbstractEntity {
 
-	   
-	@Column(nullable=false,length=256)
+	@Column(nullable = false, length = 256)
 	@NotNull
-	@Size( max=256)
+	@Size(max = 256)
 	private String title;
-	
-	@Column(nullable=true,length=2048)
-	@Size( max=2048)
+
+	public static final int MAX_DESCRIPTION_SIZE=2048;
+	@Column(nullable = true, length = MAX_DESCRIPTION_SIZE)
+	@Size(max = MAX_DESCRIPTION_SIZE)
 	private String description;
-	
-	public static final int MAX_URL_SIZE=2048;
-	@Column(nullable=false,length=MAX_URL_SIZE,unique=true)
+
+	public static final int MAX_URL_SIZE = 2048;
+	@Column(nullable = false, length = MAX_URL_SIZE, unique = true)
 	@NotNull
-	@Size(max=MAX_URL_SIZE)
+	@Size(max = MAX_URL_SIZE)
 	private String url;
-	
 
-	
-	@OneToMany(cascade=CascadeType.ALL,orphanRemoval=true, mappedBy="article",fetch=FetchType.EAGER/*JBOSS: eager, GF:lazy*/)
-	private List<Comment> comments=new ArrayList<Comment>();
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "article", fetch = FetchType.LAZY)
+	private Set<Comment> comments = new HashSet<Comment>();
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	@NotNull
 	private Integer commentCount;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> keywords=new HashSet<String>();
-	
-	@Column(nullable=true,length=2048)
-	@Size(max=2048)
-	private String imageurl;
-	
+	@Column(nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable=false)
-	@NotNull
-	private Date registrationDate;
-	
-	
-	
+	private Date lastCommentDate;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name="yescomment_article_keywords")
+	private Set<String> keywords = new HashSet<String>();
+
+	@Column(nullable = true, length = 2048)
+	@Size(max = 2048)
+	private String imageurl;
+
+	@Column(nullable = true, length = 2)
+	@Size(max = 2)
+	private String language;
+
 	
 	private static final long serialVersionUID = 1L;
 
-	  
-	
 	public String getTitle() {
 		return this.title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-	}   
-	
+	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -94,15 +91,14 @@ public class Article extends AbstractEntity {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public List<Comment> getComments() {
+
+	public Set<Comment> getComments() {
 		return comments;
 	}
-	public void setComments(List<Comment> comments) {
+
+	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
 	}
-
-	
 
 	public Integer getCommentCount() {
 		return commentCount;
@@ -110,6 +106,14 @@ public class Article extends AbstractEntity {
 
 	public void setCommentCount(Integer commentCount) {
 		this.commentCount = commentCount;
+	}
+
+	public Date getLastCommentDate() {
+		return lastCommentDate;
+	}
+
+	public void setLastCommentDate(Date lastCommentDate) {
+		this.lastCommentDate = lastCommentDate;
 	}
 
 	public Set<String> getKeywords() {
@@ -128,14 +132,15 @@ public class Article extends AbstractEntity {
 		this.imageurl = imageurl;
 	}
 
-	public Date getRegistrationDate() {
-		return registrationDate;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
+	
+	
 
-		
 }

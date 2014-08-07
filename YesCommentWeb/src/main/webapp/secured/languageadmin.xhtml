@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+		<title>YesComment Moderation</title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content="Yescomment admin page" />
+
+
+	</h:head>
+	<h:body>
+		<h1>Language Administration</h1>
+
+		<h:form id="languageadministrationform">
+			<h3>Articles without language</h3>
+			<ui:repeat
+				value="#{languageAdminManagedBean.articlesWithoutLanguage}"
+				var="article">
+
+				<div>
+					<h:link outcome="viewarticle" value="#{article.title}">
+						<f:param name="articleId" value="#{article.id}" />
+					</h:link>
+					<h:outputText
+						value=" (#{yesCommentApplicationBean.getSiteOfURL(article.url)}) " />
+					<h:outputLabel value="Language: " for="language" id="languagelabel" />
+					<h:selectOneMenu id="language" value="#{article.language}">
+						<f:selectItem itemLabel="Empty" itemValue="#{null}" />
+						<f:selectItems
+							value="#{languageAdminManagedBean.possibleArticleLanguages}"
+							/>
+					</h:selectOneMenu>
+				</div>
+				<br />
+			</ui:repeat>
+
+
+			<h:commandButton id="saveLanguageButton"
+				value="Save articles languages"
+				actionListener="#{languageAdminManagedBean.saveLanguageChanges()}">
+				<f:ajax execute="@form" />
+			</h:commandButton>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

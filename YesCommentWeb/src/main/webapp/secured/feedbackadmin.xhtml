@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+		<title>YesComment Feedback Admin</title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content="Yescomment admin page" />
+
+
+	</h:head>
+	<h:body>
+		<h1>Feedback Administration</h1>
+
+		<h:form id="deletenewsfeedback">
+			<h3>Delete feedback</h3>
+			<h:outputLabel for="id" value="Id" />
+			<h:inputText value="#{feedbackAdminManagedBean.id}" id="id" size="40"
+				required="true" />
+			<h:message for="id" />
+			<br />
+			<h:commandButton id="deletefeedbackbutton" value="Delete feedback"
+				actionListener="#{feedbackAdminManagedBean.deleteFeedback()}">
+				<f:ajax execute="@form" render="@form :allfeedback" />
+			</h:commandButton>
+		</h:form>
+
+		<h:panelGroup id="allfeedback">
+			<h3>Feedbacks</h3>
+			<ui:repeat value="#{feedbackAdminManagedBean.loadAllFeedback()}" var="feedback">
+				<h:outputFormat value="id: {0}   createDate:{1}">
+					<f:param value="#{feedback.id}" />
+					
+					<f:param value="#{feedback.createDate}" />
+				</h:outputFormat>
+				<br/>
+				<h:outputText value="#{feedback.feedbackText}" />
+				<br/>
+				<br/>
+			</ui:repeat>
+		</h:panelGroup>
+
+	</h:body>
+</f:view>
+</html>

@@ -1,51 +1,98 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	template="/template.xhtml">
-
+	<ui:define name="pageheadmeta">
+		<title>Recommended articles</title>
+		<meta name="description" content="Recommentded articles on yescomment" />
+		<meta name="keywords" content="comment, yescomment, recommend" />
+		<meta name="og:title" content="Recommended articles" />
+		<meta name="og:description"
+			content="Recommentded articles on yescomment" />
+	</ui:define>
 	<ui:define name="content">
 		<h:form>
 
-			
-		
-		<h:commandButton value="#{yescommentmsg['latest_articles']}" styleClass="button first oneselectorbutton"
-				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('LATEST')}" 
-				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='LATEST'}">
-				<f:ajax render="@form" />
+
+
+			<h:commandButton
+				value="#{recommendedArticlesManagedBean.getRecommendationAscpectTranslation('LATEST')}"
+				styleClass="button recommendationtypebutton oneselectorbutton"
+				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('LATEST')}"
+				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='LATEST'}"
+				title="#{yescommentmsg['description_latest']}">
+				<f:ajax render="@form :recommendedArticlesResultForm" />
 			</h:commandButton>
-			<h:commandButton value="#{yescommentmsg['most_commented']}"  styleClass="button middle oneselectorbutton"
+			<h:commandButton
+				value="#{recommendedArticlesManagedBean.getRecommendationAscpectTranslation('MOSTCOMMENTED')}"
+				styleClass="button recommendationtypebutton oneselectorbutton"
 				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('MOSTCOMMENTED')}"
-				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='MOSTCOMMENTED'}" >
-				<f:ajax render="@form" />
+				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='MOSTCOMMENTED'}"
+				title="#{yescommentmsg['description_mostcommented']}">
+				<f:ajax render="@form :recommendedArticlesResultForm" />
 			</h:commandButton>
+			<h:commandButton
+				value="#{recommendedArticlesManagedBean.getRecommendationAscpectTranslation('LASTCOMMENTED')}"
+				styleClass="button recommendationtypebutton oneselectorbutton"
+				actionListener="#{recommendedArticlesManagedBean.setSelectedRecommendationAspect('LASTCOMMENTED')}"
+				disabled="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()=='LASTCOMMENTED'}"
+				title="#{yescommentmsg['description_lastcommented']}">
+				<f:ajax render="@form :recommendedArticlesResultForm" />
+			</h:commandButton>
+		</h:form>
+		<h:form id="recommendedArticlesResultForm">
 
-			<h:panelGroup id="recommendedArticleContainer">
-				<h:panelGroup   styleClass="articlelist"
-					rendered="#{recommendedArticlesManagedBean.latestSelected()}">
-					<ui:repeat value="#{recommendedArticlesManagedBean.latestArticles}"
-						var="article">
-						<ui:include src="articlepreview.xhtml">
-							<ui:param name="article" value="#{article}" />
-							
-						</ui:include>
-						
-					</ui:repeat>
-				</h:panelGroup>
-				<h:panelGroup  styleClass="articlelist"
-					rendered="#{recommendedArticlesManagedBean.mostCommentedSelected()}">
-					<ui:repeat
-						value="#{recommendedArticlesManagedBean.mostCommentedArticles}"
-						var="article">
-						<ui:include src="articlepreview.xhtml">
-							<ui:param name="article" value="#{article}" />
-							
-						</ui:include>
 
-					</ui:repeat>
-				</h:panelGroup>
+			<div class="recommentdedheaderdiv">
+				<h:outputText
+					value="#{yescommentmsg['articles']}  (#{recommendedArticlesManagedBean.getRecommendationAscpectTranslation(recommendedArticlesManagedBean.getSelectedRecommendationAspect())}) "
+					class="recommendationheadertext" />
+				<h:outputLink title="#{yescommentmsg['rss_recommended_articles']}"
+					rendered="#{recommendedArticlesManagedBean.getSelectedRecommendationAspect()!=null}"
+					value="#{request.contextPath}/rss?recommendation=#{recommendedArticlesManagedBean.selectedRecommendationAspect}">
+					<h:graphicImage alt="rss" value="/resources/images/rss.svg"
+						styleClass="rssicon" />
+					<h:outputText value="RSS" styleClass="rsslinktext" />
+				</h:outputLink>
+			</div>
+			<h:panelGroup styleClass="articlelist"
+				rendered="#{recommendedArticlesManagedBean.latestSelected()}">
+				<ui:repeat value="#{recommendedArticlesManagedBean.latestArticles}"
+					var="article">
+					<ui:include src="articlepreview.xhtml">
+						<ui:param name="article" value="#{article}" />
+
+					</ui:include>
+
+				</ui:repeat>
 			</h:panelGroup>
+			<h:panelGroup styleClass="articlelist"
+				rendered="#{recommendedArticlesManagedBean.mostCommentedSelected()}">
+				<ui:repeat
+					value="#{recommendedArticlesManagedBean.mostCommentedArticles}"
+					var="article">
+					<ui:include src="articlepreview.xhtml">
+						<ui:param name="article" value="#{article}" />
+
+					</ui:include>
+
+				</ui:repeat>
+			</h:panelGroup>
+			<h:panelGroup styleClass="articlelist"
+				rendered="#{recommendedArticlesManagedBean.lastCommentedSelected()}">
+				<ui:repeat
+					value="#{recommendedArticlesManagedBean.lastCommentedArticles}"
+					var="article">
+					<ui:include src="articlepreview.xhtml">
+						<ui:param name="article" value="#{article}" />
+
+					</ui:include>
+
+				</ui:repeat>
+			</h:panelGroup>
+
 		</h:form>
 
 	</ui:define>

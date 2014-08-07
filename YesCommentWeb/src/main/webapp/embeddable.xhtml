@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53083520-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<f:view contentType="text/html" encoding="UTF-8">
+	<f:metadata>
+		<f:viewParam name="articleId"
+			value="#{viewArticleManagedBean.articleId}" />
+		<f:viewParam name="highlightCommentId"
+			value="#{viewArticleManagedBean.highlightCommentId}" />
+		<f:viewAction action="#{viewArticleManagedBean.loadArticle()}" />
+	</f:metadata>
+	<h:head>
+		<ui:insert name="pageheadmeta" />
+		<link rel="icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+
+		<meta name="robots" content="index, follow" />
+
+		<h:outputStylesheet name="yescomment.css" library="css" />
+		<h:outputStylesheet name="embedded.css" library="css" />
+		<h:outputScript name="menu.js" library="js" />
+		<h:outputScript name="websocket.js" library="js" />
+		<title>Yescomment: #{viewArticleManagedBean.article.title}</title>
+		<meta charset='UTF-8' />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="og:site_name" content="Yescomment" />
+		<meta name="og:type" content="website" />
+
+		<meta name="description" content="Embedded article view page" />
+		<meta name="keywords" content="comment, yescomment, article" />
+		<meta name="og:title"
+			content="Yescomment: #{viewArticleManagedBean.article.title}" />
+		<meta name="og:description" content="Embedded article view page" />
+	</h:head>
+	<h:body>
+
+		<h:messages showSummary="true" showDetail="true" />
+
+		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
+
+			<h:form id="embeddedheaderform">
+				<div id="embeddedheaderdata">
+					<h:link outcome="viewarticle" target="_blank">
+						<f:param name="articleId"
+							value="#{viewArticleManagedBean.article.id}" />
+						<h:outputText value="Yescomment" styleClass="embeddabletitle" />
+					</h:link>
+					<h:graphicImage alt="yescomment_logo"
+						value="/resources/images/speakerphone.svg"
+						styleClass="embeddablelogo" />
+
+					<h:outputText
+						value="#{viewArticleManagedBean.article.commentCount}"
+						styleClass="embeddablecommentcount" id="commentcount" />
+
+				</div>
+				<div id="embeddablelogindiv">
+					<h:panelGroup id="embeddableloginpanel">
+						<h:inputText id="username" value="#{loginManagedBean.username}"
+							class="halfseethrough embeddedlogininput" required="true"
+							requiredMessage="#{yescommentmsg['username_is_empty']}"
+							pt:placeholder="#{yescommentmsg['username']}"
+							rendered="#{request.remoteUser==null}" />
+						<h:message for="username" showSummary="true" showDetail="false"
+							errorClass="errorstyle embeddedloginerror"
+							rendered="#{request.remoteUser==null}" />
+						<h:inputSecret id="password" value="#{loginManagedBean.password}"
+							class="halfseethrough embeddedlogininput" required="true"
+							requiredMessage="#{yescommentmsg['password_is_empty']}"
+							pt:placeholder="#{yescommentmsg['password']}"
+							rendered="#{request.remoteUser==null}" />
+						<h:message for="password" showSummary="true" showDetail="false"
+							errorClass="errorstyle embeddedloginerror"
+							rendered="#{request.remoteUser==null}" />
+						<h:commandLink
+							actionListener="#{loginManagedBean.tryToLoginEmbedded()}"
+							id="embeddedloginlink" styleClass="loginlink"
+							value="#{yescommentmsg['login']}"
+							rendered="#{request.remoteUser==null}">
+							<f:ajax
+								render=":newcommentform :embeddedheaderform:embeddableloginpanel"
+								execute="@form" />
+						</h:commandLink>
+						<h:message for="embeddedloginlink" showSummary="true"
+							showDetail="false" errorClass="errorstyle embeddedloginerror"
+							rendered="#{request.remoteUser==null}" />
+						<h:outputText id="loggedininfo"
+							value="#{yescommentmsg['logged_in']}: #{request.remoteUser}"
+							rendered="#{request.remoteUser!=null}" />
+						<h:commandLink actionListener="#{loginManagedBean.logout()}"
+							id="embeddedlogoutlink" styleClass="logoutlink"
+							value="#{yescommentmsg['logout']}"
+							rendered="#{request.remoteUser!=null}">
+							<f:ajax
+								render=":newcommentform :embeddedheaderform:embeddableloginpanel"
+								execute="@form" />
+						</h:commandLink>
+					</h:panelGroup>
+				</div>
+			</h:form>
+
+			<h:form id="newcommentform">
+				<h:panelGroup id="newcommentreplyinfo">
+					<h:panelGroup
+						rendered="#{viewArticleManagedBean.newCommentReplyOf!=null}">
+						<h:outputText value="#{yescommentmsg['replying_to']}:"></h:outputText>
+						<h:outputText
+							value="##{viewArticleManagedBean.getOrderNumberOfComment(viewArticleManagedBean.newCommentReplyOf)}, #{viewArticleManagedBean.newCommentReplyOf.author}" />
+						<h:commandLink title="#{yescommentmsg['undo_replying']}"
+							actionListener="#{viewArticleManagedBean.undoReply()}">
+							<f:ajax render=":newcommentform:newcommentreplyinfo" />
+							<img src="#{request.contextPath}/resources/images/undo_reply.svg"
+								alt="undo_reply" class="undoreply" />
+						</h:commandLink>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
+					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
+					pt:placeHolder="#{yescommentmsg['place_your_comment']}..."
+					id="newCommentText" required="true"
+					requiredMessage="#{yescommentmsg['empty_comment']}"
+					styleClass="halfseethrough" />
+				<h:message for="newCommentText" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+
+				<div>
+					<h:panelGroup id="newcommentauth">
+
+						<h:panelGroup id="newcommentauthor"
+							rendered="#{userSessionBean.captchaWrapper.captchaCorrectlyAnswered or request.remoteUser!=null}">
+							<h:outputLabel for="name" value="#{yescommentmsg['posting_as']}" />
+							<br />
+							<h:outputText id="name"
+								value="#{viewArticleManagedBean.getPostingName()}"
+								styleClass="halfseethrough" />
+
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}">
+							<h:panelGrid columns="2">
+								<h:graphicImage
+									value="/captcha/captcha.png?now=#{userSessionBean.captchaWrapper.nowTime()}"
+									id="newcommentcaptcha" styleClass="captchaimage"/>
+								<h:commandLink title="#{yescommentmsg['refresh_captcha']}"
+									rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered}"
+									actionListener="#{userSessionBean.captchaWrapper.randomizeCaptcha()}">
+									<img src="#{request.contextPath}/resources/images/refresh.svg"
+										alt="captcha_randomize" class="captcharefreshicon" />
+									<f:ajax render=":newcommentform:newcommentcaptcha" />
+								</h:commandLink>
+							</h:panelGrid>
+
+							<h:outputText value="#{yescommentmsg['captcha_type']}: " />
+							<h:inputText id="captchaanswer" styleClass="halfseethrough">
+								<f:validator validatorId="CaptchaValidator" />
+								<f:attribute name="userSessionBean" value="#{userSessionBean}" />
+								<f:ajax
+									render=":newcommentform:newcommentauth :newcommentform:newcommentpost" />
+							</h:inputText>
+							<h:message for="captchaanswer" id="captchamessage"
+								showSummary="true" showDetail="false" errorClass="errorstyle" />
+
+
+
+						</h:panelGroup>
+
+					</h:panelGroup>
+					<h:panelGroup id="newcommentpost">
+
+						<h:commandButton value="#{yescommentmsg['post_comment']}"
+							styleClass="button" id="postcommentbutton"
+							disabled="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}"
+							actionListener="#{viewArticleManagedBean.postNewComment()}">
+							<f:ajax render=":comments :newcommentform :embeddedheaderform:commentcount"
+								execute="@form" />
+						</h:commandButton>
+						<h:message for="postcommentbutton" showSummary="true"
+							showDetail="false" errorClass="errorstyle" />
+						<h:outputText value="#{yescommentmsg['captcha_intro']}"
+							rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}"
+							id="captchaintro" />
+
+					</h:panelGroup>
+				</div>
+			</h:form>
+			<div class="clear" />
+
+			<ui:include src="commentflow.xhtml" />
+		</h:panelGroup>
+
+	</h:body>
+</f:view>
+</html>

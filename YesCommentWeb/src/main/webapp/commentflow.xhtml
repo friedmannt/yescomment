@@ -1,0 +1,183 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+			<h:form id="commentsheaderform" styleClass="commentsheaderform">
+				<h:outputText value="#{yescommentmsg['comments']}"
+					class="commentsformheadertext" />
+				<h:commandLink title="#{yescommentmsg['newest_comment_first']}"
+					actionListener="#{viewArticleManagedBean.changeCommentSortOrderToNewestFirst()}"
+					disabled="#{viewArticleManagedBean.commentSortOrder=='NEWESTFIRST'}">
+					<h:graphicImage value="/resources/images/arrow_up.svg"
+						styleClass="commentordericon" alt="newest_comment_first"
+						rendered="#{viewArticleManagedBean.commentSortOrder!='NEWESTFIRST'}" />
+					<h:graphicImage value="/resources/images/arrow_up_disabled.svg"
+						styleClass="commentordericon" alt="newest_comment_first"
+						rendered="#{viewArticleManagedBean.commentSortOrder=='NEWESTFIRST'}" />
+					<f:ajax render=":comments @form" />
+				</h:commandLink>
+				<h:commandLink title="#{yescommentmsg['oldest_comment_first']}"
+					actionListener="#{viewArticleManagedBean.changeCommentSortOrderToOldestFirst()}"
+					disabled="#{viewArticleManagedBean.commentSortOrder=='OLDESTFIRST'}">
+					<h:graphicImage value="/resources/images/arrow_down.svg"
+						styleClass="commentordericon" alt="oldest_comment_first"
+						rendered="#{viewArticleManagedBean.commentSortOrder!='OLDESTFIRST'}" />
+					<h:graphicImage value="/resources/images/arrow_down_disabled.svg"
+						styleClass="commentordericon" alt="newest_comment_first"
+						rendered="#{viewArticleManagedBean.commentSortOrder=='OLDESTFIRST'}" />
+					<f:ajax render=":comments @form" />
+				</h:commandLink>
+				<h:outputLink title="#{yescommentmsg['rss_articles_comments']}"
+					value="#{request.contextPath}/rss?article=#{viewArticleManagedBean.articleId}">
+					<h:graphicImage alt="rss" value="/resources/images/rss.svg"
+						styleClass="rssicon" />
+					<h:outputText value="RSS" styleClass="rsslinktext" />
+				</h:outputLink>
+
+				<h:commandLink id="refreshComments"
+					actionListener="#{viewArticleManagedBean.reloadArticleAndComments()}"
+					title="#{yescommentmsg['refresh_comments']}">
+					<h:graphicImage alt="reloadcomments"
+						value="/resources/images/refresh.svg"
+						styleClass="refreshcommentsicon" />
+
+					<f:ajax render=":comments" />
+				</h:commandLink>
+				<h:commandLink id="continuousread"
+					title="#{yescommentmsg['continuous_read']}"
+					onclick="toggleWSConnect('#{yesCommentApplicationBean.getWebSocketURLBase()}/comments/#{viewArticleManagedBean.articleId}');">
+				<h:graphicImage alt="continuous_read_enabled" id="continuosreadenabledicon"
+						value="/resources/images/continuousread_enabled.svg"
+						styleClass="continuousreadicon" />
+					<h:graphicImage alt="continuous_read_disabled" id="continuosreaddisabledicon"
+						value="/resources/images/continuousread_disabled.svg"
+						styleClass="continuousreadicon" />
+					<f:ajax />
+				</h:commandLink>
+			</h:form>
+
+
+			<h:form id="comments">
+
+
+
+				<ui:repeat value="#{viewArticleManagedBean.comments}" var="comment"
+					varStatus="varStatus">
+
+					<h:panelGroup
+						rendered="#{varStatus.index ge viewArticleManagedBean.commentPaginator.startIndex and varStatus.index le viewArticleManagedBean.commentPaginator.endIndex}">
+						<hr />
+						<div
+							class="#{viewArticleManagedBean.commentShouldBeHighlighted(comment)?'onecomment highlighted':'onecomment'}">
+
+							<div class="commentheader">
+
+								<h:link title="#{yescommentmsg['link_to_comment']}"
+									styleClass="commentlink" fragment="comments">
+									<f:param name="articleId"
+										value="#{viewArticleManagedBean.articleId}" />
+									<f:param name="highlightCommentId" value="#{comment.id}" />
+									<img
+										src="#{request.contextPath}/resources/images/comment_link.svg"
+										class="commentlinkicon" alt="comment_link" />
+								</h:link>
+								<div class="commentnumber">
+
+									<h:outputText
+										value="##{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
+								</div>
+								<div class="commentauthor">
+									<h:outputText value="#{comment.author}" />
+								</div>
+
+								<div class="commentdate">
+									<h:outputText value="#{comment.createDate}">
+										<f:convertDateTime type="both" dateStyle="medium"
+											timeStyle="medium" />
+									</h:outputText>
+								</div>
+
+
+
+								<h:panelGroup styleClass="commentvoteandreply">
+									<h:outputText value="#{comment.upVoteCount}"
+										styleClass="upvotecount" />
+									<h:commandLink
+										disabled="#{comment.hidden or request.remoteUser==null}"
+										actionListener="#{viewArticleManagedBean.voteOnComment(comment,'UP')}"
+										title="#{yescommentmsg['vote_up']}">
+										<img
+											src="#{request.contextPath}/resources/images/thumbs_up.svg"
+											alt="vote_up" class="voteimage" />
+										<f:ajax render="@form" />
+									</h:commandLink>
+									<h:outputText value="#{comment.downVoteCount}"
+										styleClass="downvotecount" />
+									<h:commandLink
+										disabled="#{comment.hidden or request.remoteUser==null}"
+										actionListener="#{viewArticleManagedBean.voteOnComment(comment,'DOWN')}"
+										title="#{yescommentmsg['vote_down']}">
+										<img
+											src="#{request.contextPath}/resources/images/thumbs_down.svg"
+											alt="vote_down" class="voteimage" />
+										<f:ajax render="@form" />
+									</h:commandLink>
+									<div class="commentreply">
+										<h:commandLink title="#{yescommentmsg['reply']}"
+											actionListener="#{viewArticleManagedBean.reply(comment)}">
+											<img src="#{request.contextPath}/resources/images/reply.svg"
+												class="replyicon" alt="reply" />
+											<f:ajax render=":newcommentform:newcommentreplyinfo" />
+										</h:commandLink>
+									</div>
+								</h:panelGroup>
+
+								<div class="clear" />
+								<div class="commentreplyinfo">
+									<h:panelGroup rendered="#{comment.replyOf!=null}">
+										<h:outputText value="#{yescommentmsg['reply_of']}:" />
+										<h:link title="#{yescommentmsg['link_to_replied_comment']}"
+											fragment="comments" styleClass="linktoreplied">
+											<f:param name="articleId"
+												value="#{viewArticleManagedBean.articleId}" />
+											<f:param name="highlightCommentId"
+												value="#{comment.replyOf.id}" />
+											<img
+												src="#{request.contextPath}/resources/images/reply_of.svg"
+												class="replyoficon" alt="reply_of" />
+											<h:outputFormat
+												value="##{viewArticleManagedBean.getOrderNumberOfComment(comment.replyOf)}, #{comment.replyOf.author}">
+												<f:param name="articleId"
+													value="#{viewArticleManagedBean.articleId}" />
+												<f:param name="highlightCommentId"
+													value="#{comment.replyOf.id}" />
+											</h:outputFormat>
+
+
+										</h:link>
+
+									</h:panelGroup>
+								</div>
+							</div>
+
+							<p>
+								<h:outputText value="#{comment.commentText}" id="commenttext"
+									styleClass="commenttext" rendered="#{!comment.hidden}" />
+								<h:outputText value="#{yescommentmsg['comment_hidden']}"
+									id="hiddencommenttext" styleClass="moderatedcommenttext"
+									rendered="#{comment.hidden}" />
+							</p>
+
+						</div>
+					</h:panelGroup>
+				</ui:repeat>
+				<ui:include src="paginator.xhtml">
+					<ui:param name="paginatorshouldberendered"
+						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
+					<ui:param name="paginator"
+						value="#{viewArticleManagedBean.commentPaginator}" />
+				</ui:include>
+			</h:form>
+</ui:composition>

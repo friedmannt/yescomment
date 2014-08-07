@@ -1,12 +1,15 @@
 package yescomment.persistence;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import yescomment.model.AbstractEntity;
@@ -17,6 +20,8 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	
 
 	protected abstract EntityManager getEntityManager();
 
@@ -115,34 +120,62 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 			return tq.getResultList();
 		}
 	}
-	
-	
+
 	@Override
-	public List<T> getEntitiesOrdered(String attributeName, boolean isAscending) {
-		
-		return getEntitiesOrdered(attributeName, isAscending, null);
+	public List<T> getEntitiesOrdered( String attributeName,Class<?> attributeClass, boolean isAscending) {
+
+		return getEntitiesOrdered(attributeName,attributeClass, isAscending, null, null);
 	}
 
 	@Override
-	public List<T> getEntitiesOrdered(String attributeName,boolean isAscending,Integer maxResults) {
-		
+	public List<T> getEntitiesOrdered(String attributeName,Class<?> attributeClass, boolean isAscending, Date minimumCreateDate) {
+		return getEntitiesOrdered(attributeName,attributeClass, isAscending, null, minimumCreateDate);
+	}
+	
+	@Override
+	public List<T> getEntitiesOrdered(String attributeName,Class<?> attributeClass, boolean isAscending, Integer maxResults) {
+		return getEntitiesOrdered(attributeName,attributeClass,isAscending, maxResults, null);
+	}
+
+
+	@Override
+	public List<T> getEntitiesOrdered(String attributeName,Class<?> attributeClass, boolean isAscending, Integer maxResults, Date minimumCreateDate) {
 		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-		
+
 		CriteriaQuery<T> q = cb.createQuery(entityClass);
+
 		Root<T> r = q.from(entityClass);
-		q.orderBy(cb.desc(r. get(attributeName)));
-		TypedQuery<T> query = getEntityManager().createQuery(q);
-		if (maxResults!=null) {
-			query.setMaxResults(maxResults);	
+		List<Predicate> predicateList = new ArrayList<Predicate>();
+		
+		if (minimumCreateDate != null) {
+			predicateList.add(cb.greaterThanOrEqualTo(r.<Date>get("createDate"), minimumCreateDate));
+			
 		}
 		
+		
+		Predicate[] predicates = new Predicate[predicateList.size()];
+		predicateList.toArray(predicates);
+		q.where(predicates);
+		Object nullCoalescedValue=NullCoalesceValues.getCoalescedDefaultValueForClass(attributeClass);
+		q.orderBy(cb.desc( cb.coalesce( r.get(attributeName), cb.literal(nullCoalescedValue))));//if order by attribute is null, constant is applied
+		TypedQuery<T> query = getEntityManager().createQuery(q);
+		if (maxResults != null) {
+			query.setMaxResults(maxResults);
+		}
+
 		return query.getResultList();
 	}
 
-	protected abstract void notifyEntityCreation(T entity);
-
-	protected abstract void notifyEntityModification(T entity);
-
-	protected abstract void notifyEntityDeletion(T entity);
-
+	
+	protected void notifyEntityCreation(T entity) {
+		
+	}
+	
+	protected  void notifyEntityModification(T entity) {
+		
+	}
+	
+	protected  void notifyEntityDeletion(T entity) {
+		
+	}
 }

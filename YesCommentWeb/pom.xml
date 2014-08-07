@@ -8,13 +8,13 @@
 		<artifactId>YesCommentParent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>YesCommentWeb</artifactId>
 
 	<packaging>war</packaging>
 	<name>${project.artifactId}</name>
-	
-	
+
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -29,7 +29,6 @@
 			<scope>provided</scope>
 		</dependency>
 		
-		
 	</dependencies>
-	
+
 </project>

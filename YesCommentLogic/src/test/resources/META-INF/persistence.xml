@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="YesCommentTestPU"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>yescomment.model.Article</class>
+		<class>yescomment.model.Comment</class>
+		<class>yescomment.model.Feedback</class>
+		<class>yescomment.model.News</class>
+		<class>yescomment.model.User</class>
+		<class>yescomment.model.Vote</class>
+		<properties>
+	
+			<property name="javax.persistence.schema-generation.database.action"
+				value="drop-and-create" />
+			<property name="javax.persistence.schema-generation.create-source"
+				value="metadata" />
+			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:YescommentDB;create=true" />
+			
+			
+		</properties>
+	</persistence-unit>
+</persistence>

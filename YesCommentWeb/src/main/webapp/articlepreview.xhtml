@@ -14,7 +14,7 @@
 
 			</div>
 			<div class="button">
-				<h:outputText value="#{article.commentCount}" />
+				<h:outputText value="#{article.commentCount}" id="commentcount"/>
 			</div>
 
 		</div>
@@ -33,10 +33,13 @@
 						value="#{yesCommentApplicationBean.getSiteOfURL(article.url)}" />
 				</cite>
 				<cite>
-				<h:outputText value="#{article.registrationDate}">
+				<h:outputText value="#{article.createDate}">
 					<f:convertDateTime type="date" />
 				</h:outputText>
 				</cite>
+				<cite> <h:outputText rendered ="#{article.language!=null}"
+								value="(#{article.language})" />
+							</cite>
 			</p>
 			<p class="articledescriptiontext">
 				<h:outputText value="#{article.description}" />

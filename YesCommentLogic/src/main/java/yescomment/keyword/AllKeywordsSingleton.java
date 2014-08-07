@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
@@ -26,8 +28,8 @@ import yescomment.util.MapSorter;
  */
 @Singleton
 @LocalBean
-public class AllKeywordsSingleton implements ArticleLifeCycleListener,Serializable {
-
+@Startup
+public class AllKeywordsSingleton implements ArticleLifeCycleListener, Serializable {
 
 	/**
 	 * 
@@ -35,13 +37,14 @@ public class AllKeywordsSingleton implements ArticleLifeCycleListener,Serializab
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	ArticleManager articleManager;
+	protected ArticleManager articleManager;
 
 	private Map<String, Integer> keywords; // value is occurence count, all
 											// keywords contained
 
 	/**
-	 * Retrieves keywords (the top n) based on occurece count
+	 * Retrieves keywords (the top n) based on occurence count
+	 * 
 	 * 
 	 * @param n
 	 * @return
@@ -49,9 +52,7 @@ public class AllKeywordsSingleton implements ArticleLifeCycleListener,Serializab
 
 	@Lock(LockType.READ)
 	public Map<String, Integer> retrieveTopKeywords(int n) {
-		if (keywords == null) {
-			populateKeywords();
-		}
+		
 
 		// sorting
 		Map<String, Integer> sortedKeywords = MapSorter.sortByValues(keywords, false);
@@ -73,12 +74,13 @@ public class AllKeywordsSingleton implements ArticleLifeCycleListener,Serializab
 	}
 
 	@Lock(LockType.WRITE)
-	private void populateKeywords() {
+	@PostConstruct
+	public void populateKeywords() {
 		// get all keywords from database
-
 		List<String> allKeywords = articleManager.getAllKeywords(false);
 		keywords = new HashMap<String, Integer>(allKeywords.size());// initial
 																	// size
+
 		for (String keyword : allKeywords) {
 			int currentKeywordCount = 0;
 			if (keywords.containsKey(keyword)) {
@@ -93,41 +95,38 @@ public class AllKeywordsSingleton implements ArticleLifeCycleListener,Serializab
 	@Override
 	@Lock(LockType.WRITE)
 	public void articleCreated(Article article) {
-		if (keywords == null) {
-			populateKeywords();
-		}
-		for (String keyword : article.getKeywords()) {
-			int currentKeywordCount = 0;
-			if (keywords.containsKey(keyword)) {
-				currentKeywordCount = keywords.get(keyword);
+		
+			for (String keyword : article.getKeywords()) {
+				int currentKeywordCount = 0;
+				if (keywords.containsKey(keyword)) {
+					currentKeywordCount = keywords.get(keyword);
 
+				}
+
+				keywords.put(keyword, currentKeywordCount + 1);
+				
 			}
-
-			keywords.put(keyword, currentKeywordCount + 1);
-		}
-
+		
 	}
 
 	@Override
 	@Lock(LockType.WRITE)
 	public void articleDeleted(Article article) {
-		if (keywords == null) {
-			populateKeywords();
-		}
-		for (String keyword : article.getKeywords()) {
-			int currentKeywordCount = 0;
-			if (keywords.containsKey(keyword)) {
-				currentKeywordCount = keywords.get(keyword);
+		
+			for (String keyword : article.getKeywords()) {
+				int currentKeywordCount = 0;
+				if (keywords.containsKey(keyword)) {
+					currentKeywordCount = keywords.get(keyword);
+
+				}
+				if (currentKeywordCount != 1) {
+					keywords.put(keyword, currentKeywordCount - 1);
+				} else {
+					keywords.remove(keyword);
+				}
 
 			}
-			if (currentKeywordCount != 1) {
-				keywords.put(keyword, currentKeywordCount - 1);
-			} else {
-				keywords.remove(keyword);
-			}
-
 		}
-
-	}
+	
 
 }

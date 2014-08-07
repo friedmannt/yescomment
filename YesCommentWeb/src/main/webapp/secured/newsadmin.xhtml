@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+		<title>YesComment News Admin</title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content="Yescomment admin page" />
+
+
+	</h:head>
+	<h:body>
+		<h1>News Administration</h1>
+
+		<h:form id="createnewsform">
+			<h3>Create news</h3>
+			<h:outputLabel for="title" value="Title" />
+			<h:inputText value="#{newsAdminManagedBean.title}" id="title"
+				size="40" required="true" />
+			<h:message for="title" />
+			<br />
+			<h:outputLabel for="text" value="Text" />
+			<h:inputTextarea value="#{newsAdminManagedBean.text}" id="text"
+				cols="40" rows="7" required="true" />
+			<h:message for="text" />
+			<br />
+			<h:commandButton id="createnewsbutton" value="Publish news"
+				actionListener="#{newsAdminManagedBean.pubishNews()}">
+				<f:ajax execute="@form" render="@form :allnews" />
+			</h:commandButton>
+		</h:form>
+		<h:form id="deletenewsform">
+			<h3>Delete news</h3>
+			<h:outputLabel for="id" value="Id" />
+			<h:inputText value="#{newsAdminManagedBean.id}" id="id" size="40"
+				required="true" />
+			<h:message for="id" />
+			<br />
+			<h:commandButton id="deletenewsbutton" value="Delete news"
+				actionListener="#{newsAdminManagedBean.deleteNews()}">
+				<f:ajax execute="@form" render="@form :allnews" />
+			</h:commandButton>
+		</h:form>
+
+		<h:panelGroup id="allnews">
+			<h3>News</h3>
+			<ui:repeat value="#{newsAdminManagedBean.loadAllNews()}" var="news">
+				<h:outputFormat value="id: {0}  title: {1}  createDate:{2}">
+					<f:param value="#{news.id}" />
+					<f:param value="#{news.title}" />
+					<f:param value="#{news.createDate}" />
+				</h:outputFormat>
+				<br/>
+				<h:outputText value="#{news.newsText}" />
+				<br/>
+				<br/>
+			</ui:repeat>
+		</h:panelGroup>
+
+	</h:body>
+</f:view>
+</html>

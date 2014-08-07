@@ -1,6 +1,9 @@
 package yescomment.managedbean;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import javax.ejb.EJB;
@@ -10,7 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import yescomment.articleretriever.ArticleInfoRetriever;
+import yescomment.articleretriever.AsynchArticleInfoRetriever;
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
 import yescomment.util.ArticleInfo;
@@ -25,6 +28,8 @@ public class NewArticleManagedBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private static final int SECONDS_BETWEEN_ARTICLE_IMPORTS = 60;
 
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
@@ -41,10 +46,11 @@ public class NewArticleManagedBean implements Serializable {
 	ArticleManager articleManager;
 
 	@EJB
-	ArticleInfoRetriever articleInfoRetriever;
+	AsynchArticleInfoRetriever articleInfoRetriever;
 
 	ArticleInfo newArticleInfo;
-	boolean newArticlePassedTheCheck = false;
+
+	Boolean newArticlePassedTheCheck;
 
 	public ArticleInfo getNewArticleInfo() {
 		return newArticleInfo;
@@ -54,35 +60,37 @@ public class NewArticleManagedBean implements Serializable {
 		this.newArticleInfo = newArticleInfo;
 	}
 
-	public boolean isNewArticlePassedTheCheck() {
+	public Boolean getNewArticlePassedTheCheck() {
 		return newArticlePassedTheCheck;
 	}
 
-	public void setNewArticlePassedTheCheck(boolean newArticlePassedTheCheck) {
+	public void setNewArticlePassedTheCheck(Boolean newArticlePassedTheCheck) {
 		this.newArticlePassedTheCheck = newArticlePassedTheCheck;
 	}
 
-	public void retrieveNewArticleInfo(String url) {
+	private Future<ArticleInfo> articleInfoFutureResult;
+
+	public void finishRetrieveNewArticleInfo() {
 
 		try {
-			Future<ArticleInfo> articleInfoFutureResult = articleInfoRetriever.retrieveArticleInfo(url);
-			newArticleInfo = articleInfoFutureResult.get();// use asynch future
-															// call instead on
-															// blocking get
-
-		} catch (Exception e) {
-			newArticlePassedTheCheck = false;
+			newArticleInfo = articleInfoFutureResult.get();
+		} catch (ExecutionException e) {
 			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage("newarticleform:newarticlepassedthecheck", new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getClass().getName() + ":" + e.getMessage(), null));
+			Throwable cause = e.getCause();
+			newArticlePassedTheCheck = Boolean.FALSE;
+			FacesContext.getCurrentInstance().addMessage("newarticleform:newarticlepassedthecheck", new FacesMessage(FacesMessage.SEVERITY_ERROR, cause.getClass().getName() + ":" + cause.getMessage(), null));
 			return;
-		}
 
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
 		// we should check, whether final article url is unique
 		Article articleWithSameURL = articleManager.getArticleByURL(newArticleInfo.getFinalURL());
 		if (articleWithSameURL == null) {
-			newArticlePassedTheCheck = true;
+			newArticlePassedTheCheck = Boolean.TRUE;
 		} else {
-			newArticlePassedTheCheck = false;
+			newArticlePassedTheCheck = Boolean.FALSE;
 			FacesContext.getCurrentInstance().addMessage("newarticleform:newarticlepassedthecheck", new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("article_already_exists", JSFUtil.getLocale()) + newArticleInfo.getFinalURL(), null));
 
 		}
@@ -90,21 +98,40 @@ public class NewArticleManagedBean implements Serializable {
 	}
 
 	public String createNewArticle() {
+		assert newArticlePassedTheCheck;
+		Locale locale = JSFUtil.getLocale();
+		int secondsToWait = JSFUtil.secondsToWaitUntilOperationAllowed(userSessionBean.getLastArticleImportDate(), SECONDS_BETWEEN_ARTICLE_IMPORTS);
+		if (secondsToWait != 0) {
 
-		Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
+			FacesContext.getCurrentInstance().addMessage("newarticleform:newarticleimportbutton", new FacesMessage(FacesMessage.SEVERITY_ERROR, String.format(LocalizationUtil.getTranslation("wait_n_seconds_next_article", locale), secondsToWait), null));
+			return null;
+		} else {
 
-		article = articleManager.create(article);
-		// redirect to new article
-		String newArticleId = article.getId();
-		return "/viewarticle.xhtml?faces-redirect=true&articleId=" + newArticleId;
+			userSessionBean.setLastArticleImportDate(new Date());
+			Article article = articleManager.createArticleFromArticleInfo(newArticleInfo);
+
+			article = articleManager.create(article);
+			// redirect to new article
+			String newArticleId = article.getId();
+			return "/viewarticle.xhtml?faces-redirect=true&articleId=" + newArticleId;
+		}
 
 	}
 
-	public void fillNewArticleURLFromSearch() {
+	/**
+	 * At page load, we get future articleinfo from flash, and get the result
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void getArticleInfoFutureResultFromFlash() throws InterruptedException {
+		Object objectFromFlash = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("articleInfoFutureResult");
+		if (objectFromFlash != null) {
+			// might be null, if newarticlepage is loaded directly
+			if (objectFromFlash instanceof Future<?>) {
+				articleInfoFutureResult = (Future<ArticleInfo>) objectFromFlash;
+				finishRetrieveNewArticleInfo();
+			}
 
-		String searchedURL = (String) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("searchedArticleURL");
-		if (searchedURL != null) {
-			retrieveNewArticleInfo(searchedURL);
 		}
 	}
 

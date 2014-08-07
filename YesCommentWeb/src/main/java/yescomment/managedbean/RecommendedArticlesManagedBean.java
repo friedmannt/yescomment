@@ -2,6 +2,7 @@ package yescomment.managedbean;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -10,7 +11,9 @@ import javax.faces.bean.ViewScoped;
 
 import yescomment.model.Article;
 import yescomment.recommended.RecommendationAscpect;
-import yescomment.recommended.RecommendedArticlesSingletonLocal;
+import yescomment.recommended.RecommendedArticlesRetriever;
+import yescomment.util.JSFUtil;
+import yescomment.util.LocalizationUtil;
 
 @ManagedBean
 @ViewScoped
@@ -22,11 +25,13 @@ public class RecommendedArticlesManagedBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	RecommendedArticlesSingletonLocal recommendedArticlesSingleton;
+	RecommendedArticlesRetriever recommendedArticlesRetriever;
 
 	List<Article> latestArticles;
 
 	List<Article> mostCommentedArticles;
+	
+	List<Article> lastCommentedArticles;
 	
 	
 
@@ -46,6 +51,18 @@ public class RecommendedArticlesManagedBean implements Serializable {
 		this.mostCommentedArticles = mostCommentedArticles;
 	}
 
+	
+	
+	public List<Article> getLastCommentedArticles() {
+		return lastCommentedArticles;
+	}
+
+	public void setLastCommentedArticles(List<Article> lastCommentedArticles) {
+		this.lastCommentedArticles = lastCommentedArticles;
+	}
+
+
+
 	private RecommendationAscpect selectedRecommendationAspect;
 
 	public RecommendationAscpect getSelectedRecommendationAspect() {
@@ -64,12 +81,23 @@ public class RecommendedArticlesManagedBean implements Serializable {
 	public boolean mostCommentedSelected() {
 		return selectedRecommendationAspect == RecommendationAscpect.MOSTCOMMENTED;
 	}
+	
+	public boolean lastCommentedSelected() {
+		return selectedRecommendationAspect == RecommendationAscpect.LASTCOMMENTED;
+	}
+
 
 	@PostConstruct
-	public void setSelectedRecommendationAspectToLatest() {
-		latestArticles = recommendedArticlesSingleton.retrieveRecommendedArticles(RecommendationAscpect.LATEST);
-		mostCommentedArticles = recommendedArticlesSingleton.retrieveRecommendedArticles(RecommendationAscpect.MOSTCOMMENTED);
+	public void initializeRecommendedArticles() {
+		latestArticles = recommendedArticlesRetriever.retrieveRecommendedArticles(RecommendationAscpect.LATEST);
+		mostCommentedArticles = recommendedArticlesRetriever.retrieveRecommendedArticles(RecommendationAscpect.MOSTCOMMENTED);
+		lastCommentedArticles = recommendedArticlesRetriever.retrieveRecommendedArticles(RecommendationAscpect.LASTCOMMENTED);
 		selectedRecommendationAspect = RecommendationAscpect.LATEST;
+	}
+	
+	public String getRecommendationAscpectTranslation(final RecommendationAscpect recommendationAscpect) {
+		Locale locale = JSFUtil.getLocale();
+		return LocalizationUtil.getEnumTranslation(recommendationAscpect, locale);
 	}
 
 }

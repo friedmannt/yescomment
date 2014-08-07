@@ -5,6 +5,9 @@
 		<role-name>yescommentadmin</role-name>
 		<group-name>yescommentadmin</group-name>
 	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>yescommentuser</role-name>
+		<group-name>yescommentuser</group-name>
+	</security-role-mapping>
 	<parameter-encoding default-charset="UTF-8" />
-
 </glassfish-web-app>

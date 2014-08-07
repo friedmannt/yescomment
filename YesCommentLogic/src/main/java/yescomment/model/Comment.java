@@ -1,14 +1,14 @@
 package yescomment.model;
 
-import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,23 +28,37 @@ public class Comment extends AbstractEntity {
 	@Column(nullable = false, length = MAX_COMMENT_SIZE)
 	@NotNull
 	@Size(max = MAX_COMMENT_SIZE)
-	/*@Lob*/ /*JBOSS does it bad*/
+	/*@Lob openshift:postgresql cannot handle*/
 	private String commentText;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
-	@NotNull
-	private Date commentDate;
 	
-	public static final int MAX_AUTHOR_SIZE=64;
+	
+	public static final int MAX_AUTHOR_SIZE=16;
 	@Column(nullable=false,length = MAX_AUTHOR_SIZE)
 	@Size(max = MAX_AUTHOR_SIZE)
 	@NotNull
 	private String author;
 	
-	private Integer plusCount=0;
 	
-	private Integer minusCount=0;
+	@ManyToOne(fetch=FetchType.EAGER,optional=true)
+	private Comment replyOf;
+	
+	
+	private Integer upVoteCount=0;
+	
+	private Integer downVoteCount=0;
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "comment", fetch = FetchType.LAZY)
+	private Set<Vote> votes;
+
+	/**
+	 * Hidden comment is not visible for users
+	 */
+	@NotNull
+	public Boolean hidden=false;
+	
+	
 	
 	private static final long serialVersionUID = 1L;
 
@@ -65,14 +79,7 @@ public class Comment extends AbstractEntity {
 		this.article = article;
 	}
 
-	public Date getCommentDate() {
-		return commentDate;
-	}
-
-	public void setCommentDate(Date commentDate) {
-		this.commentDate = commentDate;
-	}
-
+	
 	public String getAuthor() {
 		return author;
 	}
@@ -81,20 +88,47 @@ public class Comment extends AbstractEntity {
 		this.author = author;
 	}
 
-	public Integer getPlusCount() {
-		return plusCount;
+	public Comment getReplyOf() {
+		return replyOf;
 	}
 
-	public void setPlusCount(Integer plusCount) {
-		this.plusCount = plusCount;
+	public void setReplyOf(Comment replyOf) {
+		this.replyOf = replyOf;
 	}
 
-	public Integer getMinusCount() {
-		return minusCount;
+	
+	public Integer getUpVoteCount() {
+		return upVoteCount;
 	}
 
-	public void setMinusCount(Integer minusCount) {
-		this.minusCount = minusCount;
+	public void setUpVoteCount(Integer upVoteCount) {
+		this.upVoteCount = upVoteCount;
+	}
+
+	public Integer getDownVoteCount() {
+		return downVoteCount;
+	}
+
+	public void setDownVoteCount(Integer downVoteCount) {
+		this.downVoteCount = downVoteCount;
+	}
+
+	
+
+	public Set<Vote> getVotes() {
+		return votes;
+	}
+
+	public void setVotes(Set<Vote> votes) {
+		this.votes = votes;
+	}
+
+	public Boolean getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(Boolean hidden) {
+		this.hidden = hidden;
 	}
 
 }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+		<title>YesComment Moderation</title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content="Yescomment admin page" />
+
+
+	</h:head>
+	<h:body>
+		<h1>Moderation</h1>
+
+		<h:form id="moderationform">
+			<h3>Soft moderation</h3>
+			<h:outputLabel for="moderatedcommentid" value="Comment id" />
+			<h:inputText value="#{moderationManagedBean.moderatedCommentId}"
+				id="moderatedcommentid" size="40" required="true" />
+			<h:message for="moderatedcommentid" />
+			<br />
+			<h:commandButton id="hideCommentButton" value="Hide Comment"
+				actionListener="#{moderationManagedBean.hideComment()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton id="unhideCommentButton" value="Unhide Comment"
+				actionListener="#{moderationManagedBean.unhideComment()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton type="reset" value="Reset">
+
+			</h:commandButton>
+		</h:form>
+		<br />
+		<h:form id="deletecommentform">
+			<h3>Delete Comment</h3>
+			<h:outputLabel for="deletedCommentId"
+				value="Id of comment to be deleted" />
+			<h:inputText value="#{moderationManagedBean.deletedCommentId}"
+				id="deletedCommentId" size="40" required="true" />
+			<h:message for="deletedCommentId" />
+			<br />
+			<h:commandButton id="deleteCommentButton" value="Delete Comment"
+				actionListener="#{moderationManagedBean.deleteComment()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton type="reset" value="Reset">
+
+			</h:commandButton>
+		</h:form>
+		<h:form id="validateCommentDataForm">
+			<h3>Validate comment count and last comment date</h3>
+			<h:outputLabel for="validateCommentDataArticleId"
+				value="Id of article where comment count and last comment date will be validated" />
+			<h:inputText value="#{moderationManagedBean.validateCommentDataArticleId}"
+				id="validateCommentDataArticleId" size="40" required="true" />
+			<h:message for="validateCommentDataArticleId" />
+			<br />
+			<h:commandButton id="validateCommentDataButton" value="Validate comment data in article"
+				actionListener="#{moderationManagedBean.validateCommentData()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton type="reset" value="Reset">
+
+			</h:commandButton>
+		</h:form>
+		
+		
+		<h:form id="mergearticleform">
+			<h3>Merge articles</h3>
+			<h:outputLabel for="mergedArticleId"
+				value="Id of article to be deleted and merged" />
+			<h:inputText value="#{moderationManagedBean.mergedArticleId}"
+				id="mergedArticleId" size="40" required="true" />
+			<h:message for="mergedArticleId" />
+			<br />
+			<h:outputLabel for="mergeTargetArticleId"
+				value="Id of merge target article" />
+			<h:inputText value="#{moderationManagedBean.mergeTargetArticleId}"
+				id="mergeTargetArticleId" size="40" required="true" />
+			<h:message for="mergeTargetArticleId" />
+			<br />
+			<h:commandButton id="mergeArticleButton" value="Merge article"
+				actionListener="#{moderationManagedBean.mergeArticle()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton type="reset" value="Reset">
+
+			</h:commandButton>
+		</h:form>
+	</h:body>
+</f:view>
+</html>

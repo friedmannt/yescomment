@@ -4,59 +4,93 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	template="/template.xhtml">
-
+	<f:metadata>
+		<f:viewParam name="keyword" value="#{keywordManagedBean.keyword}" />
+		<f:viewAction action="#{keywordManagedBean.searchForKeyword()}" />
+	</f:metadata>
+	<ui:define name="pageheadmeta">
+		<title>Keywords</title>
+		<meta name="description" content="Keyword search and tagcloud" />
+		<meta name="keywords" content="comment, yescomment, search" />
+		<meta name="og:title" content="Keywords" />
+		<meta name="og:description" content="Keyword search and tagcloud" />
+	</ui:define>
 	<ui:define name="content">
 		<h:outputText value="#{yescommentmsg['keyword_introline1']}" />
 		<br />
 		<h:outputText value="#{yescommentmsg['keyword_introline2']}" />
 		<br />
 		<h:outputText value="#{yescommentmsg['keyword_introline3']}" />
+		<br />
+
+
 		<h:form id="searchkeywordform">
-			<table>
-				<tr>
-					<td><h:inputText id="searchedkeyword" type="search"
-							styleClass="halfseethrough" value="#{keywordManagedBean.keyword}"
-							required="true"
-							requiredMessage="#{yescommentmsg['keyword_empty']}"
-							pt:placeholder="#{yescommentmsg['enter_keyword']}">
-							<f:passThroughAttribute name="required" value="required" />
-						</h:inputText></td>
-					<td><h:commandButton type="submit" id="keywordsearchbutton"
-							actionListener="#{keywordManagedBean.searchForKeyword()}">
-							<f:ajax render=":resultarticlesforkeyword @form" execute="@form" />
-						</h:commandButton></td>
-				</tr>
-				<tr>
-					<td><h:message for="searchedkeyword"
-							id="searchedkeywordmessage" showSummary="true" showDetail="false"
-							errorClass="errorstyle" /></td>
-					<td />
-				</tr>
-			</table>
+			<div id="searchkeyworddiv">
+				<div id="searchkeywordbuttondiv">
+					<h:commandButton type="submit" id="keywordsearchbutton"
+						title="#{yescommentmsg['search_keyword']}"
+						actionListener="#{keywordManagedBean.searchForKeyword()}">
+						<f:ajax render=":resultarticlesforkeyword @form" execute="@form" />
+					</h:commandButton>
+
+				</div>
+				<div id="searchkeywordinputdiv">
+					<h:inputText id="searchedkeyword" type="search"
+						styleClass="halfseethrough" value="#{keywordManagedBean.keyword}"
+						required="true"
+						requiredMessage="#{yescommentmsg['keyword_empty']}"
+						pt:placeholder="#{yescommentmsg['enter_keyword']}...">
+						<f:passThroughAttribute name="required" value="required" />
+					</h:inputText>
+
+				</div>
+
+
+			</div>
+
+			<div id="searchkeywordmessagediv">
+				<h:message for="searchedkeyword" id="searchedkeywordmessage"
+					showSummary="true" showDetail="false" errorClass="errorstyle" />
+			</div>
+
+
+
 
 		</h:form>
+		<h:form id="tagcloudform">
+			<div id="tagcloud" class="halfseethrough">
+				<ul>
+					<ui:repeat
+						value="#{keywordTagCloudBean.getTopKeywordsTagCloudItems()}"
+						var="tagCloudItem">
+						<li style="font-size: #{tagCloudItem.strength*100 } %"><h:outputLink
+								value="#{tagCloudItem.url}">
+								<h:outputText value="#{tagCloudItem.tag}" />
+							</h:outputLink></li>
+					</ui:repeat>
 
-		<div id="tagcloud" class="halfseethrough">
-			<ul>
-				<ui:repeat
-					value="#{keywordTagCloudBean.getTopKeywordsTagCloudItems()}"
-					var="tagCloudItem">
-					<li style="font-size: #{tagCloudItem.strength*100}%"><h:outputLink
-							value="#{tagCloudItem.url}">
-							<h:outputText value="#{tagCloudItem.tag}" />
-						</h:outputLink></li>
-				</ui:repeat>
+				</ul>
+			</div>
+		</h:form>
+		<h:form>
+			<h:commandButton
+				value="#{keywordManagedBean.getKeywordLanguageFilterTranslation('ALL_LANGUAGE')}"
+				styleClass="button keywordlanguageselectionbutton oneselectorbutton"
+				actionListener="#{keywordManagedBean.changeSelectedKeywordLanguageFilter('ALL_LANGUAGE')}"
+				disabled="#{keywordManagedBean.selectedKeywordLanguageFilter=='ALL_LANGUAGE'}">
+				<f:ajax render="@form :resultarticlesforkeyword" />
+			</h:commandButton>
+			<h:commandButton
+				value="#{keywordManagedBean.getKeywordLanguageFilterTranslation('USER_LANGUAGE')} (#{yesCommentApplicationBean.getCurrentLanguage()})"
+				styleClass="button keywordlanguageselectionbutton oneselectorbutton"
+				actionListener="#{keywordManagedBean.changeSelectedKeywordLanguageFilter('USER_LANGUAGE')}"
+				disabled="#{keywordManagedBean.selectedKeywordLanguageFilter=='USER_LANGUAGE'}">
+				<f:ajax render="@form :resultarticlesforkeyword" />
+			</h:commandButton>
+		</h:form>
 
-			</ul>
-		</div>
-
-
-
-
-
-
-		<h:panelGroup id="resultarticlesforkeyword" styleClass="articlelist">
-			<h:outputText id="noresultarticles"
+		<h:form id="resultarticlesforkeyword" styleClass="articlelist">
+			<h:outputText id="noresultarticles" styleClass="noresultarticles"
 				value="#{yescommentmsg['no_results']}"
 				rendered="#{keywordManagedBean.resultArticles.isEmpty()}" />
 			<ui:repeat value="#{keywordManagedBean.resultArticles}" var="article"
@@ -69,6 +103,6 @@
 
 
 			</ui:repeat>
-		</h:panelGroup>
+		</h:form>
 	</ui:define>
 </ui:composition>

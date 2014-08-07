@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
+<ui:define name="pageheadmeta">
+		<title>Registration</title>
+		<meta name="description" content="Registration" />
+		<meta name="keywords" content="comment, yescomment, registration, sign in" />
+	</ui:define>
+	<ui:define name="content">
+
+
+		<h1 class="spacedheading">#{yescommentmsg['registration']}</h1>
+
+		<h:form id="registrationform">
+			<h:panelGrid id="registrationgrid" columns="3">
+				<h:outputLabel for="username" value="#{yescommentmsg['username']}"
+					styleClass="registrationlabel" />
+				<h:inputText id="username" styleClass="registrationinput halfseethrough"
+					value="#{registrationManagedBean.userName}" required="true"
+					requiredMessage="#{yescommentmsg['username_is_empty']}"
+					pt:placeholder="#{yescommentmsg['username']}"
+					pt:maxlength="#{registrationManagedBean.getMaxUsernameSize()}">
+					<f:converter converterId="StringTrimConverter" />
+				</h:inputText>
+				<h:message for="username" showSummary="true" showDetail="false"
+					errorClass="errorstyle" />
+				<h:outputLabel for="password1" value="#{yescommentmsg['password']}"
+					styleClass="registrationlabel" />
+				<h:inputSecret id="password1" styleClass="registrationinput halfseethrough"
+					value="#{registrationManagedBean.password1}" required="true"
+					requiredMessage="#{yescommentmsg['password_is_empty']}"
+					pt:placeholder="#{yescommentmsg['password']}">
+					<f:validator validatorId="PasswordValidator" />
+				</h:inputSecret>
+				<h:message for="password1" showSummary="true" showDetail="false"
+					errorClass="errorstyle" />
+				<h:outputLabel for="password2"
+					value="#{yescommentmsg['retype_password']}"
+					styleClass="registrationlabel" />
+				<h:inputSecret id="password2" styleClass="registrationinput halfseethrough"
+					value="#{registrationManagedBean.password2}" required="true"
+					requiredMessage="#{yescommentmsg['password_is_empty']}"
+					pt:placeholder="#{yescommentmsg['retype_password']}">
+					<f:validator validatorId="PasswordValidator" />
+				</h:inputSecret>
+				<h:message for="password2" showSummary="true" showDetail="false"
+					errorClass="errorstyle" />
+
+
+
+				<h:outputText value="Captcha:" />
+
+
+				<h:graphicImage
+					value="/captcha/captcha.png?now=#{userSessionBean.captchaWrapper.nowTime()}"
+					id="registrationcaptcha" styleClass="registrationcaptcha captchaimage"/>
+				<h:commandLink title="#{yescommentmsg['refresh_captcha']}"
+					actionListener="#{userSessionBean.captchaWrapper.randomizeCaptcha()}">
+					<img
+						src="#{request.contextPath}/resources/images/refresh.svg"
+						alt="captcha_randomize" class="captcharefreshicon" />
+					<f:ajax
+						render=":registrationform:registrationcaptcha" />
+				</h:commandLink>
+
+
+				<h:outputText value="#{yescommentmsg['captcha_type']}: " />
+				<h:inputText 
+					id="captchaanswer" styleClass="registrationinput halfseethrough">
+					<f:validator validatorId="CaptchaValidator" />
+					<f:attribute name="userSessionBean" value="#{userSessionBean}"/>
+				</h:inputText>
+				<h:message for="captchaanswer" id="captchamessage"
+					showSummary="true" showDetail="false" errorClass="errorstyle" />
+			</h:panelGrid>
+
+
+
+
+
+
+			<h:commandButton id="registrationbutton"
+				value="#{yescommentmsg['registration']}" styleClass="button"
+				actionListener="#{registrationManagedBean.registration()}"
+				rendered="#{!registrationManagedBean.registrationSuccessful}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton id="disabledregistrationbutton" disabled="true"
+				value="#{yescommentmsg['registration_successful']}"
+				styleClass="button"
+				rendered="#{registrationManagedBean.registrationSuccessful}" />
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

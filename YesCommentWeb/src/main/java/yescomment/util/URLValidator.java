@@ -12,12 +12,20 @@ public class URLValidator implements Validator {
 
 	@Override
 	public void validate(FacesContext fc, UIComponent uic, Object value) throws ValidatorException {
-		if (!URLUtil.urlIsValid((String) value)) {
-		
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("url_invalid", JSFUtil.getLocale()),null));
+		final String url = (String) value;
+
+		String schema = URLUtil.getSchemaOfURL(url);
+		if (schema == null || (!schema.equals("http") && !schema.equals("https"))) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("protocol_invalid", JSFUtil.getLocale()), null));
 		}
-		
+		String fragment = URLUtil.getFragmentOfURL(url);
+		if (fragment != null ) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("fragment_not_allowed", JSFUtil.getLocale()), null));
+		}
+		if (!URLUtil.urlIsValid(url)) {
+
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("url_invalid", JSFUtil.getLocale()), null));
+		}
 
 	}
-
 }

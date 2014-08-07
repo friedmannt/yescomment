@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
+	<ui:define name="pageheadmeta">
+		<title>Login</title>
+		<meta name="description" content="Login" />
+		<meta name="keywords" content="comment, yescomment, login" />
+	</ui:define>
+	<ui:define name="content">
+
+
+		<h1 class="spacedheading">#{yescommentmsg['login']}</h1>
+		<h:form id="loginform">
+			<h:panelGrid columns="3" id="logingrid">
+				<h:outputText value="#{yescommentmsg['username']}" />
+				<h:inputText id="username" value="#{loginManagedBean.username}"
+					class="halfseethrough" required="true"
+					requiredMessage="#{yescommentmsg['username_is_empty']}"
+					pt:placeholder="#{yescommentmsg['username']}" />
+				<h:message for="username" showSummary="true" showDetail="false"
+					errorClass="errorstyle" />
+				<h:outputText value="#{yescommentmsg['password']}" />
+				<h:inputSecret id="password" value="#{loginManagedBean.password}"
+					class="halfseethrough" required="true"
+					requiredMessage="#{yescommentmsg['password_is_empty']}"
+					pt:placeholder="#{yescommentmsg['password']}" />
+				<h:message for="password" showSummary="true" showDetail="false"
+					errorClass="errorstyle" />
+			</h:panelGrid>
+			<h:commandButton action="#{loginManagedBean.tryToLogin()}"
+				value="#{yescommentmsg['login']}" id="loginbutton"
+				class="button invertedbutton loginbutton">
+			</h:commandButton>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

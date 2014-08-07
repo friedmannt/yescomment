@@ -12,7 +12,14 @@
 			value="#{viewArticleManagedBean.highlightCommentId}" />
 		<f:viewAction action="#{viewArticleManagedBean.loadArticle()}" />
 	</f:metadata>
-
+	<ui:define name="pageheadmeta">
+		<title>Yescomment: #{viewArticleManagedBean.article.title}</title>
+		<meta name="description" content="Article view page" />
+		<meta name="keywords" content="comment, yescomment, article" />
+		<meta name="og:title"
+			content="Yescomment: #{viewArticleManagedBean.article.title}" />
+		<meta name="og:description" content="Article view page" />
+	</ui:define>
 	<ui:define name="content">
 
 		<h:messages showSummary="true" showDetail="true" />
@@ -24,219 +31,119 @@
 				</ui:include>
 			</h:panelGroup>
 			<h:form id="articlelinkform">
+				<h:outputLink styleClass="shareemaillink"
+					value="#{shareArticleInEmailManagedBean.getMailtoLinkForArticle(viewArticleManagedBean.article,request.remoteUser,request.requestURL)}">
+
+					<h:outputText value="#{yescommentmsg['share_article_email']}" />
+					<h:graphicImage alt="mailto_link"
+						value="/resources/images/mailto_link.svg" styleClass="mailtoicon" />
+				</h:outputLink>
 				<h:outputLink styleClass="originalarticlelink"
-					value="#{viewArticleManagedBean.article.url}">#{yescommentmsg['open_original_article']}</h:outputLink>
+					value="#{viewArticleManagedBean.article.url}">
+
+					<h:outputText value="#{yescommentmsg['open_original_article']}" />
+					<h:graphicImage alt="originallink"
+						value="/resources/images/outside_link.svg"
+						styleClass="originallinkicon" />
+				</h:outputLink>
+				<h:link styleClass="embeddablecommentslink"
+					outcome="embeddable.xhtml?articleId=#{viewArticleManagedBean.articleId}">
+
+					<h:outputText value="#{yescommentmsg['embeddable_url']}" />
+					<h:graphicImage alt="embeddinglink"
+						value="/resources/images/embeddable_link.svg"
+						styleClass="embeddinglinkicon" />
+				</h:link>
+
 
 			</h:form>
 			<hr />
 			<h:form id="newcommentform">
-
+				<h:panelGroup id="newcommentreplyinfo">
+					<h:panelGroup
+						rendered="#{viewArticleManagedBean.newCommentReplyOf!=null}">
+						<h:outputText value="#{yescommentmsg['replying_to']}:"></h:outputText>
+						<h:outputText
+							value="##{viewArticleManagedBean.getOrderNumberOfComment(viewArticleManagedBean.newCommentReplyOf)}, #{viewArticleManagedBean.newCommentReplyOf.author}" />
+						<h:commandLink title="#{yescommentmsg['undo_replying']}"
+							actionListener="#{viewArticleManagedBean.undoReply()}">
+							<f:ajax render=":newcommentform:newcommentreplyinfo" />
+							<img src="#{request.contextPath}/resources/images/undo_reply.svg"
+								alt="undo_reply" class="undoreply" />
+						</h:commandLink>
+					</h:panelGroup>
+				</h:panelGroup>
 				<h:inputTextarea value="#{viewArticleManagedBean.newCommentText}"
 					pt:maxlength="#{viewArticleManagedBean.getMaxCommentSize()}"
-					pt:placeHolder="#{yescommentmsg['place_your_comment']}" id="newCommentText"
-					required="true" requiredMessage="#{yescommentmsg['empty_comment']}"
+					pt:placeHolder="#{yescommentmsg['place_your_comment']}..."
+					id="newCommentText" required="true"
+					requiredMessage="#{yescommentmsg['empty_comment']}"
 					styleClass="halfseethrough" />
 				<h:message for="newCommentText" showSummary="true"
 					showDetail="false" errorClass="errorstyle" />
+
 				<div>
-					<h:panelGroup id="newcommentauthor">
+					<h:panelGroup id="newcommentauth">
 
-						<h:outputLabel for="name" value="#{yescommentmsg['your_name']}" />
-						<h:inputText id="name" value="#{userSessionBean.userName}"
-							maxlength="#{userSessionBean.getMaxAuthorSize()}"
-							pt:placeHolder="#{yescommentmsg['your_name']}"
-							title="#{yescommentmsg['your_name']}" styleClass="halfseethrough">
-							<f:ajax />
-						</h:inputText>
-					</h:panelGroup>
-					<h:panelGroup id="newcommentcaptcha">
-						<h:outputText
-							value="#{yescommentmsg['captcha_intro']}" />
+						<h:panelGroup id="newcommentauthor"
+							rendered="#{userSessionBean.captchaWrapper.captchaCorrectlyAnswered or request.remoteUser!=null}">
+							<h:outputLabel for="name" value="#{yescommentmsg['posting_as']}" />
+							<br />
+							<h:outputText id="name"
+								value="#{viewArticleManagedBean.getPostingName()}"
+								styleClass="halfseethrough" />
 
-						<h:panelGroup
-							rendered="#{captchaManagedBean.captchaCorrectlyAnswered}">
-							<h:outputText value="#{yescommentmsg['captcha_already_answered']}" />
 						</h:panelGroup>
 						<h:panelGroup
-							rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}">
-							<div>
-								<h:outputText value="#{yescommentmsg['please_select']}:" />
-								<h:outputText
-									value="#{captchaManagedBean.localizeColor(captchaManagedBean.captcha.correctCaptchaOption.color)}" />
-								<h:outputText value=" " />
-								<h:outputText
-									value="#{captchaManagedBean.localizeNumber(captchaManagedBean.captcha.correctCaptchaOption.number)}" />
+							rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}">
+							<h:panelGrid columns="2">
+								<h:graphicImage
+									value="/captcha/captcha.png?now=#{userSessionBean.captchaWrapper.nowTime()}"
+									id="newcommentcaptcha" styleClass="captchaimage"/>
+								<h:commandLink title="#{yescommentmsg['refresh_captcha']}"
+									rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered}"
+									actionListener="#{userSessionBean.captchaWrapper.randomizeCaptcha()}">
+									<img src="#{request.contextPath}/resources/images/refresh.svg"
+										alt="captcha_randomize" class="captcharefreshicon" />
+									<f:ajax render=":newcommentform:newcommentcaptcha" />
+								</h:commandLink>
+							</h:panelGrid>
 
-								<br />
-								<h:panelGroup id="captcha">
-									<ui:repeat
-										value="#{captchaManagedBean.captcha.possibleCaptchaOptions}"
-										var="captchaoption">
-										<h:commandLink
-											actionListener="#{captchaManagedBean.answer(captchaoption)}"
-											immediate="true">
-											<h:outputText value="#{captchaoption.number}"
-												style="color:#{captchaoption.color}"
-												styleClass="captchaoption" />
-											<f:ajax
-												render=":newcommentform:newcommentcaptcha :newcommentform:newcommentcaptcharefresh :newcommentform:postcommentbutton" />
-										</h:commandLink>
+							<h:outputText value="#{yescommentmsg['captcha_type']}: " />
+							<h:inputText id="captchaanswer" styleClass="halfseethrough">
+								<f:validator validatorId="CaptchaValidator" />
+								<f:attribute name="userSessionBean" value="#{userSessionBean}" />
+								<f:ajax
+									render=":newcommentform:newcommentauth :newcommentform:newcommentpost" />
+							</h:inputText>
+							<h:message for="captchaanswer" id="captchamessage"
+								showSummary="true" showDetail="false" errorClass="errorstyle" />
 
-									</ui:repeat>
 
-								</h:panelGroup>
-								<h:message for="captcha" id="captchamessage" showSummary="true"
-									showDetail="false" errorClass="errorstyle" />
-							</div>
+
 						</h:panelGroup>
-					</h:panelGroup>
-					<h:panelGroup id="newcommentcaptcharefresh">
-						<h:commandLink title="#{yescommentmsg['refresh_captcha']}"  rendered="#{!captchaManagedBean.captchaCorrectlyAnswered}"
-							actionListener="#{captchaManagedBean.randomizeCaptcha()}">
-							<img
-								src="#{request.contextPath}/resources/images/captcha_randomize.svg"
-								alt="captcha_randomize" class="captcharefreshicon" />
-							<f:ajax render=":newcommentform:newcommentcaptcha" />
-						</h:commandLink>
+
 					</h:panelGroup>
 					<h:panelGroup id="newcommentpost">
 
-						<h:commandButton value="#{yescommentmsg['post_comment']}" styleClass="button"
-							id="postcommentbutton"
-							disabled="#{!captchaManagedBean.captchaCorrectlyAnswered}"
+						<h:commandButton value="#{yescommentmsg['post_comment']}"
+							styleClass="button" id="postcommentbutton"
+							disabled="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}"
 							actionListener="#{viewArticleManagedBean.postNewComment()}">
-							<f:ajax render=":comments :viewedarticlepreview @form"
+							<f:ajax render=":comments :newcommentform :commentcount"
 								execute="@form" />
 						</h:commandButton>
+						<h:message for="postcommentbutton" showSummary="true"
+							showDetail="false" errorClass="errorstyle" />
+						<h:outputText value="#{yescommentmsg['captcha_intro']}"
+							rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}"
+							id="captchaintro" />
+
 					</h:panelGroup>
-
-
 				</div>
 			</h:form>
 			<div class="clear" />
-
-			<h2 class="commentformheadertext">#{yescommentmsg['comments']}</h2>
-			<h:form id="commentorderform">
-
-				<h:commandLink title="#{yescommentmsg['newest_comment_first']}"
-					actionListener="#{viewArticleManagedBean.setCommentSortOrder('NEWESTFIRST')}"
-					disabled="#{viewArticleManagedBean.getCommentSortOrder()=='NEWESTFIRST'}">
-					<h:graphicImage value="/resources/images/arrow_up.svg"
-						styleClass="commentordericon" alt="newest_comment_first"
-						rendered="#{viewArticleManagedBean.getCommentSortOrder()!='NEWESTFIRST'}" />
-					<h:graphicImage value="/resources/images/arrow_up_disabled.svg"
-						styleClass="commentordericon" alt="newest_comment_first"
-						rendered="#{viewArticleManagedBean.getCommentSortOrder()=='NEWESTFIRST'}" />
-					<f:ajax render=":comments @form" />
-				</h:commandLink>
-				<h:commandLink title="#{yescommentmsg['oldest_comment_first']}"
-					actionListener="#{viewArticleManagedBean.setCommentSortOrder('OLDESTFIRST')}"
-					disabled="#{viewArticleManagedBean.getCommentSortOrder()=='OLDESTFIRST'}">
-					<h:graphicImage value="/resources/images/arrow_down.svg"
-						styleClass="commentordericon" alt="oldest_comment_first"
-						rendered="#{viewArticleManagedBean.getCommentSortOrder()!='OLDESTFIRST'}" />
-					<h:graphicImage value="/resources/images/arrow_down_disabled.svg"
-						styleClass="commentordericon" alt="newest_comment_first"
-						rendered="#{viewArticleManagedBean.getCommentSortOrder()=='OLDESTFIRST'}" />
-					<f:ajax render=":comments @form" />
-
-				</h:commandLink>
-			</h:form>
-			<div class="clear" />
-			<h:form id="comments">
-
-				<ui:include src="paginator.xhtml">
-					<ui:param name="paginatorshouldberendered"
-						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
-					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
-
-				</ui:include>
-
-
-				<ui:repeat value="#{viewArticleManagedBean.getCommentsOfArticle()}"
-					var="comment" varStatus="varStatus">
-
-					<h:panelGroup
-						rendered="#{varStatus.index ge viewArticleManagedBean.commentStartIndex and varStatus.index le viewArticleManagedBean.commentEndIndex}">
-						<hr />
-						<div
-							class="#{viewArticleManagedBean.commentShouldBeHighlighted(comment)?'onecomment highlighted':'onecomment'}">
-
-							<div class="commentheader">
-								<h:link title="#{yescommentmsg['link_to_comment']}" styleClass="commentlink"
-									fragment="comments">
-									<f:param name="articleId"
-										value="#{viewArticleManagedBean.articleId}" />
-									<f:param name="highlightCommentId" value="#{comment.id}" />
-									<img
-										src="#{request.contextPath}/resources/images/comment_link.svg"
-										class="commentlinkicon" alt="comment_link" />
-								</h:link>
-								<div class="commentnumber">
-
-									<h:outputText
-										value="##{viewArticleManagedBean.getOrderNumberOfComment(comment)}" />
-								</div>
-								<div class="commentauthor">
-									<h:outputText value="#{comment.author}" />
-								</div>
-								<div class="commentdate ">
-									<h:outputText value="#{comment.commentDate}">
-										<f:convertDateTime type="both" dateStyle="medium"
-											timeStyle="medium" />
-									</h:outputText>
-								</div>
-
-								<h:panelGroup styleClass="commentvoteform">
-									<h:outputText value="#{comment.plusCount}"
-										styleClass="upvotecount" />
-									<h:commandLink
-										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-										actionListener="#{viewArticleManagedBean.voteOnComment(comment,'UP')}"
-										title="Vote up">
-										<img src="#{request.contextPath}/resources/images/vote_up.jpg"
-											alt="vote_up" />
-
-
-										<f:ajax render="@form" />
-									</h:commandLink>
-
-									<h:outputText value="#{comment.minusCount}"
-										styleClass="downvotecount" />
-									<h:commandLink
-										disabled="#{viewArticleManagedBean.alreadyVotedOnComment(comment)}"
-										actionListener="#{viewArticleManagedBean.voteOnComment(comment,'DOWN')}"
-										title="Vote down">
-										<img
-											src="#{request.contextPath}/resources/images/vote_down.jpg"
-											alt="vote_down" />
-										<f:ajax render="@form" />
-									</h:commandLink>
-
-								</h:panelGroup>
-
-							</div>
-
-							<p class="clear">
-								<h:outputText value="#{comment.commentText}" id="commenttext"
-									styleClass="commenttext" />
-							</p>
-
-						</div>
-					</h:panelGroup>
-
-				</ui:repeat>
-				<ui:include src="paginator.xhtml">
-					<ui:param name="paginatorshouldberendered"
-						value="#{!viewArticleManagedBean.article.comments.isEmpty()}" />
-					<ui:param name="paginator" value="#{viewArticleManagedBean}" />
-
-				</ui:include>
-
-
-			</h:form>
-
-
+			<ui:include src="commentflow.xhtml" />
 		</h:panelGroup>
 
 	</ui:define>

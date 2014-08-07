@@ -2,30 +2,31 @@ package yescomment.managedbean.keyword;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 
+import yescomment.keyword.KeywordLanguageFilter;
 import yescomment.model.Article;
 import yescomment.persistence.ArticleManager;
+import yescomment.util.JSFUtil;
+import yescomment.util.LocalizationUtil;
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class KeywordManagedBean implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@ManagedProperty("#{param.keyword}")
+	
+	
 	private String keyword;
 
-	@EJB
-	ArticleManager articleManager;
+	
 
 	public String getKeyword() {
 		return keyword;
@@ -35,30 +36,49 @@ public class KeywordManagedBean implements Serializable {
 		this.keyword = keyword;
 	}
 
+	@EJB
+	ArticleManager articleManager;
+	
 	private List<Article> resultArticles;
 
 	public List<Article> getResultArticles() {
 		return resultArticles;
+	}
+	
+	private KeywordLanguageFilter selectedKeywordLanguageFilter=KeywordLanguageFilter.ALL_LANGUAGE;
+	
+	public KeywordLanguageFilter getSelectedKeywordLanguageFilter() {
+		return selectedKeywordLanguageFilter;
+	}
+
+	public void setSelectedKeywordLanguageFilter(KeywordLanguageFilter selectedKeywordLanguageFilter) {
+		this.selectedKeywordLanguageFilter = selectedKeywordLanguageFilter;
 	}
 
 	public void setResultArticles(List<Article> resultArticles) {
 		this.resultArticles = resultArticles;
 	}
 
+	
+	public void changeSelectedKeywordLanguageFilter(KeywordLanguageFilter selectedKeywordLanguageFilter) {
+		this.selectedKeywordLanguageFilter = selectedKeywordLanguageFilter;
+		//search for keyword again with different filter
+		searchForKeyword();
+	}
 	public void searchForKeyword() {
 		if (keyword == null) {
 			resultArticles = null;
 		} else {
-			resultArticles = articleManager.getArticlesWithKeyword(keyword);
+			resultArticles = articleManager.getArticlesWithKeyword(keyword,JSFUtil.getLanguageCodeOfKeywordLanguageFilter(selectedKeywordLanguageFilter));
 		}
 	}
 
-	@PostConstruct
-	public void searchForKeywordIfGiven() {
+	
 
-		if (keyword != null) {
-			searchForKeyword();
-		}
+	
+	public String getKeywordLanguageFilterTranslation(final KeywordLanguageFilter keywordLanguageFilter) {
+		Locale locale=JSFUtil.getLocale();
+		return LocalizationUtil.getEnumTranslation(keywordLanguageFilter, locale);
 	}
-
+	
 }

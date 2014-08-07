@@ -2,13 +2,24 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
-
+	<ui:define name="pageheadmeta">
+		<title>Yescomment</title>
+		<meta name="description"
+			content="Yescomment is a free commenting site. Comments can be made on any aricle on the web" />
+		<meta name="keywords" content="comment, yescomment" />
+		<meta name="og:title" content="Yescomment" />
+		<meta name="og:description"
+			content="Yescomment is a free commenting site. Comments can be made on any aricle on the web" />
+	</ui:define>
 	<ui:define name="content">
-
-
-		<h1>#{yescommentmsg['nocomment_impossible']}</h1>
-		#{yescommentmsg['main_introline1']}
-		<br/>
-		#{yescommentmsg['main_introline2']}
+		<h1 class="spacedheading">#{yescommentmsg['nocomment_impossible']}</h1>
+		<h:outputText styleClass="maintext"
+			value="#{yescommentmsg['main_introline1']}" />
+		<br />
+		<h:outputText styleClass="maintext"
+			value="#{yescommentmsg['main_introline2']}" />
+		<br />
+		<h:outputText styleClass="maintext"
+			value="#{yescommentmsg['main_introline3']}" />
 	</ui:define>
 </ui:composition>

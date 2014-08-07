@@ -1,11 +1,77 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
+	<ui:define name="pageheadmeta">
+		<title>Archives</title>
+		<meta name="description"
+			content="Archive page, retrieves articles on the given date" />
+		<meta name="keywords" content="comment, yescomment, archive" />
+		<meta name="og:title" content="Archives" />
+		<meta name="og:description"
+			content="Archive page, retrieves articles on the given date" />
+		
 
+	</ui:define>
 	<ui:define name="content">
+		<h1 class="spacedheading">#{yescommentmsg['archives']}</h1>
+		<h:form id="archivesearchform">
+			<div>
+				<h:outputLabel value="#{yescommentmsg['select_date']}"
+					for="archivedate" id="archivedatelabel" />
+				<h:inputText id="archivedate" styleClass="halfseethrough"
+					value="#{articleArchiveManagedBean.archiveDate}" required="true"
+					requiredMessage="#{yescommentmsg['achive_date_not_filled']}"
+					converterMessage="#{yescommentmsg['correct_format']} : #{yescommentmsg['ymd_format']}">
+					<f:passThroughAttribute name="type" value="date" />
+					<f:passThroughAttribute name="placeholder"
+						value="#{yescommentmsg['ymd_format']}" />
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</h:inputText>
+				<h:message for="archivedate" id="archivedatemessage"
+					showSummary="true" showDetail="false" errorClass="errorstyle" />
+				<div class="clear" />
+
+				<h:commandButton value="#{yescommentmsg['search']}"
+					styleClass="button" id="searcharchivebutton"
+					actionListener="#{articleArchiveManagedBean.searchForArticles()}">
+					<f:ajax render=":archiveform: @form" execute="@form" />
+				</h:commandButton>
+
+			</div>
+
+		</h:form>
+
+		<h:form id="archiveform">
+			<h:panelGroup id="resultarticlesformonth" styleClass="articlelist">
+
+				<h:outputText id="noresultarticles" styleClass="noresultarticles"
+					value="#{yescommentmsg['no_results']}"
+					rendered="#{articleArchiveManagedBean.resultArticles.isEmpty()}" />
+				<ui:repeat value="#{articleArchiveManagedBean.resultArticles}"
+					var="article" varStatus="varStatus" id="resultarticles">
+					<h:panelGroup
+						rendered="#{varStatus.index ge articleArchiveManagedBean.articlePaginator.startIndex and varStatus.index le articleArchiveManagedBean.articlePaginator.endIndex}">
+						<ui:include src="articlepreview.xhtml">
+							<ui:param name="article" value="#{article}" />
+						</ui:include>
+					</h:panelGroup>
+				</ui:repeat>
+
+			</h:panelGroup>
 
 
-		ARC
+			<ui:include src="paginator.xhtml">
+				<ui:param name="paginatorshouldberendered"
+					value="#{articleArchiveManagedBean.archiveArticlePaginatorShouldBeRendered()}" />
+				<ui:param name="paginator"
+					value="#{articleArchiveManagedBean.articlePaginator}" />
+
+			</ui:include>
+
+
+		</h:form>
 	</ui:define>
 </ui:composition>

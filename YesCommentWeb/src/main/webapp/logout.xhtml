@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
+	<f:metadata>
+
+		<f:viewAction action="#{loginManagedBean.logout()}" />
+	</f:metadata>
+	<ui:define name="pageheadmeta">
+		<title>Logout successful</title>
+		<meta name="description" content="Logout" />
+		<meta name="keywords" content="comment, yescomment, logout" />
+	</ui:define>
+	<ui:define name="content">
+
+
+		<h1 class="spacedheading">#{yescommentmsg['logout_successful']}</h1>
+		<h:form id="backtomain">
+			<h:button outcome="main" id="backtomainpagebutton"
+				value="#{yescommentmsg['back_to_main']}"
+				styleClass="button invertedbutton" />
+
+		</h:form>
+
+
+	</ui:define>
+</ui:composition>

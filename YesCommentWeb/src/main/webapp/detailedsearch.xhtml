@@ -1,0 +1,209 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
+	<ui:define name="pageheadmeta">
+		<title>Detailed search</title>
+		<meta name="description"
+			content="Detailed search based on given attributes" />
+		<meta name="keywords" content="comment, yescomment, search" />
+		<meta name="og:title" content="Detailed search" />
+		<meta name="og:description"
+			content="Detailed search based on given attributes" />
+	</ui:define>
+	<ui:define name="content">
+		<h1 class="spacedheading">#{yescommentmsg['detailed_search']}</h1>
+		<h:outputText value="#{yescommentmsg['detailed_search_introline1']}" />
+		<br />
+		<h:outputText value="#{yescommentmsg['detailed_search_introline2']}" />
+		<br />
+		<h:form id="searcharticlesform">
+			<h:panelGrid columns="4">
+
+				<h:outputLabel value="#{yescommentmsg['article_title']}" for="title"
+					id="titlelabel" />
+				<h:inputText id="title"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.title}"
+					styleClass="searchattribute halfseethrough">
+
+					<f:passThroughAttribute name="placeholder"
+						value="#{yescommentmsg['article_title']}" />
+					<f:converter converterId="StringTrimConverter" />
+				</h:inputText>
+				<h:outputText
+					value="#{yescommentmsg['article_title_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="title" id="titlemessage" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+
+				<h:outputLabel value="#{yescommentmsg['article_site']}" for="site"
+					id="sitelabel" />
+				<h:inputText id="site"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.site}"
+					styleClass="searchattribute halfseethrough">
+
+					<f:passThroughAttribute name="placeholder"
+						value="#{yescommentmsg['article_site']}" />
+					<f:converter converterId="StringTrimConverter" />
+				</h:inputText>
+				<h:outputText
+					value="#{yescommentmsg['article_site_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="site" id="sitemessage" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+
+				<h:outputLabel value="#{yescommentmsg['article_language']}"
+					for="language" id="languagelabel" />
+				<h:selectOneMenu id="language"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.language}"
+					styleClass="searchattribute halfseethrough">
+					<f:selectItem itemLabel="#{yescommentmsg['select_a_language']}"
+						itemValue="#{null}" />
+					<f:selectItems
+						value="#{articleDetailedSearchManagedBean.possibleArticleLanguages()}"
+						var="langvar"
+						itemLabel="#{articleDetailedSearchManagedBean.getLanguageTranslation(langvar)}"
+						itemValue="#{langvar}" />
+				</h:selectOneMenu>
+				<h:outputText
+					value="#{yescommentmsg['article_language_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="language" id="languagemessage" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+
+				<h:outputLabel value="#{yescommentmsg['created_after']}"
+					for="createdafter" id="createdafterlabel" />
+				<h:inputText id="createdafter"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.createdAfter}"
+					converterMessage="#{yescommentmsg['correct_format']} : #{yescommentmsg['ymd_format']}"
+					styleClass="searchattribute halfseethrough">
+					<f:passThroughAttribute name="type" value="date" />
+					<f:passThroughAttribute name="placeholder"
+						value="#{yescommentmsg['ymd_format']}" />
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</h:inputText>
+
+				<h:outputText
+					value="#{yescommentmsg['article_created_after_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="createdafter" id="createdaftermessage"
+					showSummary="true" showDetail="false" errorClass="errorstyle" />
+				<h:outputLabel value="#{yescommentmsg['created_before']}"
+					for="createdbefore" id="createdbeforelabel" />
+				<h:inputText id="createdbefore"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.createdBefore}"
+					converterMessage="#{yescommentmsg['correct_format']} : #{yescommentmsg['ymd_format']}"
+					styleClass="searchattribute halfseethrough">
+					<f:passThroughAttribute name="type" value="date" />
+					<f:passThroughAttribute name="placeholder"
+						value="#{yescommentmsg['ymd_format']}" />
+					<f:convertDateTime pattern="yyyy-MM-dd" />
+				</h:inputText>
+				<h:outputText
+					value="#{yescommentmsg['article_created_before_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="createdbefore" id="createdbeforemessage"
+					showSummary="true" showDetail="false" errorClass="errorstyle" />
+
+				<h:outputLabel value="#{yescommentmsg['commenter']}" for="commenter"
+					id="commenterlabel" />
+				<h:inputText id="commenter"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.commenter}"
+					styleClass="searchattribute halfseethrough">
+
+					<f:passThroughAttribute name="placeholder"
+						value="#{yescommentmsg['commenter']}" />
+					<f:converter converterId="StringTrimConverter" />
+				</h:inputText>
+
+				<h:outputText
+					value="#{yescommentmsg['article_commenter_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="commenter" id="commentermessage" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+				<h:outputLabel value="#{yescommentmsg['comment_count']}"
+					for="commentcount" id="commentcountlabel" />
+				<h:selectOneMenu id="commentcount"
+					value="#{articleDetailedSearchManagedBean.articleSearchCriteria.commentCountRange}"
+					styleClass="searchattribute halfseethrough">
+					<f:selectItem itemLabel="#{yescommentmsg['select_a_range']}"
+						itemValue="#{null}" />
+					<f:selectItems
+						value="#{articleDetailedSearchManagedBean.possibleCommentCountRanges()}"
+						var="rangevar"
+						itemLabel="#{articleDetailedSearchManagedBean.getCommentCountRangeTranslation(rangevar)}"
+						itemValue="#{rangevar}" />
+				</h:selectOneMenu>
+
+				<h:outputText
+					value="#{yescommentmsg['article_commentcount_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="commentcount" id="commentcountmessage"
+					showSummary="true" showDetail="false" errorClass="errorstyle" />
+				
+				<h:outputLabel value="#{yescommentmsg['ordering']}" for="ordering"
+					id="orderinglabel" />
+				<h:selectOneMenu id="ordering"
+					value="#{articleDetailedSearchManagedBean.articleOrder}"
+					styleClass="searchattribute halfseethrough">
+					<!-- Null selectitem not allowed at ordering /-->
+					<f:selectItems
+						value="#{articleDetailedSearchManagedBean.possibleArticleOrders()}"
+						var="articleorder"
+						itemLabel="#{articleDetailedSearchManagedBean.getArticleOrderTranslation(articleorder)}"
+						itemValue="#{articleorder}" />
+
+				</h:selectOneMenu>
+				<h:outputText
+					value="#{yescommentmsg['article_ordering_searchexplanation']}"
+					styleClass="searchexplanation" />
+				<h:message for="ordering" id="orderingmessage" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+			</h:panelGrid>
+
+
+
+
+
+
+			<h:commandButton value="#{yescommentmsg['search']}"
+				styleClass="button" id="searcharticlesbutton"
+				actionListener="#{articleDetailedSearchManagedBean.searchForArticles()}">
+				<f:ajax render=":searchresultform @form" execute="@form" />
+			</h:commandButton>
+
+		</h:form>
+
+		<h:form id="searchresultform">
+			<h:panelGroup styleClass="articlelist">
+
+				<h:outputText id="noresultarticles" styleClass="noresultarticles"
+					value="#{yescommentmsg['no_results']}"
+					rendered="#{articleDetailedSearchManagedBean.resultArticles.isEmpty()}" />
+				<ui:repeat
+					value="#{articleDetailedSearchManagedBean.resultArticles}"
+					var="article" varStatus="varStatus" id="resultarticles">
+
+					<ui:include src="articlepreview.xhtml">
+						<ui:param name="article" value="#{article}" />
+					</ui:include>
+
+				</ui:repeat>
+				<ui:include src="paginator.xhtml">
+					<ui:param name="paginatorshouldberendered"
+						value="#{articleDetailedSearchManagedBean.resultArticles!=null and !articleDetailedSearchManagedBean.resultArticles.isEmpty() }" />
+					<ui:param name="paginator"
+						value="#{articleDetailedSearchManagedBean.paginator}" />
+
+				</ui:include>
+			</h:panelGroup>
+
+
+
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,11 +1,45 @@
 <ui:composition xmlns="http://www.w3c.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
-
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	template="/template.xhtml">
+<ui:define name="pageheadmeta">
+		<title>Feedback</title>
+		<meta name="description"
+			content="Leave feedback" />
+		<meta name="keywords" content="comment, yescomment, feedback" />
+		<meta name="og:title" content="Feedback" />
+		<meta name="og:description"
+			content="Leave feedback" />
+	</ui:define>
 	<ui:define name="content">
 
 
-		Send feedback
+		<h1 class="spacedheading">#{yescommentmsg['feedback']}  (#{yescommentmsg['in_english']})</h1>
+
+		<h:form id="feedbackform">
+
+
+
+			<h:inputTextarea value="#{feedbackManagedBean.text}" id="text"
+				pt:maxlength="#{feedbackManagedBean.getMaxFeedbackSize()}"
+				title="#{yescommentmsg['feedback_text']}" required="true"
+				requiredMessage="#{yescommentmsg['empty_feedback_text']}"
+				pt:placeholder="#{yescommentmsg['feedback_text']}..."
+				styleClass="halfseethrough" disabled="#{feedbackManagedBean.sent}" />
+			<h:message for="text" showSummary="true" showDetail="false"
+				errorClass="errorstyle" />
+			<br />
+			<h:commandButton id="sendfeedbackbutton"
+				value="#{yescommentmsg['send_feedback']}" styleClass="button" rendered="#{!feedbackManagedBean.sent}"
+				actionListener="#{feedbackManagedBean.sendFeedback()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton id="disabledSendFeedbackButton" disabled="true"
+				value="#{yescommentmsg['feedback_sent']}" styleClass="button" rendered="#{feedbackManagedBean.sent}"/>
+
+
+		</h:form>
 	</ui:define>
 </ui:composition>

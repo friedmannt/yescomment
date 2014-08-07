@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view contentType="text/html" encoding="UTF-8">
+	<h:head>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{request.contextPath}/resources/favicon.ico" />
+		<title>YesComment Statistics</title>
+		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="description" content="Yescomment admin page" />
+
+
+	</h:head>
+	<h:body>
+		<h1>Statistics</h1>
+		<h:outputFormat value="Article count:{0}. Comment count:{1}. User count:{2}">
+			<f:param value="#{statisticsManagedBean.articleCount}" />
+			<f:param value="#{statisticsManagedBean.commentCount}" />
+			<f:param value="#{statisticsManagedBean.userCount}" />
+		</h:outputFormat>
+		<h:outputFormat value="Active sessions:{0}">
+			<f:param value="#{statisticsManagedBean.getActiveSessionCount()}" />
+
+		</h:outputFormat>
+		<h:panelGroup id="allsessiondata">
+			<h3>Session Data</h3>
+			<ui:repeat value="#{statisticsManagedBean.getActiveSessionData()}"
+				var="sessionData">
+
+				<h:outputText value="#{sessionData}" />
+
+				<br />
+			</ui:repeat>
+		</h:panelGroup>
+	</h:body>
+</f:view>
+</html>

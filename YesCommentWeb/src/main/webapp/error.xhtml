@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+	<ui:define name="pageheadmeta">
+		<title>Error</title>
+		<meta name="description" content="Error occurred" />
+		<meta name="keywords" content="comment, yescomment" />
+		<meta name="og:title" content="Error" />
+		<meta name="og:description" content="Yescomment error pge" />
+	</ui:define>
+	<ui:define name="content">
+		<h1 class="spacedheading">#{yescommentmsg['error_occurred']}</h1>
+
+		<h3 class="spacedheading">#{yescommentmsg['error_code']}</h3>
+		<h:outputText
+			value="#{requestScope['javax.servlet.error.status_code']}" />
+		<h3 class="spacedheading">#{yescommentmsg['error_message']}</h3>
+		<h:outputText value="#{errorManagedBean.getMessageOfStatusCode()}" />
+		<h3 class="spacedheading">#{yescommentmsg['error_url']}</h3>
+		<h:outputText
+			value="#{requestScope['javax.servlet.error.request_uri']}" />
+		<h3 class="spacedheading">#{yescommentmsg['error_exception']}</h3>
+		<h:outputText value="#{requestScope['javax.servlet.error.exception']}" />
+		<h3 class="spacedheading">#{yescommentmsg['error_exception_stacktrace']}</h3>
+		<h:outputText value="#{errorManagedBean.getStackTraceOfException()}" />
+
+
+
+	</ui:define>
+</ui:composition>

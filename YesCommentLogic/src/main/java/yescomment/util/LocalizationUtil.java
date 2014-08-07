@@ -11,42 +11,25 @@ public class LocalizationUtil {
 	static Map<Locale, ResourceBundle> resourceBundles = new HashMap<Locale, ResourceBundle>();
 
 	private static String getEnumResourceBundleKey(@NotNull Enum<?> enumValue) {
-		return enumValue.getClass().getSimpleName().toLowerCase() + "_"
-				+ enumValue.toString().toLowerCase();
+		return enumValue.getClass().getSimpleName().toLowerCase() + "_" + enumValue.toString().toLowerCase();
 
 	}
 
-	private static String getNumberBundleKey(@NotNull Integer number) {
-		
-		return "number_"+number;
-	}
-	
 	public static String getTranslation(@NotNull String key, @NotNull Locale locale) {
-	
+
 		if (resourceBundles.get(locale) == null) {
-			resourceBundles.put(locale, ResourceBundle.getBundle(
-					"yescomment.localization.yescomment", locale));
+			resourceBundles.put(locale, ResourceBundle.getBundle("yescomment.localization.yescomment", locale));
 		}
 		return resourceBundles.get(locale).getString(key);
 	}
+
 	public static String getEnumTranslation(@NotNull Enum<?> enumValue, @NotNull Locale locale) {
 		if (enumValue == null) {
 			return null;
 		}
 		String enumKey = getEnumResourceBundleKey(enumValue);
 
-		return getTranslation(enumKey,locale);
-	}
-	
-	public static String getNumberTranslation(@NotNull Integer number,@NotNull  Locale locale) {
-		if (number == null) {
-			return null;
-		}
-		String enumKey = getNumberBundleKey(number);
-
-		return getTranslation(enumKey,locale);
+		return getTranslation(enumKey, locale);
 	}
 
-
-	
 }

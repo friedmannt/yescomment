@@ -10,14 +10,24 @@
 			href="#{request.contextPath}/resources/favicon.ico" />
 		<title>YesComment Admin</title>
 		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-		<meta name="robots" content="noindex, nofollow">
+		<meta name="robots" content="noindex, nofollow"/>
 		<meta name="description"
 			content="Yescomment admin page" />
 		
 		
 	</h:head>
 	<h:body>
-		SECURED
+		<h1>Administration page</h1>
+		<h:link outcome="statistics" value="Statistics"/>
+		<br/>
+		<h:link outcome="moderation" value="Moderation"/>
+		<br/>
+		<h:link outcome="languageadmin" value="Language Adminisitration"/>
+		<br/>
+		<h:link outcome="newsadmin" value="News Adminisitration"/>
+		<br/>
+		<h:link outcome="feedbackadmin" value="Feedback Adminisitration"/>
+		<br/>
 	</h:body>
 </f:view>
 </html>

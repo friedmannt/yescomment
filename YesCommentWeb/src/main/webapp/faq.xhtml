@@ -2,10 +2,165 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets" template="/template.xhtml">
+	<ui:define name="pageheadmeta">
+		<title>Yescomment F.A.Q.</title>
+		<meta name="description" content="Frequently asked questions" />
+		<meta name="keywords" content="comment, yescomment, faq" />
+		<meta name="og:title" content="Yescomment F.A.Q." />
+		<meta name="og:description" content="Frequently asked questions" />
 
+	</ui:define>
 	<ui:define name="content">
+		<h1 class="spacedheading">#{yescommentmsg['faq']}</h1>
+		<ul>
+			<li><h:link fragment="whysitecreate"
+					value="#{yescommentmsg['faq_question_whysitecreate']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="sitefree"
+					value="#{yescommentmsg['faq_question_sitefree']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="regmandatory"
+					value="#{yescommentmsg['faq_question_regmandatory']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="whycaptcha"
+					value="#{yescommentmsg['faq_question_whycaptcha']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="removecomment"
+					value="#{yescommentmsg['faq_question_removecomment']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="constraints"
+					value="#{yescommentmsg['faq_question_constraints']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="cannotimport"
+					value="#{yescommentmsg['faq_question_cannotimport']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="importcommentable"
+					value="#{yescommentmsg['faq_question_importcommentable']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="multipleimport"
+					value="#{yescommentmsg['faq_question_multipleimport']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="importurl"
+					value="#{yescommentmsg['faq_question_importurl']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="voteeffect"
+					value="#{yescommentmsg['faq_question_voteeffect']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="replymore"
+					value="#{yescommentmsg['faq_question_replymore']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="importauth"
+					value="#{yescommentmsg['faq_question_importauth']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="nolanguage"
+					value="#{yescommentmsg['faq_question_nolanguage']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="continuousread"
+					value="#{yescommentmsg['faq_question_continuousread']}"
+					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="embeddable"
+					value="#{yescommentmsg['faq_question_embeddable']}"
+					styleClass="faqquestionlink" /></li>
+
+		</ul>
+		<span> <h:link id="whysitecreate" fragment="whysitecreate"
+				value="#{yescommentmsg['faq_question_whysitecreate']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_whysitecreate']}" />
+		</span>
+
+		<span> <h:link id="sitefree" fragment="sitefree"
+				value="#{yescommentmsg['faq_question_sitefree']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_sitefree']}" />
+		</span>
+
+		<span> <h:link id="regmandatory" fragment="regmandatory"
+				value="#{yescommentmsg['faq_question_regmandatory']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_regmandatory']}" />
+		</span>
+
+		<span> <h:link id="whycaptcha" fragment="whycaptcha"
+				value="#{yescommentmsg['faq_question_whycaptcha']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_whycaptcha']}" />
+		</span>
+
+		<span> <h:link id="removecomment" fragment="removecomment"
+				value="#{yescommentmsg['faq_question_removecomment']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_removecomment']}" />
+		</span>
+
+		<span> <h:link id="constraints" fragment="constraints"
+				value="#{yescommentmsg['faq_question_constraints']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_constraints']}" />
+		</span>
+
+		<span> <h:link id="cannotimport" fragment="cannotimport"
+				value="#{yescommentmsg['faq_question_cannotimport']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_cannotimport']}" />
+		</span>
+
+		<span> <h:link id="importcommentable"
+				fragment="importcommentable"
+				value="#{yescommentmsg['faq_question_importcommentable']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_importcommentable']}" />
+		</span>
+
+		<span> <h:link id="multipleimport" fragment="multipleimport"
+				value="#{yescommentmsg['faq_question_multipleimport']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_multipleimport']}" />
+		</span>
+
+		<span> <h:link id="importurl" fragment="importurl"
+				value="#{yescommentmsg['faq_question_importurl']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_importurl']}" />
+		</span>
+
+		<span> <h:link id="voteeffect" fragment="voteeffect"
+				value="#{yescommentmsg['faq_question_voteeffect']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_voteeffect']}" />
+		</span>
+
+		<span> <h:link id="replymore" fragment="replymore"
+				value="#{yescommentmsg['faq_question_replymore']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_replymore']}" />
+		</span>
+
+		<span> <h:link id="importauth" fragment="importauth"
+				value="#{yescommentmsg['faq_question_importauth']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_importauth']}" />
+		</span>
+
+		<span> <h:link id="nolanguage" fragment="nolanguage"
+				value="#{yescommentmsg['faq_question_nolanguage']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_nolanguage']}" />
+		</span>
+		<span> <h:link id="continuousread" fragment="continuousread"
+				value="#{yescommentmsg['faq_question_continuousread']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_continuousread']}" />
+		</span>
+
+		<span> <h:link id="embeddable" fragment="embeddable"
+				value="#{yescommentmsg['faq_question_embeddable']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_embeddable']}" />
+		</span>
 
 
-		FAQ
+
+
 	</ui:define>
 </ui:composition>

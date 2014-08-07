@@ -7,7 +7,10 @@ import java.util.Set;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
+import yescomment.util.JSFUtil;
 import yescomment.util.URLUtil;
 
 @ApplicationScoped
@@ -38,6 +41,15 @@ public class YesCommentApplicationBean implements Serializable {
 
 	}
 	
+	public String getWebSocketURLBase() {
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
+				.getRequest();
+		return JSFUtil.getWebSocketURLBase(request);
+	}
 	
+	
+	public String getCurrentLanguage() {
+		return JSFUtil.getLocale().getLanguage();
+	}
 
 }

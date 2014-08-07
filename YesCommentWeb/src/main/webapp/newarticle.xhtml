@@ -5,43 +5,52 @@
 	<f:metadata>
 
 		<f:viewAction
-			action="#{newArticleManagedBean.fillNewArticleURLFromSearch()}" />
+			action="#{newArticleManagedBean.getArticleInfoFutureResultFromFlash()}" />
 	</f:metadata>
+	<ui:define name="pageheadmeta">
+		<title>New article import</title>
+		<meta name="description" content="Import new article to yescomment" />
+		<meta name="keywords" content="comment, yescomment, import" />
+				<meta name="og:title" content="New article import" />
+		<meta name="og:description"
+			content="Import new article to yescomment" />
+	</ui:define>
 	<ui:define name="content">
 		<h2>
-		<h:outputText value="#{yescommentmsg['article_not_found']}"/>
-		
+			<h:outputText value="#{yescommentmsg['article_not_imported_yet']}" />
+
 		</h2>
 		<h:form id="newarticleform">
-			<h:outputText value="#{yescommentmsg['newarticle_passed_the_check']}" />
+			<h:outputLabel
+				value="#{yescommentmsg['newarticle_passed_the_check']}:"
+				for="newarticlepassedthecheck" id="newarticlepassedthechecklabel" />
 			<h:outputText id="newarticlepassedthecheck"
-				value="#{newArticleManagedBean.newArticlePassedTheCheck}" />
-			<h:message for="newarticlepassedthecheck" showSummary="true"
+				value="#{newArticleManagedBean.newArticlePassedTheCheck}" styleClass="booleancharsign">
+				<f:converter converterId="BooleanCharSignConverter" />
+			</h:outputText>
+			<h:message for="newarticlepassedthecheck"
+				id="newarticlepassedthecheckmessage" showSummary="true"
 				showDetail="false" errorClass="errorstyle" />
 			<h:panelGroup
 				rendered="#{newArticleManagedBean.newArticleInfo!=null}">
 				<div class="articlepreview">
 					<div class="articlepreviewheader">
 						<div class="articlepreviewimage">
-
-
 							<img src="#{newArticleManagedBean.newArticleInfo.imageURL}"
-								alt="#{yescommentmsg['no_article_image']}" />
-
-
-
+								alt="#{yescommentmsg['no_article_image']}" /> 
 						</div>
 					</div>
 					<div class="articlepreviewdata">
-
 						<h1>
-
 							<h:outputText
 								value="#{newArticleManagedBean.newArticleInfo.title}" />
 						</h1>
 						<p>
 							<cite> <h:outputText
 									value="#{yesCommentApplicationBean.getSiteOfURL(newArticleManagedBean.newArticleInfo.finalURL)}" />
+							</cite> <cite> <h:outputText
+									rendered="#{newArticleManagedBean.newArticleInfo.language!=null}"
+									value="(#{newArticleManagedBean.newArticleInfo.language})" />
 							</cite>
 						</p>
 						<p class="articledescriptiontext">
@@ -58,14 +67,17 @@
 				</div>
 
 			</h:panelGroup>
-
-			<h:commandButton
-				value="#{yescommentmsg['import_article']}"
-				type="submit" styleClass="button"
-				disabled="#{!newArticleManagedBean.newArticlePassedTheCheck}"
-				action="#{newArticleManagedBean.createNewArticle()}">
-				<f:ajax render="@form" execute="@form" />
-			</h:commandButton>
+			<div>
+				<h:commandButton id="newarticleimportbutton"
+					value="#{yescommentmsg['import_article']}" type="submit"
+					styleClass="button newarticleimportbutton"
+					disabled="#{newArticleManagedBean.newArticlePassedTheCheck==null or newArticleManagedBean.newArticlePassedTheCheck==false}"
+					action="#{newArticleManagedBean.createNewArticle()}">
+					<f:ajax render="@form" execute="@form" />
+				</h:commandButton>
+				<h:message for="newarticleimportbutton" showSummary="true"
+					showDetail="false" errorClass="errorstyle" />
+			</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

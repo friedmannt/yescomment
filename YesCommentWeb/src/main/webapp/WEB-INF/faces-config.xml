@@ -11,6 +11,7 @@
 		<locale-config>
 			<default-locale>en</default-locale>
 			<supported-locale>hu</supported-locale>
+			<supported-locale>fr</supported-locale>
 		</locale-config>
 	</application>
 	<navigation-rule>
@@ -20,13 +21,12 @@
 			<to-view-id>/keywords.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>recommendedarticles</from-outcome>
+			<to-view-id>/recommendedarticles.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>viewarticle</from-outcome>
 			<to-view-id>/viewarticle.xhtml</to-view-id>
 		</navigation-case>
-		<navigation-case>
-			<from-outcome>latestarticles</from-outcome>
-			<to-view-id>/latestarticles.xhtml</to-view-id>
-		</navigation-case>
-
 	</navigation-rule>
 </faces-config>

@@ -5,29 +5,28 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 	<h:form id="searcharticleform">
-		<table>
-			<tr>
-				<td><h:inputText id="searchedurl" type="search"
-						styleClass="halfseethrough"
-						value="#{searchArticleManagedBean.searchedArticleURL}"
-						required="true" requiredMessage="#{yescommentmsg['url_empty']}"
-						pt:placeholder="#{yescommentmsg['enter_article_url']}">
-						<f:validator validatorId="URLValidator" />
-						<f:passThroughAttribute name="required" value="required" />
-					</h:inputText></td>
-				<td><h:commandButton type="submit" id="searchbutton"
-						action="#{searchArticleManagedBean.searchForArticle()}">
-						<f:ajax render="@form" execute="@form" />
-					</h:commandButton></td>
-			</tr>
-			<tr>
-				<td><h:message for="searchedurl" id="searchedurlmessage"
-						showSummary="true" showDetail="false" errorClass="errorstyle" /></td>
-				<td />
-			</tr>
-
-
-		</table>
-
+		<div id="searcharticlediv">
+			<div id="searcharticlebuttondiv" >
+				<h:commandButton type="submit" id="searchbutton" title="#{yescommentmsg['search_url']}"
+					action="#{searchArticleByURLManagedBean.searchForArticleByURL()}" >
+					<f:ajax render="@form" execute="@form" />
+				</h:commandButton>
+			</div>
+			<div id="searcharticleinputdiv">
+				<h:inputText id="searchedurl" type="search"
+					styleClass="halfseethrough"
+					value="#{searchArticleByURLManagedBean.searchedArticleURL}"
+					required="true" requiredMessage="#{yescommentmsg['url_empty']}"
+					pt:placeholder="#{yescommentmsg['enter_article_url']}...">
+					<f:passThroughAttribute name="required" value="required" />
+					<f:validator validatorId="URLValidator" />
+					<f:converter converterId="StringTrimConverter" />
+				</h:inputText>
+			</div>
+		</div>
+		<div id="searcharticlemessagediv">
+			<h:message for="searchedurl" id="searchedurlmessage"
+				showSummary="true" showDetail="false" errorClass="errorstyle" />
+		</div>
 	</h:form>
 </ui:composition>

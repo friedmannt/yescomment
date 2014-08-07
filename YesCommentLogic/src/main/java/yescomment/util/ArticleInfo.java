@@ -12,6 +12,7 @@ public class ArticleInfo implements Serializable{
 	private String title;
 	private String description;
 	private String keywords;
+	private String language;
 	
 	
 
@@ -55,9 +56,17 @@ public class ArticleInfo implements Serializable{
 		this.description = description;
 	}
 
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
 	@Override
 	public String toString() {
-		return "ArticleInfo [finalURL=" + finalURL + ", imageURL=" + imageURL + ", title=" + title + ", description=" + description + ", keywords=" + keywords + "]";
+		return "ArticleInfo [finalURL=" + finalURL + ", imageURL=" + imageURL + ", title=" + title + ", description=" + description + ", keywords=" + keywords + ", language=" + language + "]";
 	}
 
 	

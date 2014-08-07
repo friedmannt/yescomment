@@ -9,14 +9,15 @@
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>/faces/*</url-pattern>
   </servlet-mapping>
+ 
   <context-param>
-    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
     <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>client</param-value>
+    <param-value>server</param-value>
   </context-param>
   
   <context-param>
@@ -29,7 +30,7 @@
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>
    <security-constraint>
-      <display-name>Yescomment security</display-name>
+      <display-name>Yescomment admininstration security</display-name>
       <web-resource-collection>
          <web-resource-name>admin pages</web-resource-name>
          <url-pattern>/faces/secured/*</url-pattern>
@@ -41,8 +42,15 @@
    <security-role>
       <role-name>yescommentadmin</role-name>
    </security-role>
-     <login-config>
-      <auth-method>BASIC</auth-method>
+      <security-role>
+      <role-name>yescommentuser</role-name>
+   </security-role>
+   
+    <login-config>
+      <auth-method>BASIC</auth-method>	
       <realm-name>yescomment_realm</realm-name>
    </login-config>
+   <error-page>
+    	<location>/faces/error.xhtml</location>
+	</error-page>
 </web-app>

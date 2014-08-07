@@ -1,60 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-53083520-1', 'auto');
+  ga('send', 'pageview');
+
+</script>	
 <f:view contentType="text/html" encoding="UTF-8">
 	<h:head>
-		<link rel="shortcut icon" type="image/x-icon"
+		<ui:insert name="pageheadmeta" />
+		<link rel="icon" type="image/x-icon"
 			href="#{request.contextPath}/resources/favicon.ico" />
-		<title>YesComment</title>
-		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-		<meta name="robots" content="index, follow"/>
-		<meta name="description"
-			content="Yescomment is a free commenting site. Comments can be made on any aricle on the web" />
-		<meta name="keywords" content="comment, yescomment" />
+
+		<meta name="robots" content="index, follow" />
+
 		<h:outputStylesheet name="yescomment.css" library="css" />
+		<h:outputScript name="menu.js" library="js" />
+		<h:outputScript name="websocket.js" library="js" />
+		<meta charset='UTF-8' />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="og:site_name" content="Yescomment" />
+		<meta name="og:type" content="website" />
 	</h:head>
 	<h:body>
-
 		<div id="contentwrapper">
 			<aside id="dotherightthing">
-				<nav class="headerbuttons">
-					<h1>
-						<h:outputLink value="#{request.contextPath}">
-							<img src="#{request.contextPath}/resources/images/speaker.png"
-								alt="yescommentspeaker" />
-						</h:outputLink>
+				<nav class="headernav">
+
+					<h:outputLink value="#{request.contextPath}/"
+						styleClass="mainnavigationlink">
+
+						<img
+							src="#{request.contextPath}/resources/images/speakerphone.svg"
+							alt="yescommentspeaker" />
 						<h:outputText class="yescommentheaderboxtext"
-							value="YES, COMMENT!" />
-					</h1>
-					<div class="clear" />
-					<h2>
-						<h:link outcome="recommendedarticles"
-							value="#{yescommentmsg['recommended']}" styleClass="first button" />
-						<h:link outcome="keywords" value="#{yescommentmsg['keywords']}"
-							styleClass="last button" />
-					</h2>
+							id="mainyescommenttext" value="YESCOMMENT" />
+
+					</h:outputLink>
+
+
+					<div class="menu">
+						<div>
+							<div id="menu-button" onclick="toggleMenu('menu-dropdown');">
+								<h:graphicImage alt="menu"
+									value="/resources/images/menu_transparent.svg"
+									styleClass="menuicon" />
+								<h:outputText class="yescommentheaderboxtext"
+									value="#{yescommentmsg['menu']}" id="mainmenutext" />
+							</div>
+
+							<div id="menu-dropdown">
+								<ul class="menu-items">
+
+									<li><h:link outcome="recommendedarticles"
+											value="#{yescommentmsg['recommended']}"
+											styleClass="menuitemlink" /></li>
+									<li><h:link outcome="keywords"
+											value="#{yescommentmsg['keywords']}"
+											styleClass="menuitemlink" /></li>
+									<li><h:link outcome="detailedsearch"
+											value="#{yescommentmsg['detailed_search']}"
+											styleClass="menuitemlink" /></li>
+								</ul>
+
+							</div>
+						</div>
+
+
+					</div>
+
 				</nav>
 			</aside>
-			<div id="main">
-				<header id="top">
-					<ui:include src="search.xhtml" />
-				</header>
+			<main> <header id="top">
+				<div id="topheaderdiv">
 
-				<article>
-					<ui:insert name="content" />
-				</article>
-				<footer id="footer">
-					<nav id="footerlinks">
-						<h:link outcome="feedback" styleClass="footerlink">#{yescommentmsg['feedback']}</h:link>
-						<h:link outcome="legal" styleClass="footerlink">#{yescommentmsg['legal']}</h:link>
-						<h:link outcome="archive" styleClass="footerlink">#{yescommentmsg['archives']}</h:link>
-						<h:link outcome="faq" styleClass="footerlink">#{yescommentmsg['faq']}</h:link>
-					</nav>
+					<div id="loginregistrationlinkdiv">
 
-				</footer>
-			</div>
+						<h:link outcome="login" styleClass="loginlink"
+							value="#{yescommentmsg['login']}"
+							rendered="#{request.remoteUser==null}" />
+
+						<h:link outcome="registration" styleClass="registrationlink"
+							value="#{yescommentmsg['registration']}"
+							rendered="#{request.remoteUser==null}" />
+						<h:outputText id="loggedininfo"
+							value="#{yescommentmsg['logged_in']}: #{request.remoteUser}"
+							rendered="#{request.remoteUser!=null}" />
+
+						<h:link outcome="logout" styleClass="logoutlink"
+							value="#{yescommentmsg['logout']}"
+							rendered="#{request.remoteUser!=null}" />
+
+					</div>
+				</div>
+				<ui:include src="search.xhtml" />
+			</header>
+
+			<article>
+				
+				<ui:insert name="content" />
+			</article>
+			<footer id="footer">
+				<nav id="footerlinks">
+					<h:link outcome="faq" styleClass="footerlink">#{yescommentmsg['faq']}</h:link>
+					<h:outputText value=" " />
+					<h:link outcome="news" styleClass="footerlink">#{yescommentmsg['news']}</h:link>
+					<h:outputText value=" " />
+					<h:link outcome="feedback" styleClass="footerlink">#{yescommentmsg['feedback']}</h:link>
+					<h:outputText value=" " />
+					<h:link outcome="archive" styleClass="footerlink">#{yescommentmsg['archives']}</h:link>
+					<h:outputText value=" " />
+					<h:link outcome="legal" styleClass="footerlink">#{yescommentmsg['legal']}</h:link>
+
+
+				</nav>
+			</footer> </main>
 
 
 		</div>
