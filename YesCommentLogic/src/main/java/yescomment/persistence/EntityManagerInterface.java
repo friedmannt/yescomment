@@ -75,6 +75,12 @@ public interface EntityManagerInterface<T extends AbstractEntity> extends Serial
 	 */
 	List<T> getEntitiesOrdered(String attributeName,Class<?> attributeClass, boolean isAscending,Integer maxResults,Date minimumCreateDate);
 
+	/**
+	 * Finds an enity, and removes it
+	 * @param id
+	 */
+	void remove(String id);
+
 	
 	
 }

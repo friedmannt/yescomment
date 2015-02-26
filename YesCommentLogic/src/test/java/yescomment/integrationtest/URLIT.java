@@ -26,7 +26,7 @@ public class URLIT {
 	@Test
 	public void testArticleInfoURLShortened2() throws IOException  {
 		ArticleInfo ai= ArticleInfoRetriever.getArticleInfoFromURL("http://bit.ly/noobtest");
-		assertEquals("http://everythingtutorials.org/noobtest/", ai.getFinalURL());
+		assertEquals("http://www.minecraftnoobtest.com/", ai.getFinalURL());
 		
 		
 		

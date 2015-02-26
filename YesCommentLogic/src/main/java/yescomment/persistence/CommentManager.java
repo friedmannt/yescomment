@@ -69,6 +69,9 @@ public class CommentManager extends AbstractEntityManager<Comment> {
 
 	
 
+	
+
+
 	public void hideComment(@NotNull final String commentId) {
 		Comment comment = find(commentId);
 		if (comment != null) {
@@ -128,5 +131,8 @@ public class CommentManager extends AbstractEntityManager<Comment> {
 
 	
 	}
+	
+	
+
 
 }

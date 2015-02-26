@@ -16,11 +16,11 @@ public class URLValidator implements Validator {
 
 		String schema = URLUtil.getSchemaOfURL(url);
 		if (schema == null || (!schema.equals("http") && !schema.equals("https"))) {
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("protocol_invalid", JSFUtil.getLocale()), null));
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("protocol_invalid", JSFUtil.getLocale()), LocalizationUtil.getTranslation("protocol_mandatory", JSFUtil.getLocale())));
 		}
 		String fragment = URLUtil.getFragmentOfURL(url);
 		if (fragment != null ) {
-			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("fragment_not_allowed", JSFUtil.getLocale()), null));
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("fragment_not_allowed", JSFUtil.getLocale()), LocalizationUtil.getTranslation("fragment_description", JSFUtil.getLocale())));
 		}
 		if (!URLUtil.urlIsValid(url)) {
 

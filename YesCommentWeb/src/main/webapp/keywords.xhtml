@@ -63,7 +63,7 @@
 					<ui:repeat
 						value="#{keywordTagCloudBean.getTopKeywordsTagCloudItems()}"
 						var="tagCloudItem">
-						<li style="font-size: #{tagCloudItem.strength*100 } %"><h:outputLink
+						<li style="font-size: #{tagCloudItem.strength*100}%"><h:outputLink
 								value="#{tagCloudItem.url}">
 								<h:outputText value="#{tagCloudItem.tag}" />
 							</h:outputLink></li>

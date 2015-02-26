@@ -18,7 +18,7 @@
 	<h:body>
 		<h1>Language Administration</h1>
 
-		<h:form id="languageadministrationform">
+		<h:form id="articlewithoutlanguageform">
 			<h3>Articles without language</h3>
 			<ui:repeat
 				value="#{languageAdminManagedBean.articlesWithoutLanguage}"
@@ -34,18 +34,44 @@
 					<h:selectOneMenu id="language" value="#{article.language}">
 						<f:selectItem itemLabel="Empty" itemValue="#{null}" />
 						<f:selectItems
-							value="#{languageAdminManagedBean.possibleArticleLanguages}"
-							/>
+							value="#{languageAdminManagedBean.possibleArticleLanguages}" />
 					</h:selectOneMenu>
 				</div>
 				<br />
 			</ui:repeat>
 
-
+			<h:commandButton id="populateArticlesWithoutLanguageButton"
+				value="Populate articles without language"
+				actionListener="#{languageAdminManagedBean.populateArticlesWithoutLanguage()}">
+				<f:ajax render="@form" />
+			</h:commandButton>
 			<h:commandButton id="saveLanguageButton"
 				value="Save articles languages"
 				actionListener="#{languageAdminManagedBean.saveLanguageChanges()}">
 				<f:ajax execute="@form" />
+			</h:commandButton>
+
+		</h:form>
+		<h:form id="changelanguageform">
+			<h3>Change article language</h3>
+			<h:outputLabel for="changedArticleId"
+				value="Id of article to change language" />
+			<h:inputText value="#{languageAdminManagedBean.changedArticleId}"
+				id="changedArticleId" size="40" required="true" />
+			<h:message for="changedArticleId" />
+			<h:selectOneMenu id="language"
+				value="#{languageAdminManagedBean.changedArticleLanguage}">
+				<f:selectItem itemLabel="Empty" itemValue="#{null}" />
+				<f:selectItems
+					value="#{languageAdminManagedBean.possibleArticleLanguages}" />
+			</h:selectOneMenu>
+			<br />
+			<h:commandButton id="changeArticleLanguageButton"
+				value="Change article language"
+				actionListener="#{languageAdminManagedBean.changeArticleLanguage()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton type="reset" value="Reset">
 			</h:commandButton>
 		</h:form>
 	</h:body>

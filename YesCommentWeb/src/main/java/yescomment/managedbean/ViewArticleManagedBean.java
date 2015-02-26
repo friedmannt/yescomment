@@ -19,16 +19,18 @@ import javax.validation.constraints.NotNull;
 
 import yescomment.model.Article;
 import yescomment.model.Comment;
+import yescomment.model.Vote;
 import yescomment.persistence.ArticleManager;
 import yescomment.persistence.CommentManager;
 import yescomment.persistence.VoteManager;
-import yescomment.push.CommentNotificationEndpoint;
+import yescomment.push.CommentOrVoteNotificationEndpoint;
 import yescomment.util.AnonymusUserName;
+import yescomment.util.CommentLinkDetector;
+import yescomment.util.CommentLinkDetector.CommentContent;
 import yescomment.util.JSFUtil;
 import yescomment.util.ListPaginator;
 import yescomment.util.LocalizationUtil;
 import yescomment.util.Paginator;
-import yescomment.util.VoteDirection;
 
 @ManagedBean
 @ViewScoped
@@ -37,13 +39,10 @@ public class ViewArticleManagedBean implements Serializable {
 	public static enum CommentSortOrder {
 		OLDESTFIRST, NEWESTFIRST;
 	}
-	
-	private static final int COMMENT_PAGE_SIZE=20;
-	
-	private static final int SECONDS_BETWEEN_COMMENTS=30;
-	
 
-	
+	private static final int COMMENT_PAGE_SIZE = 20;
+
+	private static final int SECONDS_BETWEEN_COMMENTS = 30;
 
 	/**
 	 * 
@@ -53,8 +52,6 @@ public class ViewArticleManagedBean implements Serializable {
 	@ManagedProperty(value = "#{userSessionBean}")
 	private UserSessionBean userSessionBean;
 
-
-	
 	public UserSessionBean getUserSessionBean() {
 		return userSessionBean;
 	}
@@ -63,13 +60,12 @@ public class ViewArticleManagedBean implements Serializable {
 		this.userSessionBean = userSessionBean;
 	}
 
-	
 	@EJB
 	ArticleManager articleManager;
 
 	@EJB
 	CommentManager commentManager;
-	
+
 	@EJB
 	VoteManager voteManager;
 
@@ -102,7 +98,7 @@ public class ViewArticleManagedBean implements Serializable {
 	public void setArticle(Article article) {
 		this.article = article;
 	}
-	
+
 	public List<Comment> comments;
 
 	public List<Comment> getComments() {
@@ -122,11 +118,9 @@ public class ViewArticleManagedBean implements Serializable {
 	public void setNewCommentText(String newCommentText) {
 		this.newCommentText = newCommentText;
 	}
-	
+
 	public Comment newCommentReplyOf;
-	
-	
-	
+
 	public Comment getNewCommentReplyOf() {
 		return newCommentReplyOf;
 	}
@@ -136,9 +130,7 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	private Paginator commentPaginator;
-	
-	
-	
+
 	public Paginator getCommentPaginator() {
 		return commentPaginator;
 	}
@@ -147,7 +139,6 @@ public class ViewArticleManagedBean implements Serializable {
 		this.commentPaginator = commentPaginator;
 
 	}
-	
 
 	private void sortComments(@NotNull final CommentSortOrder commentSortOrder) {
 		// sorting the comments based on commentSortOrder
@@ -162,25 +153,25 @@ public class ViewArticleManagedBean implements Serializable {
 					return o2.getCreateDate().compareTo(o1.getCreateDate());
 				default:
 					return 0;
-					
+
 				}
-				
+
 			}
 		});
-	}  
+	}
 
 	public void loadArticle() {
-		Locale locale=JSFUtil.getLocale();
+		Locale locale = JSFUtil.getLocale();
 		if (articleId == null) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("no_id_param_err_sum", locale), LocalizationUtil.getTranslation("no_id_param_err_det", locale)));
 		} else {
 			Article article = articleManager.find(articleId);
 			if (article == null) {
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("article_id_not_found_err_sum", locale),  LocalizationUtil.getTranslation("article_id_not_found_err_det", locale)));
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("article_id_not_found_err_sum", locale), LocalizationUtil.getTranslation("article_id_not_found_err_det", locale)));
 			} else {
 				this.article = article;
-				this.comments=new ArrayList<>(article.getComments());
-				commentPaginator=new ListPaginator(COMMENT_PAGE_SIZE, comments.size());
+				this.comments = new ArrayList<>(article.getComments());
+				commentPaginator = new ListPaginator(COMMENT_PAGE_SIZE, comments.size());
 				sortComments(commentSortOrder);
 				if (highlightCommentId == null) {
 					// jump to first page
@@ -195,39 +186,32 @@ public class ViewArticleManagedBean implements Serializable {
 		}
 
 	}
-	
-	
 
 	public void postNewComment() {
-		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
-				.getRequest();
-		assert(userSessionBean.getCaptchaWrapper().isCaptchaCorrectlyAnswered()||request.getRemoteUser()!=null);
-		Locale locale=JSFUtil.getLocale();
-		int secondsToWait = JSFUtil.secondsToWaitUntilOperationAllowed(userSessionBean.getLastCommentDate(),SECONDS_BETWEEN_COMMENTS ) ;
-		if (secondsToWait!=0) {
-			
-			FacesContext.getCurrentInstance().addMessage("newcommentform:postcommentbutton", new FacesMessage(FacesMessage.SEVERITY_ERROR,  String.format(LocalizationUtil.getTranslation("wait_n_seconds_next_comment", locale),secondsToWait), null));
-		}
-		else {
+		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		assert (userSessionBean.getCaptchaWrapper().isCaptchaCorrectlyAnswered() || request.getRemoteUser() != null);
+		Locale locale = JSFUtil.getLocale();
+		int secondsToWait = JSFUtil.secondsToWaitUntilOperationAllowed(userSessionBean.getLastCommentDate(), SECONDS_BETWEEN_COMMENTS);
+		if (secondsToWait != 0) {
+
+			FacesContext.getCurrentInstance().addMessage("newcommentform:postcommentbutton", new FacesMessage(FacesMessage.SEVERITY_ERROR, String.format(LocalizationUtil.getTranslation("wait_n_seconds_next_comment", locale), secondsToWait), null));
+		} else {
 			userSessionBean.setLastCommentDate(new Date());
 			String userName = JSFUtil.getUserName();
 			String author = userName != null ? userName : AnonymusUserName.ANONYMUS_USER_NAME;
-			String newCommentReplyOfId=newCommentReplyOf==null?null:newCommentReplyOf.getId();
-			article = commentManager.addCommentToArticle(article, newCommentText, author,newCommentReplyOfId);
-			//telling the websocket endpont to notify the clients
-			CommentNotificationEndpoint.commentNotify(articleId);
+			String newCommentReplyOfId = newCommentReplyOf == null ? null : newCommentReplyOf.getId();
+			article = commentManager.addCommentToArticle(article, newCommentText, author, newCommentReplyOfId);
+			// telling the websocket endpont to notify the clients,because of
+			// comment post
+			CommentOrVoteNotificationEndpoint.commentNotify(articleId);
 			refreshComments();
 			newCommentText = null;
-			newCommentReplyOf=null;
+			newCommentReplyOf = null;
 			highlightCommentId = null;
 
 		}
-		
 
 	}
-
-	
-	
 
 	private CommentSortOrder commentSortOrder = CommentSortOrder.NEWESTFIRST;// initialize
 																				// with
@@ -243,47 +227,43 @@ public class ViewArticleManagedBean implements Serializable {
 	}
 
 	public void changeCommentSortOrderToNewestFirst() {
-		if (commentSortOrder==CommentSortOrder.OLDESTFIRST) {
-			commentSortOrder=CommentSortOrder.NEWESTFIRST;
+		if (commentSortOrder == CommentSortOrder.OLDESTFIRST) {
+			commentSortOrder = CommentSortOrder.NEWESTFIRST;
 			sortComments(commentSortOrder);
 		}
 	}
-	
+
 	public void changeCommentSortOrderToOldestFirst() {
-		if (commentSortOrder==CommentSortOrder.NEWESTFIRST) {
-			commentSortOrder=CommentSortOrder.OLDESTFIRST;
+		if (commentSortOrder == CommentSortOrder.NEWESTFIRST) {
+			commentSortOrder = CommentSortOrder.OLDESTFIRST;
 			sortComments(commentSortOrder);
 		}
 	}
-	
-	
+
 	public int getOrderNumberOfComment(final Comment comment) {
 		switch (commentSortOrder) {
 		case NEWESTFIRST:
-			return comments.size()-comments.indexOf(comment);
-			
+			return comments.size() - comments.indexOf(comment);
+
 		case OLDESTFIRST:
 			return comments.indexOf(comment) + 1;
 
 		default:
 			return 0;
 		}
-		
+
 	}
 
-	
-	
-	
-	public void voteOnComment(@NotNull  Comment comment,@NotNull final VoteDirection voteDirection) {
+	public void voteOnComment(@NotNull Comment comment, @NotNull final Vote.VoteDirection voteDirection) {
 		assert !comment.getHidden();
-		Comment votedComment=voteManager.voteOnComment(comment.getId(), JSFUtil.getUserName(),voteDirection);
+		Comment votedComment = voteManager.voteOnComment(comment.getId(), JSFUtil.getUserName(), voteDirection);
 		comment.setUpVoteCount(votedComment.getUpVoteCount());
 		comment.setDownVoteCount(votedComment.getDownVoteCount());
-		
+		// telling the websocket endpont to notify the clients,because of
+		// comment post
+		CommentOrVoteNotificationEndpoint.commentNotify(articleId);
+
 	}
-
-
-
 
 	public boolean commentShouldBeHighlighted(Comment comment) {
 		return highlightCommentId == null ? false : highlightCommentId.equals(comment.getId());
@@ -292,21 +272,18 @@ public class ViewArticleManagedBean implements Serializable {
 	public static String getMaxCommentSize() {
 		return Integer.toString(Comment.MAX_COMMENT_SIZE);
 	}
-	
+
 	public String getPostingName() {
-		return JSFUtil.getUserName()!=null?JSFUtil.getUserName():AnonymusUserName.ANONYMUS_USER_NAME;
-	}	
+		return JSFUtil.getUserName() != null ? JSFUtil.getUserName() : AnonymusUserName.ANONYMUS_USER_NAME;
+	}
+
 	public void answerCaptcha() {
-		
 
 	}
-	
-	
-	
 
 	// setting page start and end indices to show highlighted comment
 	private void pageToComment(@NotNull final String highlightCommentId) {
-		
+
 		Integer indexOfHighlightedComment = null;
 		for (int i = 0; i < comments.size(); i++) {
 			Comment comment = comments.get(i);
@@ -322,24 +299,26 @@ public class ViewArticleManagedBean implements Serializable {
 
 	}
 
-	public void reply (Comment comment) {
-		newCommentReplyOf=comment;
+	public void reply(Comment comment) {
+		newCommentReplyOf = comment;
 	}
+
 	public void undoReply() {
-		newCommentReplyOf=null;
+		newCommentReplyOf = null;
 	}
-	
-	
+
 	public void reloadArticleAndComments() {
-		article=articleManager.find(articleId);
+		article = articleManager.find(articleId);
 		refreshComments();
 	}
+
 	/**
-	 * Refreshes comments of the article, which should be up-to-date before this method call
+	 * Refreshes comments of the article, which should be up-to-date before this
+	 * method call
 	 */
 	private void refreshComments() {
-		comments=new ArrayList<>(article.getComments());
-		commentPaginator=new ListPaginator(COMMENT_PAGE_SIZE, comments.size());
+		comments = new ArrayList<>(article.getComments());
+		commentPaginator = new ListPaginator(COMMENT_PAGE_SIZE, comments.size());
 		sortComments(commentSortOrder);
 		// the latest comment should be visible, based on ordering, it is
 		// on the first page or last page
@@ -350,14 +329,10 @@ public class ViewArticleManagedBean implements Serializable {
 		} else {
 			commentPaginator.lastPage();
 		}
-		
-	}
-	
-	
-	public String getEmbedCodeForArticlesComments() {
-		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
-				.getRequest();
 
-		return String.format("<iframe src=\"%s://%s:%s%s/faces/embeddable.xhtml?articleId=%s frameborder=\"0\"></iframe>",request.getScheme(),request.getServerName(),request.getServerPort(),request.getContextPath(),articleId);
+	}
+
+	public List<CommentContent> detectLinksInText(final String commentText) {
+		return CommentLinkDetector.detectLinksInText(commentText);
 	}
 }

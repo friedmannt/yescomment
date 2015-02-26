@@ -48,8 +48,14 @@ public class NewArticleManagedBean implements Serializable {
 	@EJB
 	AsynchArticleInfoRetriever articleInfoRetriever;
 
+	/**
+	 * The new articles articleinfo descriptor
+	 */
 	ArticleInfo newArticleInfo;
 
+	/**
+	 * new article is importable and not yet imported
+	 */
 	Boolean newArticlePassedTheCheck;
 
 	public ArticleInfo getNewArticleInfo() {
@@ -68,17 +74,70 @@ public class NewArticleManagedBean implements Serializable {
 		this.newArticlePassedTheCheck = newArticlePassedTheCheck;
 	}
 
+	/**
+	 * The Future wrapper around articleinfo, helps to retrieve asynchronously
+	 */
 	private Future<ArticleInfo> articleInfoFutureResult;
 
-	public void finishRetrieveNewArticleInfo() {
+	/**
+	 * At page load, we get future articleinfo from flash
+	 * 
+	 * @throws InterruptedException
+	 */
+	public void getArticleInfoFutureResultFromFlash() throws InterruptedException {
+		Locale locale = JSFUtil.getLocale();
+		Object objectFromFlash = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("articleInfoFutureResult");
+		if (objectFromFlash != null) {
 
+			// might be null, if newarticlepage is loaded directly
+			if (objectFromFlash instanceof Future<?>) {
+				articleInfoFutureResult = (Future<ArticleInfo>) objectFromFlash;
+			}
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("url_empty", locale), null));
+		}
+
+	}
+
+	/**
+	 * Shows, whether the Future<ArticleInfo> exists
+	 * 
+	 * @return
+	 */
+	public boolean articleInfoFutureResultExists() {
+		return articleInfoFutureResult != null;
+	}
+
+	/**
+	 * Tests whether article info retrieve is ready If not ready, returns false,
+	 * if ready, executes the retrieve
+	 * 
+	 * @return
+	 */
+	public boolean checkArticleInfo() {
+
+		if (articleInfoFutureResult.isDone()) {
+			retrieveNewArticleInfo();
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
+	 * If it is already ready, we retrieve the articleinfo, and set
+	 * newArticlePassedTheCheck
+	 */
+	private void retrieveNewArticleInfo() {
+		assert articleInfoFutureResult.isDone();
 		try {
 			newArticleInfo = articleInfoFutureResult.get();
 		} catch (ExecutionException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			Throwable cause = e.getCause();
 			newArticlePassedTheCheck = Boolean.FALSE;
-			FacesContext.getCurrentInstance().addMessage("newarticleform:newarticlepassedthecheck", new FacesMessage(FacesMessage.SEVERITY_ERROR, cause.getClass().getName() + ":" + cause.getMessage(), null));
+			FacesContext.getCurrentInstance().addMessage("newarticleform:newarticlepassedthecheck", new FacesMessage(FacesMessage.SEVERITY_ERROR, cause.toString(), null));
 			return;
 
 		} catch (InterruptedException e) {
@@ -97,6 +156,11 @@ public class NewArticleManagedBean implements Serializable {
 
 	}
 
+	/**
+	 * Creates the new article;
+	 * 
+	 * @return
+	 */
 	public String createNewArticle() {
 		assert newArticlePassedTheCheck;
 		Locale locale = JSFUtil.getLocale();
@@ -116,23 +180,6 @@ public class NewArticleManagedBean implements Serializable {
 			return "/viewarticle.xhtml?faces-redirect=true&articleId=" + newArticleId;
 		}
 
-	}
-
-	/**
-	 * At page load, we get future articleinfo from flash, and get the result
-	 * 
-	 * @throws InterruptedException
-	 */
-	public void getArticleInfoFutureResultFromFlash() throws InterruptedException {
-		Object objectFromFlash = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("articleInfoFutureResult");
-		if (objectFromFlash != null) {
-			// might be null, if newarticlepage is loaded directly
-			if (objectFromFlash instanceof Future<?>) {
-				articleInfoFutureResult = (Future<ArticleInfo>) objectFromFlash;
-				finishRetrieveNewArticleInfo();
-			}
-
-		}
 	}
 
 }

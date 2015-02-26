@@ -18,9 +18,9 @@ import org.junit.Test;
 import yescomment.articleretriever.ArticleInfoRetriever;
 import yescomment.model.Article;
 import yescomment.model.Comment;
+import yescomment.model.Vote;
 import yescomment.util.AnonymusUserName;
 import yescomment.util.ArticleInfo;
-import yescomment.util.VoteDirection;
 
 public class ArticleCommentPersistenceIT extends AbstractPersistenceIT{
 
@@ -60,9 +60,9 @@ public class ArticleCommentPersistenceIT extends AbstractPersistenceIT{
 			Article article = articleManager.createArticleFromArticleInfo(ai);
 			article = articleManager.create(article);
 
-			assertEquals("http://everythingtutorials.org/noobtest/", article.getUrl());
+			assertEquals("http://www.minecraftnoobtest.com/", article.getUrl());
 
-			Article foundArticle = articleManager.getArticleByURL("http://everythingtutorials.org/noobtest/");
+			Article foundArticle = articleManager.getArticleByURL("http://www.minecraftnoobtest.com/");
 
 			assertEquals(foundArticle.getId(), article.getId());
 			tx.commit();
@@ -196,11 +196,11 @@ public class ArticleCommentPersistenceIT extends AbstractPersistenceIT{
 			article = articleManager.create(article);
 			article = commentManager.addCommentToArticle(article, "Jó a podcast", "feri", null);
 			Comment comment = commentManager.getLastCommentOfArticle(article);
-			voteManager.voteOnComment(comment.getId(), "laci", VoteDirection.UP);
-			voteManager.voteOnComment(comment.getId(), "laci", VoteDirection.UP);
-			voteManager.voteOnComment(comment.getId(), "laci", VoteDirection.DOWN);
-			voteManager.voteOnComment(comment.getId(), "feri", VoteDirection.DOWN);
-			voteManager.voteOnComment(comment.getId(), "pisti", VoteDirection.DOWN);
+			voteManager.voteOnComment(comment.getId(), "laci", Vote.VoteDirection.UP);
+			voteManager.voteOnComment(comment.getId(), "laci", Vote.VoteDirection.UP);
+			voteManager.voteOnComment(comment.getId(), "laci", Vote.VoteDirection.DOWN);
+			voteManager.voteOnComment(comment.getId(), "feri", Vote.VoteDirection.DOWN);
+			voteManager.voteOnComment(comment.getId(), "pisti", Vote.VoteDirection.DOWN);
 			assertEquals(1,comment.getUpVoteCount().intValue());
 			assertEquals(1,comment.getDownVoteCount().intValue());
 

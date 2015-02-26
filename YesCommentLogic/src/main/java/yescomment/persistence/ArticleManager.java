@@ -133,7 +133,7 @@ public class ArticleManager extends AbstractEntityManager<Article> {
 		predicateList.toArray(predicates);
 		q.where(predicates);
 		TypedQuery<Article> query = em.createQuery(q);
-
+		
 		return query.getResultList();
 
 	}

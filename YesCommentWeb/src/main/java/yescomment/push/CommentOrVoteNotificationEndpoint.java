@@ -16,10 +16,10 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint("/comments/{articleId}")
-public class CommentNotificationEndpoint {
+@ServerEndpoint("/commentsandvotes/{articleId}")
+public class CommentOrVoteNotificationEndpoint {
 
-	private static final Logger logger = Logger.getLogger("CommentNotificationEndpoint");
+	private static final Logger logger = Logger.getLogger("CommentOrVoteNotificationEndpoint");
 	static Map<Session, String> subscriptions = new ConcurrentHashMap<Session, String>();
 
 	@OnOpen

@@ -54,6 +54,22 @@
 
 			</h:commandButton>
 		</h:form>
+		<h:form id="deletearticleform">
+			<h3>Delete Article</h3>
+			<h:outputLabel for="deletedArticleId"
+				value="Id of article to be deleted" />
+			<h:inputText value="#{moderationManagedBean.deletedArticleId}"
+				id="deletedArticleId" size="40" required="true" />
+			<h:message for="deletedArticleId" />
+			<br />
+			<h:commandButton id="deleteArticleButton" value="Delete Article"
+				actionListener="#{moderationManagedBean.deleteArticle()}">
+				<f:ajax execute="@form" render="@form" />
+			</h:commandButton>
+			<h:commandButton type="reset" value="Reset">
+
+			</h:commandButton>
+		</h:form>
 		<h:form id="validateCommentDataForm">
 			<h3>Validate comment count and last comment date</h3>
 			<h:outputLabel for="validateCommentDataArticleId"

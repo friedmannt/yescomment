@@ -32,7 +32,9 @@ public class ImageCaptchaServlet extends HttpServlet {
 		byte[] captchaChallengeAsPng = null;
 		ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
 
-		BufferedImage challenge = CaptchaUtil.getImageOfString(userSessionBean.getCaptchaWrapper().getCaptcha().getChallenge(), CaptchaUtil.DEFAULT_IMAGE_WIDTH, CaptchaUtil.DEFAULT_IMAGE_HEIGTH);
+		final CaptchaWrapper captchaWrapper = userSessionBean.getCaptchaWrapper();
+		final Captcha captcha = captchaWrapper.getCaptcha();
+		BufferedImage challenge = CaptchaUtil.getImageOfString(captcha.getChallenge(), CaptchaUtil.DEFAULT_IMAGE_WIDTH, CaptchaUtil.DEFAULT_IMAGE_HEIGTH);
 		//write to png, it supports alpha
 		ImageIO.write(challenge, "png", pngOutputStream);
 		pngOutputStream.flush();

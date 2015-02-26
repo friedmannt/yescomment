@@ -22,7 +22,7 @@ public class ArticleTitleIT {
 	public void testArticleInfoTitle2() throws IOException {
 		ArticleInfo ai = ArticleInfoRetriever.getArticleInfoFromURL("http://bit.ly/noobtest");
 
-		assertEquals("Minecraft Noob Test - How Much Of A Noob Are You?", ai.getTitle());
+		assertEquals("Minecraft Noob Test - How Much of a Noob Are You?", ai.getTitle());
 
 	}
 

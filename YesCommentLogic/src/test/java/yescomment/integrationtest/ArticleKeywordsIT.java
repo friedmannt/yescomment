@@ -28,7 +28,7 @@ public class ArticleKeywordsIT {
 	@Test
 	public void testHTMLKeywords2() throws MalformedURLException, IOException {
 		ArticleInfo ai=ArticleInfoRetriever.getArticleInfoFromURL("http://www.theguardian.com/world/2014/mar/12/malaysia-airlines-search-mired-in-confusion-over-planes-final-path");
-		assertEquals("Malaysia Airlines flight MH370,Plane crashes,Malaysia,Vietnam,Asia Pacific,World news,World news",ai.getKeywords());
+		assertEquals("Malaysia Airlines flight MH370,Plane crashes,Malaysia,Vietnam,Asia Pacific,World news",ai.getKeywords());
 	}
 	@Test
 	public void testHTMLKeywords3() throws MalformedURLException, IOException {
@@ -38,7 +38,7 @@ public class ArticleKeywordsIT {
 	@Test
 	public void testHTMLKeywords4() throws MalformedURLException, IOException {
 		ArticleInfo ai=ArticleInfoRetriever.getArticleInfoFromURL("http://edition.cnn.com/video/?/video/bestoftv/2013/10/10/pkg-foster-alzheimers-family.cnn");
-		assertEquals("CNN,CNN Video,CNN news,CNN.com,CNN TV,news,news online,breaking news,U.S. news,world news,weather,business,CNN Money,sports,politics,law,technology,entertainment,education,travel,health,special reports,autos,developing story,news video,CNN Intl",ai.getKeywords());
+		assertEquals("breaking news video, news videos, cnn video, videos, Breaking News Videos, Story Video and Show Clips - CNN.com",ai.getKeywords());
 	}
 	@Test
 	public void testHTMLKeywords5() throws MalformedURLException, IOException {

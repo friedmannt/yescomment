@@ -59,16 +59,7 @@ public class LoginManagedBean implements Serializable {
 		}
 	}
 
-	public void tryToLoginEmbedded() {
-
-		try {
-			login();
-			
-		} catch (ServletException e) {
-			e.printStackTrace();
-			FacesContext.getCurrentInstance().addMessage("embeddedheaderform:embeddedloginlink", new FacesMessage(FacesMessage.SEVERITY_ERROR, LocalizationUtil.getTranslation("login_error", JSFUtil.getLocale()),null ));
-		}
-	}
+	
 	
 	public void login() throws ServletException {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -79,7 +70,6 @@ public class LoginManagedBean implements Serializable {
 
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		request.logout();
-		//embedded has the same viewscoped managed bean after logout
 		username=null;
 		password=null;
 		

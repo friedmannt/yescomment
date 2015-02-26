@@ -2,8 +2,10 @@ package yescomment.util;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Max;
+
 /**
- * Utility class for paging a list
+ * Utility class for paging a list. Index is 0 based
  * 
  * @author Friedmann Tamás
  * 
@@ -89,6 +91,12 @@ public class ListPaginator implements Serializable, Paginator {
 
 	@Override
 	public void jumpToItem(final int itemIndex) {
+		if (itemIndex>=itemCount) {
+			throw new IndexOutOfBoundsException(String.format("%d: out of upper bounds",itemIndex));
+		}
+		if (itemIndex<0) {
+			throw new IndexOutOfBoundsException(String.format("%d: out of lower bounds",itemIndex));
+		}
 		startIndex = itemIndex / pageSize * pageSize;
 		endIndex = startIndex + pageSize - 1;
 		displayedItemsChanged();

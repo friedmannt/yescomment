@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 import yescomment.model.Article;
 import yescomment.model.Comment;
 import yescomment.model.Vote;
-import yescomment.util.VoteDirection;
 
 @Stateless
 public class VoteManager extends AbstractEntityManager<Vote> {
@@ -64,7 +63,7 @@ public class VoteManager extends AbstractEntityManager<Vote> {
 		}
 	}
 
-	public Comment voteOnComment(@NotNull final String commentId, @NotNull final String userName, @NotNull final VoteDirection voteDirection) {
+	public Comment voteOnComment(@NotNull final String commentId, @NotNull final String userName, @NotNull final Vote.VoteDirection voteDirection) {
 		Comment comment = commentManager.find(commentId);
 		if (enabledToVoteOnComment(comment, userName)) {
 			Vote vote = new Vote();
@@ -72,16 +71,16 @@ public class VoteManager extends AbstractEntityManager<Vote> {
 			vote.setComment(comment);
 			vote.setUserName(userName);
 			vote.setVoteDirection(voteDirection);
-			if (voteDirection == VoteDirection.UP) {
+			if (voteDirection == Vote.VoteDirection.UP) {
 				comment.setUpVoteCount(comment.getUpVoteCount() + 1);
 
 			}
-			if (voteDirection == VoteDirection.DOWN) {
+			if (voteDirection == Vote.VoteDirection.DOWN) {
 				comment.setDownVoteCount(comment.getDownVoteCount() + 1);
 
 			}
 		}
-		return commentManager.merge(comment);
+		return comment;
 	}
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.PersistenceContext;
 import javax.validation.constraints.NotNull;
 
 import yescomment.model.Feedback;
+import yescomment.model.Feedback.FeedbackSubject;
 
 @Stateless
 
@@ -31,8 +32,9 @@ public class FeedbackManager extends AbstractEntityManager<Feedback> {
 
 	
 	
-	public void sendFeedback(@NotNull final String text) {
+	public void sendFeedback(@NotNull final FeedbackSubject subject, @NotNull final String text) {
 		Feedback feedback = new Feedback();
+		feedback.setFeedbackSubject(subject);
 		feedback.setFeedbackText(text);
 		create(feedback);
 

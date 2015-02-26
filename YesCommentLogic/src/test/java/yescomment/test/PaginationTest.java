@@ -72,6 +72,48 @@ public class PaginationTest {
 		assertEquals(10	, paginator.getEndIndex()+1);
 
 	}
+	
+	@Test
+	public void testJumpToItem() {
+		ListPaginator paginator=new ListPaginator( 11,100);
+		paginator.jumpToItem(0);
+		assertEquals(1, paginator.getCurrentPage());
+		paginator.jumpToItem(3);
+		assertEquals(1, paginator.getCurrentPage());
+	
+		paginator.jumpToItem(98);
+		assertEquals(9, paginator.getCurrentPage());
+		paginator.jumpToItem(99);
+		assertEquals(10, paginator.getCurrentPage());
+		
+		
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testJumpToItemOutOfLoweBounds() {
+		ListPaginator paginator=new ListPaginator( 11,100);
+		paginator.jumpToItem(-1);
+		
+		
+		
+	}
+	
+	@Test(expected=IndexOutOfBoundsException.class)
+	public void testJumpToItemOutOfUpperBounds() {
+		ListPaginator paginator=new ListPaginator( 11,100);
+		paginator.jumpToItem(100);
+		
+		
+		
+	}
+	
+	@Test
+	public void testCount() {
+		ListPaginator paginator=new ListPaginator( 11,100);
+		assertEquals(100, paginator.getItemCount());
+		assertEquals(11, paginator.getPageSize());
+
+	}
 
 	
 

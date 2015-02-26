@@ -10,7 +10,7 @@ import java.util.Date;
 public class CaptchaWrapper implements Serializable {
 
 	
-	public static final int DEFAULT_CAPTCHA_LENGTH=8;
+	public static final int DEFAULT_CAPTCHA_LENGTH=6;
 	/**
 	 * 
 	 */

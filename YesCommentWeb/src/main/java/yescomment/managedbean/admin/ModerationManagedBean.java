@@ -27,6 +27,8 @@ public class ModerationManagedBean implements Serializable {
 	ArticleManager articleManager;
 
 	private String deletedCommentId;// for delete
+	
+	private String deletedArticleId;// for delete
 
 	private String moderatedCommentId;// for hide/unhide
 
@@ -38,6 +40,14 @@ public class ModerationManagedBean implements Serializable {
 
 	public String getDeletedCommentId() {
 		return deletedCommentId;
+	}
+
+	public String getDeletedArticleId() {
+		return deletedArticleId;
+	}
+
+	public void setDeletedArticleId(String deletedArticleId) {
+		this.deletedArticleId = deletedArticleId;
 	}
 
 	public void setDeletedCommentId(String deletedCommentId) {
@@ -84,7 +94,13 @@ public class ModerationManagedBean implements Serializable {
 		deletedCommentId=null;
 
 	}
+	public void deleteArticle() {
+		articleManager.remove(deletedArticleId);
+		deletedArticleId=null;
 
+	}
+
+	
 	public void hideComment() {
 		commentManager.hideComment(moderatedCommentId);
 		moderatedCommentId=null;

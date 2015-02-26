@@ -8,28 +8,37 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import yescomment.util.VoteDirection;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity implementation class for Entity: Comment
  * 
  */
 @Entity
-@Table(name="yescomment_vote")
+@Table(name = "yescomment_vote")
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Vote extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 	@ManyToOne(optional = false)
+	@XmlTransient
 	private Comment comment;
-	
-	public static final int MAX_USERNAME_SIZE=16;
-	@Column(nullable=false,length = MAX_USERNAME_SIZE)
+
+	public static final int MAX_USERNAME_SIZE = 16;
+	@Column(nullable = false, length = MAX_USERNAME_SIZE)
 	@Size(max = MAX_USERNAME_SIZE)
 	@NotNull
+	@XmlElement(required=true)
 	private String userName;
 
 	@Enumerated(EnumType.STRING)
+	@XmlElement(required=true)
+	@NotNull
 	private VoteDirection voteDirection;
 
 	public Comment getComment() {
@@ -55,7 +64,9 @@ public class Vote extends AbstractEntity {
 	public void setVoteDirection(VoteDirection voteDirection) {
 		this.voteDirection = voteDirection;
 	}
-	
-	
-	
+
+	public static enum VoteDirection {
+		UP, DOWN
+	}
+
 }

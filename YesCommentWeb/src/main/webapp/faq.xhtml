@@ -25,6 +25,9 @@
 			<li><h:link fragment="whycaptcha"
 					value="#{yescommentmsg['faq_question_whycaptcha']}"
 					styleClass="faqquestionlink" /></li>
+			<li><h:link fragment="editmycomment"
+					value="#{yescommentmsg['faq_question_editmycomment']}"
+					styleClass="faqquestionlink" /></li>
 			<li><h:link fragment="removecomment"
 					value="#{yescommentmsg['faq_question_removecomment']}"
 					styleClass="faqquestionlink" /></li>
@@ -58,9 +61,7 @@
 			<li><h:link fragment="continuousread"
 					value="#{yescommentmsg['faq_question_continuousread']}"
 					styleClass="faqquestionlink" /></li>
-			<li><h:link fragment="embeddable"
-					value="#{yescommentmsg['faq_question_embeddable']}"
-					styleClass="faqquestionlink" /></li>
+			
 
 		</ul>
 		<span> <h:link id="whysitecreate" fragment="whysitecreate"
@@ -91,6 +92,11 @@
 				value="#{yescommentmsg['faq_question_removecomment']}"
 				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
 				value="#{yescommentmsg['faq_answer_removecomment']}" />
+		</span>
+		<span> <h:link id="editmycomment" fragment="editmycomment"
+				value="#{yescommentmsg['faq_question_editmycomment']}"
+				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
+				value="#{yescommentmsg['faq_answer_editmycomment']}" />
 		</span>
 
 		<span> <h:link id="constraints" fragment="constraints"
@@ -153,11 +159,6 @@
 				value="#{yescommentmsg['faq_answer_continuousread']}" />
 		</span>
 
-		<span> <h:link id="embeddable" fragment="embeddable"
-				value="#{yescommentmsg['faq_question_embeddable']}"
-				styleClass="faqquestion" /> <h:outputText styleClass="faqanswer"
-				value="#{yescommentmsg['faq_answer_embeddable']}" />
-		</span>
 
 
 

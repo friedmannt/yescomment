@@ -38,7 +38,7 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 
 		em.persist(entity);
 
-		// em.close();
+
 		notifyEntityCreation(entity);
 		return entity;
 
@@ -51,7 +51,6 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 
 		T mergedEntity = em.merge(entity);
 
-		// em.close();
 		return mergedEntity;
 
 	}
@@ -63,7 +62,12 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 
 		em.remove(em.merge(entity));
 
-		// em.close();
+	}
+	
+	@Override
+	public void remove(String id) {
+		T entity=find(id);
+		remove(entity);
 	}
 
 	@Override
@@ -149,9 +153,7 @@ public abstract class AbstractEntityManager<T extends AbstractEntity> implements
 		
 		if (minimumCreateDate != null) {
 			predicateList.add(cb.greaterThanOrEqualTo(r.<Date>get("createDate"), minimumCreateDate));
-			
 		}
-		
 		
 		Predicate[] predicates = new Predicate[predicateList.size()];
 		predicateList.toArray(predicates);

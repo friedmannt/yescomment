@@ -277,7 +277,7 @@ textarea {
 
 .articlepreview .articlepreviewdata p.articlepreviewkeywords a {
 	color: red;
-	margin: 0px 1px;
+	margin: 0px 2px;
 }
 
 .articlelist {
@@ -318,6 +318,10 @@ textarea {
 	font-size: 18px;
 	line-height: 18px;
 	padding: 0px 10px;
+}
+
+.newarticlecheckbutton {
+	display: none;
 }
 
 .newarticleinforefresh {
@@ -412,15 +416,17 @@ textarea {
 	padding: 0px 20px;
 }
 
-.moderatedcommenttext {
-	white-space: pre-wrap;
-	display: block;
-	letter-spacing: 1px;
+
+.hiddencommenttext {
 	color: #b0b0b0;
-	padding: 0px 20px;
 }
 
-.originalarticlelink,.shareemaillink,.embeddablecommentslink {
+
+.linkinsidecomment{
+color: rgba(251, 25, 71, 0.7);
+}
+
+.originalarticlelink,.shareemaillink {
 	text-align: right;
 	display: block;
 	color: #303030;
@@ -465,13 +471,13 @@ textarea {
 #newcommentform\:newcommentauth {
 	float: left;
 	min-height: 50px;
-	width: 75%;
+	width: 70%;
 }
 
 #newcommentform\:newcommentpost {
 	float: left;
 	min-height: 50px;
-	width: 25%;
+	width: 30%;
 	min-width: 50px;
 }
 
@@ -480,7 +486,7 @@ textarea {
 	font-size: 22px;
 }
 
-.captcharefreshicon {
+.captcharefreshicon,.captchavalidateicon {
 	height: 30px;
 }
 
@@ -573,6 +579,12 @@ textarea {
 	margin-top: 15px;
 	display: block;
 	letter-spacing: 1px;
+}
+
+#feedbackform\:subject {
+	width: 100%;
+	display: block;
+	font-size: 14px;
 }
 
 #feedbackform\:text {
@@ -815,7 +827,7 @@ textarea {
 	font-weight: bold;
 }
 
-.mailtoicon,.originallinkicon,.embeddinglinkicon {
+.mailtoicon,.originallinkicon {
 	width: 20px;
 	margin-left: 5px;
 	vertical-align: bottom;
@@ -876,9 +888,10 @@ textarea {
 }
 
 .captchaimage{
-	width: 160px;
+	width: 120px; 
 	height: 40px;
 }
+
 
 @media only screen and (max-width: 640px) {
 	#dotherightthing {

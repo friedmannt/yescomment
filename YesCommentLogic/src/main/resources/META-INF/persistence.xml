@@ -16,6 +16,8 @@
 				value="metadata" />
 			<property name="javax.persistence.schema-generation.scripts.create-target"
 				value="yescommentschema.sql" />
+				<property name="eclipselink.logging.level" value="FINE"/>
+				<property name="eclipselink.logging.parameters" value="true"/>
 		</properties>
 	</persistence-unit>
 </persistence>

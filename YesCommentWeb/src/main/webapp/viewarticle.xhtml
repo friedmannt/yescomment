@@ -22,7 +22,7 @@
 	</ui:define>
 	<ui:define name="content">
 
-		<h:messages showSummary="true" showDetail="true" />
+		<h:messages showSummary="true" showDetail="true" errorClass="errorstyle"/>
 		<h:panelGroup rendered="#{viewArticleManagedBean.article!=null}">
 			<h:panelGroup id="viewedarticlepreview">
 				<ui:include src="articlepreview.xhtml">
@@ -39,23 +39,15 @@
 						value="/resources/images/mailto_link.svg" styleClass="mailtoicon" />
 				</h:outputLink>
 				<h:outputLink styleClass="originalarticlelink"
-					value="#{viewArticleManagedBean.article.url}">
+					value="#{viewArticleManagedBean.article.url}"
+					target="_blank"
+					>
 
 					<h:outputText value="#{yescommentmsg['open_original_article']}" />
 					<h:graphicImage alt="originallink"
 						value="/resources/images/outside_link.svg"
 						styleClass="originallinkicon" />
 				</h:outputLink>
-				<h:link styleClass="embeddablecommentslink"
-					outcome="embeddable.xhtml?articleId=#{viewArticleManagedBean.articleId}">
-
-					<h:outputText value="#{yescommentmsg['embeddable_url']}" />
-					<h:graphicImage alt="embeddinglink"
-						value="/resources/images/embeddable_link.svg"
-						styleClass="embeddinglinkicon" />
-				</h:link>
-
-
 			</h:form>
 			<hr />
 			<h:form id="newcommentform">
@@ -96,7 +88,7 @@
 						</h:panelGroup>
 						<h:panelGroup
 							rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}">
-							<h:panelGrid columns="2">
+							<h:panelGrid columns="3">
 								<h:graphicImage
 									value="/captcha/captcha.png?now=#{userSessionBean.captchaWrapper.nowTime()}"
 									id="newcommentcaptcha" styleClass="captchaimage"/>
@@ -107,25 +99,24 @@
 										alt="captcha_randomize" class="captcharefreshicon" />
 									<f:ajax render=":newcommentform:newcommentcaptcha" />
 								</h:commandLink>
+								<h:commandLink title="#{yescommentmsg['validate_captcha']}"
+									rendered="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered}">
+									<img src="#{request.contextPath}/resources/images/validate.svg"
+										alt="captcha_validate" class="captchavalidateicon" />
+									<f:ajax	execute="@form" render=":newcommentform:newcommentauth :newcommentform:newcommentpost" />
+								</h:commandLink>
 							</h:panelGrid>
 
 							<h:outputText value="#{yescommentmsg['captcha_type']}: " />
 							<h:inputText id="captchaanswer" styleClass="halfseethrough">
 								<f:validator validatorId="CaptchaValidator" />
 								<f:attribute name="userSessionBean" value="#{userSessionBean}" />
-								<f:ajax
-									render=":newcommentform:newcommentauth :newcommentform:newcommentpost" />
 							</h:inputText>
 							<h:message for="captchaanswer" id="captchamessage"
 								showSummary="true" showDetail="false" errorClass="errorstyle" />
-
-
-
 						</h:panelGroup>
-
 					</h:panelGroup>
 					<h:panelGroup id="newcommentpost">
-
 						<h:commandButton value="#{yescommentmsg['post_comment']}"
 							styleClass="button" id="postcommentbutton"
 							disabled="#{!userSessionBean.captchaWrapper.captchaCorrectlyAnswered and request.remoteUser==null}"

@@ -32,7 +32,8 @@ public class LanguageAdminManagedBean implements Serializable {
 	List<Article> articlesWithoutLanguage;
 	List<String> possibleArticleLanguages;
 	
-	
+	String changedArticleId;
+	String changedArticleLanguage;
 
 	public List<Article> getArticlesWithoutLanguage() {
 		return articlesWithoutLanguage;
@@ -50,21 +51,42 @@ public class LanguageAdminManagedBean implements Serializable {
 		this.possibleArticleLanguages = possibleArticleLanguages;
 	}
 
+	public String getChangedArticleId() {
+		return changedArticleId;
+	}
+
+	public void setChangedArticleId(String changedArticleId) {
+		this.changedArticleId = changedArticleId;
+	}
+
+	public String getChangedArticleLanguage() {
+		return changedArticleLanguage;
+	}
+
+	public void setChangedArticleLanguage(String changedArticleLanguage) {
+		this.changedArticleLanguage = changedArticleLanguage;
+	}
+	
 	@PostConstruct
-	public void populateArticlesWithoutLanguage() {
-		articlesWithoutLanguage=articleManager.getArticlesWithoutLanguage();
+	public void populatePossibleLanguages() {
 		possibleArticleLanguages= new ArrayList<String>(ArticleLanguage.values().length);
 		for (ArticleLanguage articleLanguage:ArticleLanguage.values()) {
 			possibleArticleLanguages.add(articleLanguage.toString().toLowerCase());
 		}
 		Collections.sort(possibleArticleLanguages);
+	}
+	
+	
+	public void populateArticlesWithoutLanguage() {
+		articlesWithoutLanguage=articleManager.getArticlesWithoutLanguage();
+	
 		
 	}
 	
 	
 	
 	/**
-	 * Saving only the ones, where article is set
+	 * Saving only the ones, where article language is set
 	 */
 	public void saveLanguageChanges() {
 		for (Article article:articlesWithoutLanguage) {
@@ -72,5 +94,14 @@ public class LanguageAdminManagedBean implements Serializable {
 				articleManager.merge(article);
 			}
 		}
+	}
+	
+	/**
+	 * Saving selected article language
+	 */
+	public void changeArticleLanguage() {
+		Article article=articleManager.find(changedArticleId);
+		article.setLanguage(changedArticleLanguage);
+		articleManager.merge(article);
 	}
 }

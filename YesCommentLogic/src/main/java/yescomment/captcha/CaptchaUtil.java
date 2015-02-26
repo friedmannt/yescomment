@@ -21,7 +21,7 @@ import yescomment.util.StringUtil;
 public class CaptchaUtil {
 
 	
-	public static final int DEFAULT_IMAGE_WIDTH=400;
+	public static final int DEFAULT_IMAGE_WIDTH=300;
 	
 	public static final int DEFAULT_IMAGE_HEIGTH=100;
 	
@@ -29,7 +29,13 @@ public class CaptchaUtil {
 	public static final int FONT_SIZE = 80;
 	
 
-	
+	/**
+	 * renders an image of the captcha
+	 * @param captcha
+	 * @param imageWidth
+	 * @param imageHeight
+	 * @return
+	 */
 	public static BufferedImage getImageOfString(@NotNull String captcha, @NotNull int imageWidth, @NotNull int imageHeight) {
 		BufferedImage background = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);//support alpha
 		// get graphics
@@ -39,10 +45,10 @@ public class CaptchaUtil {
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		// calcul text position
 		final Font font = new Font(Font.SERIF,0,FONT_SIZE);
-		graph.setComposite(AlphaComposite.Clear);
-		graph.fillRect(0, 0, imageWidth, imageHeight);
+		graph.setComposite(AlphaComposite.Clear);//transparent backround
+		graph.fillRect(0, 0, imageWidth, imageHeight);//transparent backround fill
 		graph.setComposite(AlphaComposite.Src);
-		graph.setPaint(Color.BLACK);
+		graph.setPaint(Color.BLACK);//paint color is black
 		graph.setFont(font);
 		
 
@@ -58,7 +64,8 @@ public class CaptchaUtil {
 			double radians=Math.toRadians(rotationDegree);
 			//0,0 is the left top, 0,imageheight is the left bottom. But letters go below 0 line, so 10 px is elevated
 			//all chars are shifted on x axis with 1/8 of total width
-			final int charposx = i*(imageWidth/captcha.length());
+			final int xmargin=(int) (imageWidth*0.05);//5% margin in the x axis
+			final int charposx = xmargin+i*((imageWidth-2*xmargin)/captcha.length());//would be i*((imageWidth)/captcha.length()); if there were no margins
 			final int charposy = imageHeight-imageHeight/4;
 			//rotate at charpos
 			graph.rotate(radians,charposx,charposy);
@@ -88,7 +95,7 @@ public class CaptchaUtil {
 		// get the session id that will identify the generated captcha.
 		// the same id must be used to validate the response, the session id
 		// is a good candidate!
-		String captchaId = StringUtil.getRandomString(8, new Random());
+		String captchaId = StringUtil.getRandomString(6, new Random());
 		// call the ImageCaptchaService getChallenge method
 		BufferedImage challenge = getImageOfString(captchaId, DEFAULT_IMAGE_WIDTH, DEFAULT_IMAGE_HEIGTH);
 

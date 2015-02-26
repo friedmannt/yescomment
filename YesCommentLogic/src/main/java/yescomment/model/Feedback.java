@@ -2,6 +2,8 @@ package yescomment.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,6 +22,9 @@ public class Feedback extends AbstractEntity {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private FeedbackSubject feedbackSubject;
 	
 	
 	public static final int MAX_FEEDBACK_SIZE=4000;
@@ -28,8 +33,18 @@ public class Feedback extends AbstractEntity {
 	@Size(max = MAX_FEEDBACK_SIZE)
 	private String feedbackText;
 	
-
 	
+	
+
+
+	public FeedbackSubject getFeedbackSubject() {
+		return feedbackSubject;
+	}
+
+	public void setFeedbackSubject(FeedbackSubject feedbackSubject) {
+		this.feedbackSubject = feedbackSubject;
+	}
+
 	public String getFeedbackText() {
 		return feedbackText;
 	}
@@ -37,11 +52,10 @@ public class Feedback extends AbstractEntity {
 	public void setFeedbackText(String feedbackText) {
 		this.feedbackText = feedbackText;
 	}
-
 	
-
-	
-	
+	public static enum FeedbackSubject {
+		OPINION,BUGREPORT,IDEA,MISSPELL,LAWVIOLATION
+	}
 	
 
 	
